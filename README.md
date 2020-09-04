@@ -13,7 +13,7 @@ Features:
 
 
 
-[![time tracker](https://wakatime.com/badge/github/Vitexus/ISDOC-via-IMAP-to-FlexiBee.svg)](https://wakatime.com/badge/github/Vitexus/ISDOC-via-IMAP-to-FlexiBee)
+[![time tracker](https://wakatime.com/badge/github/VitexSoftware/FlexiBee-email-importer.svg)](https://wakatime.com/badge/github/VitexSoftware/FlexiBee-email-importer)
 
 
 Configuration
