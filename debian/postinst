@@ -1,0 +1,21 @@
+#!/bin/sh
+# postinst script for flexibee-email-importer
+
+set -e
+
+if [ "$1" = "configure" ]; then
+
+    . /usr/share/debconf/confmodule
+    db_get composer/WEB_USER
+    WEBUSER=$RET
+
+    mkdir -p /var/lib/composer /var/lib/flexibee-email-importer /usr/lib/flexibee-email-importer/
+    chown $WEBUSER:$WEBUSER /var/lib/composer /var/lib/flexibee-email-importer /usr/lib/flexibee-email-importer/ -R
+    su - $WEBUSER -s /bin/bash -c 'COMPOSER_HOME="/var/lib/composer" composer --no-dev -o install -d /usr/lib/flexibee-email-importer/'
+
+fi
+
+
+#DEBHELPER#
+
+exit 0

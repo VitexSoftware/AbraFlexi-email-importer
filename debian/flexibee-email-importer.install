@@ -1,0 +1,4 @@
+bin/*			usr/bin
+src/*.php		usr/share/flexibee-email-importer/
+src/Imap2FB/*.php 	usr/share/flexibee-email-importer/Imap2FB
+debian/composer.json	usr/lib/flexibee-email-importer/

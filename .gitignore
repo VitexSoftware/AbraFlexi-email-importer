@@ -1,0 +1,9 @@
+/composer.lock
+/nbproject/private/
+/vendor/
+/debian/.debhelper/
+/debian/flexibee-email-importer.debhelper.log
+/debian/flexibee-email-importer.substvars
+/debian/debhelper-build-stamp
+/debian/flexibee-email-importer/
+client.json

@@ -1,0 +1,24 @@
+{
+    "name": "vitexsoftware/imap2flexibee",
+    "description": "Import Invoices and other products from imap Inbox",
+    "authors": [
+        {
+            "name": "Vitex",
+            "email": "info@vitexsoftware.cz"
+        }
+    ],
+    "minimum-stability":"dev",
+    "require": {
+        "ext-imap": "*",
+        "ext-zip": "*",
+        "spoje.net/flexibee": "dev-master",
+        "vitexsoftware/flexibee-bricks": "dev-master",
+        "php-imap/php-imap": "dev-master",
+        "lightools/xml": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "FlexiPeeHP\\Imap2FB\\": "src/Imap2FB/"
+        }
+    }
+}

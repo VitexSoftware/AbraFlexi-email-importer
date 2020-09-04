@@ -1,0 +1,7 @@
+{
+    "IMAP_SERVER": "mailhost.com",
+    "IMAP_PORT": 143,
+    "IMAP_LOGIN": "your@email",
+    "IMAP_PASSWORD": "XXXXXX",
+    "IMAP_MAILBOX": "inbox"
+}

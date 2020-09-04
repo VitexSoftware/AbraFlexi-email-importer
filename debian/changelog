@@ -1,0 +1,7 @@
+flexibee-email-importer (0.3.10) UNRELEASED; urgency=medium
+
+  * Initial release.
+  *  Atatchments fixed
+  * New configuration option
+
+ -- CyberVitexus <vitex@exiv.jinonice.czf>  Sun, 12 Jul 2020 12:02:43 +0200

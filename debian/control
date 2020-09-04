@@ -1,0 +1,15 @@
+Source: flexibee-email-importer
+Section: web
+Priority: optional
+Maintainer: "Vítězslav Dvořák" <info@vitexsoftware.cz>t
+Build-Depends: debhelper (>=11~),composer
+Standards-Version: 4.1.4
+Homepage: https://github.com/VitexSoftware/MultiFlexiBeeSetup
+
+Package: flexibee-email-importer
+Multi-Arch: foreign
+Depends: ${misc:Depends}, php-cli, php-imap, php-zip, php-spojenet-flexibee
+Suggests: flexibee-server,php-flexibee-config, flexibee-digest, flexibee-matcher, flexibee-reminder, flexibee-contract-invoices
+Architecture: all
+Description: mail to FlexiBee importer
+ Utility for importning invoices from imap account to flexibee.
