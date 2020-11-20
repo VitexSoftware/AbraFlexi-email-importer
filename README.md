@@ -1,5 +1,5 @@
 ISDOC files importer From IMAP folder to AbraFlexi
-=================================================
+==================================================
 
 ![Logo](abraflexi-imap-import.svg?raw=true)
 
@@ -11,9 +11,39 @@ Features:
  * Create new entries in Price List
  * Handle storage moves
 
-
-
 [![time tracker](https://wakatime.com/badge/github/VitexSoftware/AbraFlexi-email-importer.svg)](https://wakatime.com/badge/github/VitexSoftware/AbraFlexi-email-importer)
+
+Installation
+------------
+
+
+Method 1) for developers:
+
+```shell
+git clone git@github.com:VitexSoftware/AbraFlexi-email-importer.git
+cd AbraFlexi-email-importer.git
+composer install
+```
+
+Method 2) for users:
+
+```shell
+wget https://github.com/VitexSoftware/AbraFlexi-email-importer/archive/main.zip
+unzip AbraFlexi-email-importer-main.zip
+cd AbraFlexi-email-importer-main
+composer.phar install
+```
+
+Method 3) For admins. Debian and Ubuntu based distros can use our repository to 
+install latest version by this commands:
+
+```shell
+sudo apt install lsb-release wget
+echo "deb http://repo.vitexsoftware.cz $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/vitexsoftware.list
+sudo wget -O /etc/apt/trusted.gpg.d/vitexsoftware.gpg http://repo.vitexsoftware.cz/keyring.gpg
+sudo apt update
+sudo apt install abraflexi-email-importer
+```
 
 
 Configuration
@@ -42,6 +72,17 @@ export    ABRAFLEXI_STORAGE="SKLAD"
  * ABRAFLEXI_STORAGE - code of default storage
 
 Imap options described here: https://www.php.net/manual/en/function.imap-open.php
+
+you can also create file /etc/profile.d/abraflexi-email-importer.sh with export
+definitions to be ready system wide.
+
+
+Usage
+-----
+
+run command **bin/imap2abraflexi** by hand or periodically to check & import of
+new invoices in your mailbox.
+
 
 
 Supported by
