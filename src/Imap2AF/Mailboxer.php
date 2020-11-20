@@ -9,6 +9,7 @@
 
 namespace AbraFlexi\Imap2AF;
 
+use Ease\Logger\Logging;
 use Ease\Shared;
 use Exception;
 use PhpImap\Exceptions\ConnectionException;
@@ -21,7 +22,7 @@ use PhpImap\Mailbox;
  */
 class Mailboxer extends Mailbox {
 
-    use \Ease\Logger\Logging;
+    use Logging;
 
     /**
      *
@@ -80,12 +81,11 @@ class Mailboxer extends Mailbox {
      * Mailbox handler
      */
     public function __construct() {
-        $shared = Shared::singleton();
-        $this->setUp();
+        $this->setUp(Shared::singleton()->configuration);
 
 // Create PhpImap\Mailbox instance for all further actions
         parent::__construct(
-                '{' . $this->mserver . ':' . $this->mport . '/'.$this->moptions.'}' . $this->mailbox, // IMAP server and mailbox folder
+                '{' . $this->mserver . ':' . $this->mport . '/' . $this->moptions . '}' . $this->mailbox, // IMAP server and mailbox folder
                 $this->mlogin, // Username for the before configured mailbox
                 $this->mpassword, // Password for the before configured username
                 sys_get_temp_dir() . '/', // Directory, where attachments will be saved (optional)

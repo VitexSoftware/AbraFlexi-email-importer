@@ -9,20 +9,20 @@
 
 namespace AbraFlexi\Imap2AF;
 
-use DOMDocument;
-use DOMElement;
-use DOMNodeList;
-use Ease\Functions;
 use AbraFlexi\Adresar;
 use AbraFlexi\Cenik;
 use AbraFlexi\Company;
 use AbraFlexi\FakturaPrijata;
-use AbraFlexi\AbraFlexiRO;
-use AbraFlexi\AbraFlexiRW;
 use AbraFlexi\Nastaveni;
 use AbraFlexi\Priloha;
+use AbraFlexi\RO;
+use AbraFlexi\RW;
 use AbraFlexi\SkladovaKarta;
 use AbraFlexi\Stitek;
+use DOMDocument;
+use DOMElement;
+use DOMNodeList;
+use Ease\Functions;
 use Lightools\Xml\XmlLoader;
 
 /**
@@ -130,7 +130,7 @@ class Importer extends FakturaPrijata {
         $invoice = new FakturaPrijata($invoiceInfo);
 
         $invoice->setDataValue('datSplat', $paymentMeans['datSplat']);
-        $invoice->setDataValue('banka', $this->conf('ABRAFLEXI_BANK') ? AbraFlexiRO::code($this->conf('ABRAFLEXI_BANK')) : null );
+        $invoice->setDataValue('banka', $this->conf('ABRAFLEXI_BANK') ? RO::code($this->conf('ABRAFLEXI_BANK')) : null );
 
         $checker = new Adresar();
         if ($checker->recordExists(['ic' => $invoiceSuplier['ic']])) {
@@ -141,7 +141,7 @@ class Importer extends FakturaPrijata {
             $invoiceItem['dodavatel'] = $suplierAbraFlexiID;
             $invoiceItem['origin'] = $invoice->getDataValue('cisDosle');
             if ($invoiceItem['typPolozkyK'] == 'typPolozky.katalog') {
-                $invoiceItem['sklad'] = $this->conf('ABRAFLEXI_STORAGE') ? AbraFlexiRO::code($this->conf('ABRAFLEXI_STORAGE')) : null;
+                $invoiceItem['sklad'] = $this->conf('ABRAFLEXI_STORAGE') ? RO::code($this->conf('ABRAFLEXI_STORAGE')) : null;
             }
             $invoice->addArrayToBranch($invoiceItem, 'polozkyFaktury');
         }
@@ -414,8 +414,8 @@ class Importer extends FakturaPrijata {
      * @return boolean Measure Unit presence status
      */
     public function handleMeasureUnit($unitCode) {
-        $checker = new AbraFlexiRW(AbraFlexiRO::code($unitCode), ['evidence' => 'merna-jednotka', 'ignore404' => true]);
-        return ($checker->lastResponseCode == 404) ? $checker->sync(['id' => AbraFlexiRO::code($unitCode), 'nazev' => mb_strtolower($unitCode), 'poznam' => _('imported from invoice by mail')]) : true;
+        $checker = new RW(RO::code($unitCode), ['evidence' => 'merna-jednotka', 'ignore404' => true]);
+        return ($checker->lastResponseCode == 404) ? $checker->sync(['id' => RO::code($unitCode), 'nazev' => mb_strtolower($unitCode), 'poznam' => _('imported from invoice by mail')]) : true;
     }
 
     /**
@@ -863,7 +863,7 @@ class Importer extends FakturaPrijata {
         if (empty($bank)) {
             $this->addStatusMessage(_('Default bank account is not set'), 'warning');
         } else {
-            $bankStatus = $this->checkBank(AbraFlexiRO::code($bank));
+            $bankStatus = $this->checkBank(RO::code($bank));
             if ($bankStatus === false) {
                 $this->addStatusMessage(sprintf(_('Default bank %s not exists'), $bank), 'error');
             }
@@ -873,7 +873,7 @@ class Importer extends FakturaPrijata {
         if (empty($storage)) {
             $this->addStatusMessage(_('Default storage is not set'), 'warning');
         } else {
-            $storageStatus = $this->checkStorage(AbraFlexiRO::code($storage));
+            $storageStatus = $this->checkStorage(RO::code($storage));
             if ($storageStatus === false) {
                 $this->addStatusMessage(sprintf(_('Default storage %s not exists'), $storage), 'warning');
             }
@@ -890,7 +890,7 @@ class Importer extends FakturaPrijata {
      * @return boolean
      */
     public function checkStorage($storage) {
-        $prober = new AbraFlexiRO($storage, ['evidence' => 'sklad', 'ignore404' => true]);
+        $prober = new RO($storage, ['evidence' => 'sklad', 'ignore404' => true]);
         return $prober->lastResponseCode == 200;
     }
 
@@ -902,7 +902,7 @@ class Importer extends FakturaPrijata {
      * @return boolean
      */
     public function checkBank($bank) {
-        $prober = new AbraFlexiRO($bank, ['evidence' => 'bankovni-ucet', 'ignore404' => true]);
+        $prober = new RO($bank, ['evidence' => 'bankovni-ucet', 'ignore404' => true]);
         return $prober->lastResponseCode == 200;
     }
 
