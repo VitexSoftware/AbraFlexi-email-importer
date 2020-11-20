@@ -1,24 +1,24 @@
 {
-    "name": "vitexsoftware/imap2flexibee",
-    "description": "Import Invoices and other products from imap Inbox",
+    "name": "vitexsoftware/imap2abraflexi",
+    "description": "Import Invoices from imap Inbox to AbraFlexi",
     "authors": [
         {
             "name": "Vitex",
             "email": "info@vitexsoftware.cz"
         }
     ],
-    "minimum-stability":"dev",
+    "minimum-stability": "dev",
     "require": {
         "ext-imap": "*",
         "ext-zip": "*",
-        "spoje.net/flexibee": "dev-master",
-        "vitexsoftware/flexibee-bricks": "dev-master",
+        "spojenet/flexibee": "2.0.x-dev",
+        "vitexsoftware/flexibee-bricks": "dev-abraflexi",
         "php-imap/php-imap": "dev-master",
         "lightools/xml": "*"
     },
     "autoload": {
         "psr-4": {
-            "FlexiPeeHP\\Imap2FB\\": "src/Imap2FB/"
+            "AbraFlexi\\Imap2AF\\": "src/Imap2AF/"
         }
     }
 }

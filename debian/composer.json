@@ -1,6 +1,6 @@
 {
-    "name": "deb/flexibee-email-importer",
-    "description": "Invoice Matcher for FlexiBee written in PHP",
+    "name": "deb/abraflexi-email-importer",
+    "description": "Invoice Matcher for AbraFlexi written in PHP",
     "type": "project",
     "version": "0.8",
     "authors": [
@@ -11,18 +11,18 @@
     ],
     "minimum-stability": "dev",
     "config": {
-        "vendor-dir": "/var/lib/flexibee-email-importer"
+        "vendor-dir": "/var/lib/abraflexi-email-importer"
     },
     "require": {
         "ext-imap": "*",
         "ext-zip": "*",
-        "deb/flexibee-bricks": "*",
+        "deb/abraflexi-bricks": "*",
         "php-imap/php-imap": "dev-master",
         "lightools/xml": "*"
     },
     "autoload": {
         "psr-4": {
-            "FlexiPeeHP\\Imap2FB\\": "/usr/share/flexibee-email-importer/Imap2FB/"
+            "AbraFlexi\\Imap2AF\\": "/usr/share/abraflexi-email-importer/Imap2AF/"
         }
     },
     "repositories": [
@@ -36,7 +36,7 @@
         },
         {
             "type": "path",
-            "url": "/usr/share/php/FlexiPeeHP"
+            "url": "/usr/share/php/AbraFlexi"
         },
         {
             "type": "path",
@@ -44,7 +44,7 @@
         },
         {
             "type": "path",
-            "url": "/usr/share/php/FlexiPeeHPBricks"
+            "url": "/usr/share/php/AbraFlexiBricks"
         }
     ]
 }

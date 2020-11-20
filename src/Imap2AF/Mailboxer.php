@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Imap2FlexiBee MailBox handler
+ * Imap2AbraFlexi MailBox handler
  *
  * @author     Vítězslav Dvořák <info@vitexsofware.cz>
  * @copyright  (G) 2019-2020 Vitex Software
  */
 
-namespace FlexiPeeHP\Imap2FB;
+namespace AbraFlexi\Imap2AF;
 
 use Ease\Shared;
 use Exception;
@@ -46,7 +46,7 @@ class Mailboxer extends Mailbox {
      * @param array $params
      */
     public function setUp($params = []) {
-        $this->setupProperty($params, 'msklad', 'FLEXIBEE_SKLAD');
+        $this->setupProperty($params, 'msklad', 'ABRAFLEXI_SKLAD');
         $this->setupProperty($params, 'mlogin', 'IMAP_LOGIN');
         $this->setupProperty($params, 'mpassword', 'IMAP_PASSWORD');
         $this->setupProperty($params, 'mport', 'IMAP_PORT');

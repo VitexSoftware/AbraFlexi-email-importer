@@ -1,9 +1,9 @@
-ISDOC files importer From IMAP folder to FlexiBee
+ISDOC files importer From IMAP folder to AbraFlexi
 =================================================
 
-![Logo](flexibee-imap-import.svg?raw=true)
+![Logo](abraflexi-imap-import.svg?raw=true)
 
-Tool for importing ISDOC/ISDOCx files into FlexiBee
+Tool for importing ISDOC/ISDOCx files into AbraFlexi
 
 Features:
 
@@ -13,7 +13,7 @@ Features:
 
 
 
-[![time tracker](https://wakatime.com/badge/github/VitexSoftware/FlexiBee-email-importer.svg)](https://wakatime.com/badge/github/VitexSoftware/FlexiBee-email-importer)
+[![time tracker](https://wakatime.com/badge/github/VitexSoftware/AbraFlexi-email-importer.svg)](https://wakatime.com/badge/github/VitexSoftware/AbraFlexi-email-importer)
 
 
 Configuration
@@ -29,13 +29,17 @@ export    IMAP_PASSWORD="password"
 export    IMAP_MAILBOX="string"
 export    IMAP_OPTIONS="imap/ssl"
 
-export    FLEXIBEE_URL="https://demo.flexibee.eu:5434"
-export    FLEXIBEE_LOGIN="winstrom"
-export    FLEXIBEE_PASSWORD="winstrom"
-export    FLEXIBEE_COMPANY="demo"
-export    FLEXIBEE_BANK="BANKA"
+export    ABRAFLEXI_URL="https://demo.flexibee.eu:5434"
+export    ABRAFLEXI_LOGIN="winstrom"
+export    ABRAFLEXI_PASSWORD="winstrom"
+export    ABRAFLEXI_COMPANY="demo"
+export    ABRAFLEXI_BANK="BANKA"
+export    ABRAFLEXI_STORAGE="SKLAD"
 
 ```
+
+ * ABRAFLEXI_BANK    - code of default bank account
+ * ABRAFLEXI_STORAGE - code of default storage
 
 Imap options described here: https://www.php.net/manual/en/function.imap-open.php
 

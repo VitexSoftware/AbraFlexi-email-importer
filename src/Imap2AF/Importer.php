@@ -1,20 +1,36 @@
 <?php
 
 /**
- * Imap2FlexiBee Import 
+ * Imap2AbraFlexi Import 
  *
  * @author     Vítězslav Dvořák <info@vitexsofware.cz>
  * @copyright  (G) 2019-2020 Vitex Software
  */
 
-namespace FlexiPeeHP\Imap2FB;
+namespace AbraFlexi\Imap2AF;
+
+use DOMDocument;
+use DOMElement;
+use DOMNodeList;
+use Ease\Functions;
+use AbraFlexi\Adresar;
+use AbraFlexi\Cenik;
+use AbraFlexi\Company;
+use AbraFlexi\FakturaPrijata;
+use AbraFlexi\AbraFlexiRO;
+use AbraFlexi\AbraFlexiRW;
+use AbraFlexi\Nastaveni;
+use AbraFlexi\Priloha;
+use AbraFlexi\SkladovaKarta;
+use AbraFlexi\Stitek;
+use Lightools\Xml\XmlLoader;
 
 /**
  * Description of Importer
  *
  * @author Vítězslav Dvořák <info@vitexsoftware.cz>
  */
-class Importer extends \FlexiPeeHP\FakturaPrijata {
+class Importer extends FakturaPrijata {
 
     /**
      * Default values for new Pricelist Item
@@ -30,26 +46,26 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
         'Autorská odměna'];
 
     /**
-     * FlexiBee pricelist Object
-     * @var \FlexiPeeHP\Cenik
+     * AbraFlexi pricelist Object
+     * @var Cenik
      */
     private $priceList;
 
     /**
      * XML Loader
-     * @var \Lightools\Xml\XmlLoader
+     * @var XmlLoader
      */
     public $loader;
 
     /**
      * Invoice Suplier
-     * @var \FlexiPeeHP\Adresar
+     * @var Adresar
      */
     private $suplier;
 
     /**
      * My Company Info
-     * @var \FlexiPeeHP\Nastaveni
+     * @var Nastaveni
      */
     private $myInfo = null;
 
@@ -75,9 +91,9 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
         parent::__construct($init, $options);
 
         $this->parser = new Convertor();
-        $this->suplier = new \FlexiPeeHP\Adresar();
-        $this->loader = new \Lightools\Xml\XmlLoader();
-        $this->myInfo = new \FlexiPeeHP\Nastaveni(1);
+        $this->suplier = new Adresar();
+        $this->loader = new XmlLoader();
+        $this->myInfo = new Nastaveni(1);
     }
 
     /**
@@ -99,7 +115,7 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
      * @param string $filename invoice filename Faktura_VF1_7761_2019.isdocx
      * @param string $filrPath real filename on disk
      * 
-     * @return \FlexiPeeHP\FakturaPrijata
+     * @return FakturaPrijata
      */
     public function xmlDomToInvoice() {
         $invoiceSuplier = $this->parser->invoiceSuplier();
@@ -107,22 +123,25 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
         $paymentMeans = $this->parser->paymentMeans();
         $invoiceInfo = $this->parser->invoiceInfo();
 
-        $suplierFlexiBeeID = $this->getSuplierFlexiBeeID($invoiceSuplier);
+        $invoiceInfo['ic'] = $invoiceSuplier['ic'];
+        
+        $suplierAbraFlexiID = $this->getSuplierAbraFlexiID($invoiceSuplier);
 
-        $invoice = new \FlexiPeeHP\FakturaPrijata($invoiceInfo);
+        $invoice = new FakturaPrijata($invoiceInfo);
 
         $invoice->setDataValue('datSplat', $paymentMeans['datSplat']);
+        $invoice->setDataValue('banka', $this->conf('ABRAFLEXI_BANK') ? AbraFlexiRO::code($this->conf('ABRAFLEXI_BANK')) : null );
 
-        $checker = new \FlexiPeeHP\Adresar();
+        $checker = new Adresar();
         if ($checker->recordExists(['ic' => $invoiceSuplier['ic']])) {
             $invoice->setDataValue('firma', 'in:' . $invoiceSuplier['ic']);
         }
 
         foreach ($invoiceItems as $invoiceItemID => $invoiceItem) {
-            $invoiceItem['dodavatel'] = $suplierFlexiBeeID;
+            $invoiceItem['dodavatel'] = $suplierAbraFlexiID;
             $invoiceItem['origin'] = $invoice->getDataValue('cisDosle');
             if ($invoiceItem['typPolozkyK'] == 'typPolozky.katalog') {
-                $invoiceItem['sklad'] = array_key_exists('storage', $this->configuration) ? \FlexiPeeHP\FlexiBeeRO::code($this->configuration['storage']) : null;
+                $invoiceItem['sklad'] = $this->conf('ABRAFLEXI_STORAGE') ? AbraFlexiRO::code($this->conf('ABRAFLEXI_STORAGE')) : null;
             }
             $invoice->addArrayToBranch($invoiceItem, 'polozkyFaktury');
         }
@@ -140,7 +159,7 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
     /**
      * Convert Dom based invoice item Element to Array
      *
-     * @param \DOMElement $item
+     * @param DOMElement $item
      * 
      * @return array
      */
@@ -238,7 +257,7 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
      */
     public function importInvoiceItems(&$invoiceItems) {
         $pricelistIDs = [];
-        $this->priceList = new \FlexiPeeHP\Cenik();
+        $this->priceList = new Cenik();
 
         $invoiceItems = $this->recountForPricelist($invoiceItems);
 
@@ -250,7 +269,7 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
                 continue;
             }
 
-            if ($this->flexiBeePricelistPresence($invoiceItem)) {
+            if ($this->abraFlexiPricelistPresence($invoiceItem)) {
                 $pricelistId = $this->priceList->lastResult['cenik'][0]['id'];
                 $pricelistIDs[$invoiceItemID] = $pricelistId;
                 $this->addStatusMessage(sprintf(_('Allready known item %s'),
@@ -262,20 +281,20 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
 
                     $newPriceListItem = $this->addItemToPriceList($invoiceItem);
                     if (is_null($newPriceListItem)) {
-                        $this->addStatusMessage(sprintf(_('Item %s insert to FlexiBee Pricelist failed'), $invoiceItem['nazev']), 'error');
+                        $this->addStatusMessage(sprintf(_('Item %s insert to AbraFlexi Pricelist failed'), $invoiceItem['nazev']), 'error');
                     } else {
                         $pricelistIDs[$invoiceItemID] = $newPriceListItem;
 
-                        $this->addStatusMessage(sprintf(_('Item was added to FlexiBee Pricelist as %s'),
+                        $this->addStatusMessage(sprintf(_('Item was added to AbraFlexi Pricelist as %s'),
                                         $newPriceListItem), 'success');
 
 //                        $newStorageItem = $this->addItemToStorage($this->priceList,
 //                                0);
 //                        if (is_null($newStorageItem) || ($newStorageItem['success'] != 'true')) {
-//                            $this->addStatusMessage(sprintf(_('Item %s inject to FlexiBee Storage failed'),
+//                            $this->addStatusMessage(sprintf(_('Item %s inject to AbraFlexi Storage failed'),
 //                                            $invoiceItem['nazev']), 'error');
 //                        } else {
-//                            $this->addStatusMessage(sprintf(_('Item was added to FlexiBee Storage as %s'),
+//                            $this->addStatusMessage(sprintf(_('Item was added to AbraFlexi Storage as %s'),
 //                                            $newPriceListItem), 'success');
 //                        }
                     }
@@ -286,27 +305,34 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
     }
 
     /**
-     * Insert given invoice to FlexiBee
+     * Insert given invoice to AbraFlexi
      *
-     * @param \FlexiPeeHP\FakturaPrijata $invoicesToImport
+     * @param FakturaPrijata $invoicesToImport
      * 
      * @return boolean insertation status
      */
     public function importInvoice(&$invoice) {
-//                $invoice->setDataValue('stitky', 'IMAP2FB');
+//                $invoice->setDataValue('stitky', 'IMAP2AF');
         $invoiceInserted = $invoice->sync();
         if ($invoiceInserted) {
-            $this->addStatusMessage(sprintf(_('Invoice was inserted to FlexiBee as %s'),
+            $this->addStatusMessage(sprintf(_('Invoice was inserted to AbraFlexi as %s'),
                             $invoice->getRecordIdent()), 'success');
         } else {
-            $this->addStatusMessage(sprintf(_('Invoice %s insert to FlexiBee failed'),
+            $this->addStatusMessage(sprintf(_('Invoice %s insert to AbraFlexi failed'),
                             $invoice->getRecordIdent()), 'error');
         }
         return $invoiceInserted;
     }
 
-    public function isForMe() {
-        return $this->myInfo->getDataValue('ic') == $this->parser->invoiceCustomer()['ic'];
+    /**
+     * Check invoice recipent validity
+     * 
+     * @param FakturaPrijata $invoice
+     * 
+     * @return boolean
+     */
+    public function isForMe(FakturaPrijata $invoice) {
+        return $this->myInfo->getDataValue('ic') === $invoice->getDataValue('ic');
     }
 
     /**
@@ -322,11 +348,11 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
                 $invoice = $this->xmlDomToInvoice();
                 $invoice->setDataValue('id', 'ext:mail:' . md5_file($inputFilePath));
 
-//                if ($this->isForMe()) {
-//                    $invoice->addStatusMessage(sprintf(_('Invoice for somebody other %s - skipping'),
-//                                    $invoice->getMyKey()), 'info');
-//                    continue;
-//                }
+                if ($this->isForMe($invoice) === false) {
+                    $invoice->addStatusMessage(sprintf(_('Invoice for somebody else %s - skipping'),
+                                    $invoice->getMyKey()), 'info');
+                    continue;
+                }
 
                 if ($this->isKnownInvoice($invoice)) {
                     $invoice->addStatusMessage(sprintf(_('Already known invoice %s - skipping'),
@@ -364,10 +390,10 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
                     $d = dir($unzippedDir);
                     while (false !== ($attachment = $d->read())) {
                         if (($attachment != 'manifest.xml') && !is_dir($unzippedDir . '/' . $attachment)) {
-                            $attached = \FlexiPeeHP\Priloha::addAttachmentFromFile($invoice, $unzippedDir . '/' . $attachment);
+                            $attached = Priloha::addAttachmentFromFile($invoice, $unzippedDir . '/' . $attachment);
                             if ($attached->getRecordIdent()) {
                                 $this->addStatusMessage(sprintf(_('%s version of invoice %s attached'),
-                                                $attachment, $invoice->getRecordIdent()), 'success');
+                                                $attachment, $invoice->getRecordCode()), 'success');
                             }
                         }
                     }
@@ -388,25 +414,25 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
      * @return boolean Measure Unit presence status
      */
     public function handleMeasureUnit($unitCode) {
-        $checker = new \FlexiPeeHP\FlexiBeeRW(\FlexiPeeHP\FlexiBeeRO::code($unitCode), ['evidence' => 'merna-jednotka', 'ignore404' => true]);
-        return ($checker->lastResponseCode == 404) ? $checker->sync(['id' => \FlexiPeeHP\FlexiBeeRO::code($unitCode), 'nazev' => mb_strtolower($unitCode), 'poznam' => _('imported from invoice by mail')]) : true;
+        $checker = new AbraFlexiRW(AbraFlexiRO::code($unitCode), ['evidence' => 'merna-jednotka', 'ignore404' => true]);
+        return ($checker->lastResponseCode == 404) ? $checker->sync(['id' => AbraFlexiRO::code($unitCode), 'nazev' => mb_strtolower($unitCode), 'poznam' => _('imported from invoice by mail')]) : true;
     }
 
     /**
      * Add item to PriceList
      *
-     * @param \FlexiPeeHP\Cenik $pricelist
+     * @param Cenik $pricelist
      * 
-     * @return \FlexiPeeHP\SkladovaKarta
+     * @return SkladovaKarta
      */
     public function addItemToStorage($pricelist, $count = 1) {
-        $storager = new \FlexiPeeHP\SkladovaKarta();
+        $storager = new SkladovaKarta();
         $storager->setDataValue('stavMJ', $count);
         $storager->setDataValue('stitky', 'FLEXICEN');
         $storager->setDataValue('ucetObdobi', 'code:' . date('Y'));
         $storager->setDataValue('cenik', $pricelist->getDataValue('id'));
         $storager->setDataValue('sklad', 'code:' . $this->configuration['storage']);
-        return $storager->insertToFlexiBee();
+        return $storager->insertToAbraFlexi();
     }
 
     /**
@@ -459,22 +485,22 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
     }
 
     /**
-     * Query FlexiBee priceList for given item name
+     * Query AbraFlexi priceList for given item name
      *
      * @param string $invoiceItemRaw Looking for
      * 
      * @return boolean
      */
-    public function flexiBeePricelistPresence($invoiceItemRaw) {
+    public function abraFlexiPricelistPresence($invoiceItemRaw) {
         $productKnown = false;
         $invoiceItem = [];
-        \Ease\Functions::divDataArray($invoiceItemRaw, $invoiceItem, 'eanKod');
-        \Ease\Functions::divDataArray($invoiceItemRaw, $invoiceItem, 'kratkyPopis');
-        \Ease\Functions::divDataArray($invoiceItemRaw, $invoiceItem, 'nazev');
+        Functions::divDataArray($invoiceItemRaw, $invoiceItem, 'eanKod');
+        Functions::divDataArray($invoiceItemRaw, $invoiceItem, 'kratkyPopis');
+        Functions::divDataArray($invoiceItemRaw, $invoiceItem, 'nazev');
 
         if (count($invoiceItem)) {
             foreach ($invoiceItem as $column => $value) {
-                $fbpl = $this->priceList->getColumnsFromFlexibee(['id'],
+                $fbpl = $this->priceList->getColumnsFromAbraFlexi(['id'],
                         [$column => $value]);
                 if ($this->priceList->lastResponseCode == 200) {
                     if (!empty(current($fbpl))) {
@@ -488,10 +514,10 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
     }
 
     /**
-     * Insert PriceList item to FlexiBee
+     * Insert PriceList item to AbraFlexi
      *
      * @param array $invoiceItem
-     * @return int item FlexiBee ID
+     * @return int item AbraFlexi ID
      */
     public function addItemToPriceList($invoiceItem) {
         $result = null;
@@ -529,7 +555,7 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
 
         $this->priceList->addArrayToBranch($providerInfo, 'dodavatele');
 
-        $inserted = $this->priceList->insertToFlexiBee();
+        $inserted = $this->priceList->insertToAbraFlexi();
         if ($this->priceList->lastResponseCode == 201) {
             $result = intval($inserted[0]['id']);
             $this->priceList->addStatusMessage(sprintf(_('PriceList item %s as %s'),
@@ -544,19 +570,19 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
     }
 
     /**
-     * Obtain FlexiBee AddressBook ID of suplier. If not exist create new one.
+     * Obtain AbraFlexi AddressBook ID of suplier. If not exist create new one.
      *
      * @param array $invoiceSuplier
-     * @return int Suplier FlexiBee AddressBook ID
+     * @return int Suplier AbraFlexi AddressBook ID
      */
-    public function getSuplierFlexiBeeID($invoiceSuplier) {
-        $suplierID = $this->flexiBeeSuplierPresence($invoiceSuplier);
+    public function getSuplierAbraFlexiID($invoiceSuplier) {
+        $suplierID = $this->abraFlexiSuplierPresence($invoiceSuplier);
 
         if (is_null($suplierID)) {
             $this->suplier->dataReset();
             $invoiceSuplier['poznam'] = _('Imported from mail');
             $this->suplier->takeData($invoiceSuplier);
-            $inserted = $this->suplier->insertToFlexiBee();
+            $inserted = $this->suplier->insertToAbraFlexi();
             if ($this->suplier->lastResponseCode == 201) {
                 $this->suplier->addStatusMessage(sprintf(_('AddressBook item %s as %s'),
                                 $invoiceSuplier['nazev'],
@@ -574,7 +600,7 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
     /**
      * Obtain Payment info by Parsing ISDOC Dom
      *
-     * @param \DOMDocument $xmlDomDocument
+     * @param DOMDocument $xmlDomDocument
      * 
      * @return array
      */
@@ -583,15 +609,15 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
     }
 
     /**
-     * Obtain Suplier FlexiBee AddressBook ID or NULL
+     * Obtain Suplier AbraFlexi AddressBook ID or NULL
      *
      * @param array $invoiceSuplier
      * 
-     * @return int Suplier FlexiBee AddressBook ID
+     * @return int Suplier AbraFlexi AddressBook ID
      */
-    public function flexiBeeSuplierPresence($invoiceSuplier) {
+    public function abraFlexiSuplierPresence($invoiceSuplier) {
         $suplierID = null;
-        $suplierFound = $this->suplier->getColumnsFromFlexibee(['id'],
+        $suplierFound = $this->suplier->getColumnsFromAbraFlexi(['id'],
                 ['ic' => $invoiceSuplier['ic']]);
         if (array_key_exists(0, $suplierFound) && array_key_exists('id', $suplierFound[0])) {
             $suplierID = intval($suplierFound[0]['id']);
@@ -605,7 +631,7 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
      *
      * @param DOMDocument $xmlDomDocument
      * 
-     * @return array of \FlexiPeeHP\FakturaPrijata properties
+     * @return array of \AbraFlexi\FakturaPrijata properties
      */
     public function getInvoiceInfo($xmlDomDocument) {
         //Remove Branches - See https://bugs.php.net/bug.php?id=61858
@@ -644,7 +670,7 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
     /**
      * Convert Dom based invoice LegalMonetaryTotal Element to Array
      *
-     * @param \DOMNodeList $invoice
+     * @param DOMNodeList $invoice
      * @return array
      */
     public function domLMTotalToArray($taxTotal) {
@@ -671,9 +697,9 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
     }
 
     /**
-     * Check for Invoice Presence in FlexiBee
+     * Check for Invoice Presence in AbraFlexi
      *
-     * @param \FlexiPeeHP\FakturaPrijata $invoice
+     * @param FakturaPrijata $invoice
      * @return boolean TRUE for known invoice; FALSE for unknown invoice
      */
     public function isKnownInvoice($invoice) {
@@ -726,11 +752,11 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
      */
     public function isConnected() {
         $connectStatus = false;
-        $companer = new \FlexiPeeHP\Company();
+        $companer = new Company();
         $companies = $companer->getFlexiData();
         if (isset($companies['company'])) {
             foreach ($companies['company'] as $company) {
-                if ($company['dbNazev'] == constant('FLEXIBEE_COMPANY')) {
+                if ($company['dbNazev'] == constant('ABRAFLEXI_COMPANY')) {
                     $connectStatus = true;
                 }
             }
@@ -739,10 +765,10 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
     }
 
     /**
-     * Create FlexiBee label
+     * Create AbraFlexi label
      */
     public function createLabel() {
-        $stitek = new \FlexiPeeHP\Stitek();
+        $stitek = new Stitek();
 
         $stitekData = [
             "kod" => "FLEXICEN",
@@ -752,10 +778,10 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
             "vsbSkl" => true
         ];
 
-        $stitekID = $stitek->getColumnsFromFlexibee('id', $stitekData);
+        $stitekID = $stitek->getColumnsFromAbraFlexi('id', $stitekData);
 
         if (!isset($stitekID[0]['id'])) {
-            $stitek->insertToFlexiBee($stitekData);
+            $stitek->insertToAbraFlexi($stitekData);
         }
     }
 
@@ -817,6 +843,67 @@ class Importer extends \FlexiPeeHP\FakturaPrijata {
             $itemData['cenaMjNeskl'] = $newPrice;
         }
         return $itemData;
+    }
+
+    /**
+     * Configuration value
+     * 
+     * @param string $key
+     * 
+     * @return string
+     */
+    public function conf($key) {
+        return array_key_exists($key, $this->configuration) ? $this->configuration[$key] : Functions::cfg($key);
+    }
+
+    public function checkSetup() {
+        $storageStatus = $bankStatus = true;
+
+        $bank = $this->conf('ABRAFLEXI_BANK');
+        if (empty($bank)) {
+            $this->addStatusMessage(_('Default bank account is not set'), 'warning');
+        } else {
+            $bankStatus = $this->checkBank(AbraFlexiRO::code($bank));
+            if ($bankStatus === false) {
+                $this->addStatusMessage(sprintf(_('Default bank %s not exists'), $bank), 'error');
+            }
+        }
+
+        $storage = $this->conf('ABRAFLEXI_STORAGE');
+        if (empty($storage)) {
+            $this->addStatusMessage(_('Default storage is not set'), 'warning');
+        } else {
+            $storageStatus = $this->checkStorage(AbraFlexiRO::code($storage));
+            if ($storageStatus === false) {
+                $this->addStatusMessage(sprintf(_('Default storage %s not exists'), $storage), 'warning');
+            }
+        }
+
+        return $storageStatus && $bankStatus;
+    }
+
+    /**
+     * Check given storage avilbility
+     * 
+     * @param string $storage
+     * 
+     * @return boolean
+     */
+    public function checkStorage($storage) {
+        $prober = new AbraFlexiRO($storage, ['evidence' => 'sklad', 'ignore404' => true]);
+        return $prober->lastResponseCode == 200;
+    }
+
+    /**
+     * Check given bank account availbility
+     * 
+     * @param string $bank
+     * 
+     * @return boolean
+     */
+    public function checkBank($bank) {
+        $prober = new AbraFlexiRO($bank, ['evidence' => 'bankovni-ucet', 'ignore404' => true]);
+        return $prober->lastResponseCode == 200;
     }
 
 }

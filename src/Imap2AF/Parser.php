@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Imap2FlexiBee ISDOC Parser
+ * Imap2AbraFlexi ISDOC Parser
  *
  * @author     Vítězslav Dvořák <info@vitexsofware.cz>
  * @copyright  (G) 2019-2020 Vitex Software
  */
 
-namespace FlexiPeeHP\Imap2FB;
+namespace AbraFlexi\Imap2AF;
 
 /**
  * Description of Importer

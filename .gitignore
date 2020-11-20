@@ -2,9 +2,9 @@
 /nbproject/private/
 /vendor/
 /debian/.debhelper/
-/debian/flexibee-email-importer.debhelper.log
-/debian/flexibee-email-importer.substvars
+/debian/abraflexi-email-importer.debhelper.log
+/debian/abraflexi-email-importer.substvars
 /debian/debhelper-build-stamp
-/debian/flexibee-email-importer/
+/debian/abraflexi-email-importer/
 client.json
-imap2fb.json
+imap2af.json

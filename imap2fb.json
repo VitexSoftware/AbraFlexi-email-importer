@@ -1,7 +1,7 @@
 {
-    "IMAP_SERVER": "mailserver",
+    "IMAP_SERVER": "mailx002.murka.cz",
     "IMAP_PORT": 143,
-    "IMAP_LOGIN": "you",
-    "IMAP_PASSWORD": "pass",
+    "IMAP_LOGIN": "vitex@murka.cz",
+    "IMAP_PASSWORD": "mdopejsek",
     "IMAP_MAILBOX": "inbox"
 }

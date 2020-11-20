@@ -1,16 +1,16 @@
 <?php
 
 /**
- * Imap2FlexiBee Isdoc to FlexiBee convertor
+ * Imap2AbraFlexi Isdoc to AbraFlexi convertor
  *
  * @author     Vítězslav Dvořák <info@vitexsofware.cz>
  * @copyright  (G) 2019-2020 Vitex Software
  */
 
-namespace FlexiPeeHP\Imap2FB;
+namespace AbraFlexi\Imap2AF;
 
 /**
- * Convert parsed invoice into FlexiBee format
+ * Convert parsed invoice into AbraFlexi format
  *
  * @author vitex
  */
@@ -79,19 +79,23 @@ class Convertor extends Parser {
      */
     public function domCustomerToArray($customer) {
         $customerArray = [];
-        $customerArrayRaw = current(self::domToArray($customer->item(0)));
 
-        $customerArray['nazev'] = $customerArrayRaw['PartyName']['Name'];
-        $customerArray['ulice'] = $customerArrayRaw['PostalAddress']['StreetName'] . ' ' . $customerArrayRaw['PostalAddress']['BuildingNumber'];
-        $customerArray['mesto'] = $customerArrayRaw['PostalAddress']['CityName'];
-        $customerArray['psc'] = $customerArrayRaw['PostalAddress']['PostalZone'];
-        $customerArray['tel'] = $customerArrayRaw['Contact']['Telephone'];
-        $customerArray['email'] = $customerArrayRaw['Contact']['ElectronicMail'];
-        $customerArray['stat'] = 'code:' . $customerArrayRaw['PostalAddress']['Country']['IdentificationCode'];
-        $customerArray['ic'] = $customerArrayRaw['PartyIdentification']['ID'];
-        $customerArray['dic'] = $customerArrayRaw['PartyTaxScheme']['CompanyID'];
-        $customerArray['platceDph'] = ($customerArrayRaw['PartyTaxScheme']['TaxScheme'] == 'VAT');
-
+        if ($customer->count()) {
+            $customerArrayRaw = current(self::domToArray($customer->item(0)));
+            $customerArray['nazev'] = $customerArrayRaw['PartyName']['Name'];
+            $customerArray['ulice'] = $customerArrayRaw['PostalAddress']['StreetName'] . ' ' . $customerArrayRaw['PostalAddress']['BuildingNumber'];
+            $customerArray['mesto'] = $customerArrayRaw['PostalAddress']['CityName'];
+            $customerArray['psc'] = $customerArrayRaw['PostalAddress']['PostalZone'];
+            $customerArray['tel'] = $customerArrayRaw['Contact']['Telephone'];
+            $customerArray['email'] = $customerArrayRaw['Contact']['ElectronicMail'];
+            $customerArray['stat'] = 'code:' . $customerArrayRaw['PostalAddress']['Country']['IdentificationCode'];
+            $customerArray['ic'] = $customerArrayRaw['PartyIdentification']['ID'];
+            $customerArray['dic'] = $customerArrayRaw['PartyTaxScheme']['CompanyID'];
+            $customerArray['platceDph'] = ($customerArrayRaw['PartyTaxScheme']['TaxScheme'] == 'VAT');
+        } else {
+            $this->addStatusMessage(_('No customer data in invoice ?!?'), 'warning');
+            $customerArray['ic'] = false;
+        }
         return $customerArray;
     }
 
@@ -209,7 +213,7 @@ class Convertor extends Parser {
     /**
      * Parse ISDOC invoice DOMDocument to
      *
-     * @return array of \FlexiPeeHP\FakturaPrijata properties
+     * @return array of \AbraFlexi\FakturaPrijata properties
      */
     public function invoiceInfo() {
 //Remove Branches - See https://bugs.php.net/bug.php?id=61858

@@ -5,5 +5,5 @@
 
 override_dh_install:
 	dh_install
-	sed -i "s/\.\.\/vendor/\/var\/lib\/flexibee-email-importer/g" debian/flexibee-email-importer/usr/share/flexibee-email-importer/init.php
+	sed -i "s/\.\.\/vendor/\/var\/lib\/abraflexi-email-importer/g" debian/abraflexi-email-importer/usr/share/abraflexi-email-importer/init.php
 

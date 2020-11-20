@@ -1,15 +1,15 @@
-Source: flexibee-email-importer
+Source: abraflexi-email-importer
 Section: web
 Priority: optional
-Maintainer: "Vítězslav Dvořák" <info@vitexsoftware.cz>t
+Maintainer: "Vítězslav Dvořák" <info@vitexsoftware.cz>
 Build-Depends: debhelper (>=11~),composer
 Standards-Version: 4.1.4
-Homepage: https://github.com/VitexSoftware/MultiFlexiBeeSetup
+Homepage: https://github.com/VitexSoftware/AbraFlexi-email-importer
 
-Package: flexibee-email-importer
+Package: abraflexi-email-importer
 Multi-Arch: foreign
-Depends: ${misc:Depends}, php-cli, php-imap, php-zip, php-spojenet-flexibee
-Suggests: flexibee-server,php-flexibee-config, flexibee-digest, flexibee-matcher, flexibee-reminder, flexibee-contract-invoices
+Depends: ${misc:Depends}, php-cli, php-imap, php-zip, php-spojenet-abraflexi
+Suggests: abraflexi-server,php-abraflexi-config, abraflexi-digest, abraflexi-matcher, abraflexi-reminder, abraflexi-contract-invoices
 Architecture: all
-Description: mail to FlexiBee importer
- Utility for importning invoices from imap account to flexibee.
+Description: mail to AbraFlexi importer
+ Utility for importning invoices from imap account to abraflexi.
