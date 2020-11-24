@@ -124,7 +124,7 @@ class Importer extends FakturaPrijata {
         $invoiceInfo = $this->parser->invoiceInfo();
 
         $invoiceInfo['ic'] = $invoiceSuplier['ic'];
-        
+
         $suplierAbraFlexiID = $this->getSuplierAbraFlexiID($invoiceSuplier);
 
         $invoice = new FakturaPrijata($invoiceInfo);
@@ -313,6 +313,11 @@ class Importer extends FakturaPrijata {
      */
     public function importInvoice(&$invoice) {
 //                $invoice->setDataValue('stitky', 'IMAP2AF');
+
+        if($this->conf('FORCE_INCOMING_INVOICE_TYPE')){
+            $invoice->setDataValue('typDokl', $this->conf('FORCE_INCOMING_INVOICE_TYPE') );
+        }
+        
         $invoiceInserted = $invoice->sync();
         if ($invoiceInserted) {
             $this->addStatusMessage(sprintf(_('Invoice was inserted to AbraFlexi as %s'),

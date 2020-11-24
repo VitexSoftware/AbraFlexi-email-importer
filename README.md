@@ -66,6 +66,8 @@ export    ABRAFLEXI_COMPANY="demo"
 export    ABRAFLEXI_BANK="BANKA"
 export    ABRAFLEXI_STORAGE="SKLAD"
 
+export    FORCE_INCOMING_INVOICE_TYPE="Faktura přijatá"
+
 ```
 
  * ABRAFLEXI_BANK    - code of default bank account

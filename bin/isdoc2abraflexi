@@ -1,0 +1,3 @@
+#!/bin/bash
+php -f /usr/share/abraflexi-email-importer/idoc2abraflexi.php
+
