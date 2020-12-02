@@ -3,6 +3,15 @@ nextversion=$(shell echo $(repoversion) | perl -ne 'chomp; print join(".", splic
 
 all:
 
+clean:
+	rm -rf docs
+
+
+phpdoc: clean
+	mkdir -p docs
+	phpdoc --defaultpackagename=MainPackage -d src
+	mv .phpdoc/build/* docs
+
 deb:
 	debuild -us -uc
 

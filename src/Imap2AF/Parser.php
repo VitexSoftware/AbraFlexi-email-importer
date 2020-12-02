@@ -39,7 +39,6 @@ class Parser extends \Ease\Sand {
         }
     }
 
-
     /**
      * CleanUP processed inputfile
      *
@@ -179,7 +178,7 @@ class Parser extends \Ease\Sand {
      */
     public function loadFile($inputFile) {
         $this->addStatusMessage('loading: ' . $inputFile, 'debug');
-        return strstr(strtolower($filename), '.isdocx') ? $this->loadISDOCx($inputFile) : $this->loadISDOC($inputFile); //TODO: Check Mime  
+        return pathinfo($inputFile, PATHINFO_EXTENSION) == 'isdocx' ? $this->loadISDOCx($inputFile) : $this->loadISDOC($inputFile); //TODO: Check Mime  
     }
 
     /**
@@ -205,6 +204,13 @@ class Parser extends \Ease\Sand {
         return $this->xmlDomDocument->hasChildNodes();
     }
 
-    
-    
+    /**
+     * Current ISDOC as DOM object
+     * 
+     * @return \DOMDocument
+     */
+    public function getXmlDomDocument() {
+        return $this->xmlDomDocument;
+    }
+
 }

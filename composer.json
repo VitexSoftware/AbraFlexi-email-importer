@@ -16,9 +16,17 @@
         "php-imap/php-imap": "dev-master",
         "lightools/xml": "*"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^9"
+    },
     "autoload": {
         "psr-4": {
             "AbraFlexi\\Imap2AF\\": "src/Imap2AF/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Test\\AbraFlexi\\Imap2AF\\": "tests/src/Imap2AF/"
         }
     }
 }

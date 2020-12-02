@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" colors="true" bootstrap="./testing/bootstrap.php" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+  <coverage>
+    <include>
+      <directory suffix=".php">src/Imap2AF</directory>
+    </include>
+  </coverage>
+  <testsuites>
+    <testsuite name="all">
+      <directory>./tests</directory>
+    </testsuite>
+  </testsuites>
+  <!-- logging>
+        <log type="tap" target="build/report.tap"/>
+        <log type="junit" target="build/report.junit.xml"/>
+        <log type="coverage-text" target="php://stdout"/>
+        <log type="coverage-html" target="build/coverage" charset="UTF-8" yui="true" highlight="true"/>
+        <log type="coverage-clover" target="build/logs/clover.xml"/>
+    </logging -->
+</phpunit>
