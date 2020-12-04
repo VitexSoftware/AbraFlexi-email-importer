@@ -43,14 +43,14 @@ class ParserTest extends \PHPUnit\Framework\TestCase {
      */
     public function testdomToArray() {
         $this->object->loadISDOC(constant('ISDOC_FILE'));
-        $this->assertEquals(['Name' => 'PRAHA12.com s.r.o.'], $this->object->domToArray($this->object->getXmlDomDocument()->getElementsByTagName('AccountingSupplierParty')[0]->getElementsByTagName('PartyName')[0]));
+        $this->assertEquals(['Name' => 'SPOJE.NET s.r.o.'], $this->object->domToArray($this->object->getXmlDomDocument()->getElementsByTagName('AccountingSupplierParty')[0]->getElementsByTagName('PartyName')[0]));
     }
 
     /**
      * @covers AbraFlexi\Imap2AF\Parser::unpackIsdocX
      */
     public function testunpackIsdocX() {
-        $this->assertEquals(sys_get_temp_dir() . '/Faktura-VF2022648.isdocxunzipped/Faktura_VF2022648.isdoc', $this->object->unpackIsdocX(constant('ISDOCX_FILE')));
+        $this->assertEquals(sys_get_temp_dir() . '/Faktura_VF1_6877_2020.isdocxunzipped/Faktura_VF1_6877_2020.isdoc', $this->object->unpackIsdocX(constant('ISDOCX_FILE')));
     }
 
     /**

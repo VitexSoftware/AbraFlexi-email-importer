@@ -82,13 +82,39 @@ class Importer extends FakturaPrijata {
     public $configuration = [];
 
     /**
+     * Listing of Wanted/Unwanted IC numbers
+     * @var array [IC]=boolean
+     */
+    private $wantList = [];
+
+    /**
+     * Invoice source label used for ext:$source:hash
+     * @var string
+     */
+    private $source;
+
+    /**
      * Import engine
      * 
-     * @param string $init
+     * @param string $source   import invoices as ext:$source:hash
      * @param array  $options
      */
-    public function __construct($init = null, $options = array()) {
-        parent::__construct($init, $options);
+    public function __construct($source, $options = array()) {
+        parent::__construct(null, $options);
+        $this->source = $source;
+        $want = \Ease\Functions::cfg('ACCEPT_PROVIDER_IDS');
+        if (empty($want) === false) {
+            foreach (strstr($want, ',') ? explode(',', $want) : [$want] as $id) {
+                $this->wantList[$id] = true;
+            }
+        }
+        $donwant = \Ease\Functions::cfg('DENY_PROVIDER_IDS');
+        if (empty($donwant) === false) {
+            foreach (strstr($donwant, ',') ? explode(',', $donwant) : [$donwant] as $id) {
+                $this->wantList[$id] = false;
+            }
+        }
+
 
         $this->parser = new Convertor();
         $this->suplier = new Adresar();
@@ -119,11 +145,12 @@ class Importer extends FakturaPrijata {
      */
     public function xmlDomToInvoice() {
         $invoiceSuplier = $this->parser->invoiceSuplier();
+        $invoiceCustomer = $this->parser->invoiceCustomer();
         $invoiceItems = $this->parser->invoiceItems();
         $paymentMeans = $this->parser->paymentMeans();
         $invoiceInfo = $this->parser->invoiceInfo();
 
-        $invoiceInfo['ic'] = $invoiceSuplier['ic'];
+        $invoiceInfo['ic'] = $invoiceCustomer['ic'];
 
         $suplierAbraFlexiID = $this->getSuplierAbraFlexiID($invoiceSuplier);
 
@@ -253,6 +280,7 @@ class Importer extends FakturaPrijata {
      * Insert invoice items to pricelist & storage
      *
      * @param array $invoiceItems
+     * 
      * @return array PricelistIDs
      */
     public function importInvoiceItems(&$invoiceItems) {
@@ -314,10 +342,10 @@ class Importer extends FakturaPrijata {
     public function importInvoice(&$invoice) {
 //                $invoice->setDataValue('stitky', 'IMAP2AF');
 
-        if($this->conf('FORCE_INCOMING_INVOICE_TYPE')){
-            $invoice->setDataValue('typDokl', $this->conf('FORCE_INCOMING_INVOICE_TYPE') );
+        if ($this->conf('FORCE_INCOMING_INVOICE_TYPE')) {
+            $invoice->setDataValue('typDokl', $this->conf('FORCE_INCOMING_INVOICE_TYPE'));
         }
-        
+
         $invoiceInserted = $invoice->sync();
         if ($invoiceInserted) {
             $this->addStatusMessage(sprintf(_('Invoice was inserted to AbraFlexi as %s'),
@@ -330,14 +358,17 @@ class Importer extends FakturaPrijata {
     }
 
     /**
-     * Check invoice recipent validity
+     * Check invoice recipent validity. We want invoice for us or from company 
+     * IDs in wantlist
      * 
      * @param FakturaPrijata $invoice
      * 
      * @return boolean
      */
     public function isForMe(FakturaPrijata $invoice) {
-        return $this->myInfo->getDataValue('ic') === $invoice->getDataValue('ic');
+        $suppliersId = str_replace('in:', '', $invoice->getDataValue('firma'));
+        return (array_key_exists($suppliersId, $this->wantList) && ($this->wantList[$suppliersId] === true) ||
+                $this->myInfo->getDataValue('ic') === $invoice->getDataValue('ic'));
     }
 
     /**
@@ -349,13 +380,13 @@ class Importer extends FakturaPrijata {
     public function mainLoop(array $inputFiles, array $senders) {
 
         foreach ($inputFiles as $inputFile => $inputFilePath) {
-            if (strstr(strtolower($inputFile), '.isdocx') ? $this->parser->loadISDOCx($inputFilePath) : $this->parser->loadISDOC($inputFilePath)) {
+            if ($this->parser->loadFile($inputFilePath)) {
                 $invoice = $this->xmlDomToInvoice();
-                $invoice->setDataValue('id', 'ext:mail:' . md5_file($inputFilePath));
+                $invoice->setDataValue('id', 'ext:' . $this->source . ':' . md5_file($inputFilePath));
 
                 if ($this->isForMe($invoice) === false) {
                     $invoice->addStatusMessage(sprintf(_('Invoice for somebody else %s - skipping'),
-                                    $invoice->getMyKey()), 'info');
+                                    $invoice->getDataValue('cisDosle') . ' ' . str_replace('in:', 'ico:', $invoice->getDataValue('firma'))), 'info');
                     continue;
                 }
 
@@ -861,6 +892,10 @@ class Importer extends FakturaPrijata {
         return array_key_exists($key, $this->configuration) ? $this->configuration[$key] : Functions::cfg($key);
     }
 
+    /**
+     * 
+     * @return boolean
+     */
     public function checkSetup() {
         $storageStatus = $bankStatus = true;
 

@@ -66,12 +66,16 @@ export    ABRAFLEXI_COMPANY="demo"
 export    ABRAFLEXI_BANK="BANKA"
 export    ABRAFLEXI_STORAGE="SKLAD"
 
-export    FORCE_INCOMING_INVOICE_TYPE="Faktura přijatá"
+export    FORCE_INCOMING_INVOICE_TYPE="code:Faktura přijatá"
+export    ACCEPT_PROVIDER_IDS="ico1,ico2,ico3"
+export    DENY_PROVIDER_IDS="icoA,icoB,icoC"
 
 ```
 
- * ABRAFLEXI_BANK    - code of default bank account
- * ABRAFLEXI_STORAGE - code of default storage
+ * ABRAFLEXI_BANK      - code of default bank account
+ * ABRAFLEXI_STORAGE   - code of default storage
+ * ACCEPT_PROVIDER_IDS - Always accept invoice from this IDs
+ * DENY_PROVIDER_IDS   - Always denz invoice from this IDs
 
 Imap options described here: https://www.php.net/manual/en/function.imap-open.php
 

@@ -34,7 +34,7 @@ class ConvertorTest extends \PHPUnit\Framework\TestCase {
      * @covers AbraFlexi\Imap2AF\Convertor::domPaymentMeansToArray
      */
     public function testdomPaymentMeansToArray() {
-        $this->assertEquals(['datSplat' => '2020-12-15'], $this->object->domPaymentMeansToArray($this->object->getXmlDomDocument()->getElementsByTagName('PaymentMeans')));
+        $this->assertEquals(['datSplat' => '2020-10-13'], $this->object->domPaymentMeansToArray($this->object->getXmlDomDocument()->getElementsByTagName('PaymentMeans')));
     }
 
     /**
@@ -42,17 +42,17 @@ class ConvertorTest extends \PHPUnit\Framework\TestCase {
      */
     public function testdomSuplierToArray() {
         $this->assertEquals([
-            'nazev' => 'PRAHA12.com s.r.o.',
-            'ulice' => 'Komořanská 178/35',
-            'mesto' => 'Praha 4',
-            'psc' => '14300',
-            'tel' => Array(),
-            'email' => 'fakturace@praha12.com',
+            'nazev' => 'SPOJE.NET s.r.o.',
+            'ulice' => 'Závěrka 473/8',
+            'mesto' => 'Praha 6',
+            'psc' => '16900',
+            'tel' => '+420 233 358 050',
+            'email' => 'office@spoje.net',
             'stat' => 'code:CZ',
-            'ic' => '04700813',
-            'dic' => 'CZ04700813',
+            'ic' => '29034736',
+            'dic' => 'CZ29034736',
             'platceDph' => true,
-            'typVztahuK' => 'typVztahu.dodavatel'
+            'typVztahuK' => 'typVztahu.dodavatel',
                 ], $this->object->domSuplierToArray($this->object->getXmlDomDocument()->getElementsByTagName('AccountingSupplierParty')));
     }
 
@@ -62,14 +62,14 @@ class ConvertorTest extends \PHPUnit\Framework\TestCase {
     public function testdomCustomerToArray() {
         $this->assertEquals([
             'nazev' => 'Vítězslav Dvořák',
-            'ulice' => 'Melodická 1417/11',
-            'mesto' => 'Praha - Stodůlky',
-            'psc' => '15800',
-            'tel' => Array(),
-            'email' => Array(),
+            'ulice' => 'Tehovská 642/3',
+            'mesto' => 'Praha 10',
+            'psc' => '10000',
+            'tel' => '',
+            'email' => 'info@vitexsoftware.cz',
             'stat' => 'code:CZ',
-            'ic' => Array(),
-            'dic' => Array(),
+            'ic' => '69438676',
+            'dic' => '',
             'platceDph' => true,
                 ], $this->object->domCustomerToArray($this->object->getXmlDomDocument()->getElementsByTagName('AccountingCustomerParty')));
     }
@@ -79,17 +79,17 @@ class ConvertorTest extends \PHPUnit\Framework\TestCase {
      */
     public function testgetInvoiceSuplier() {
         $this->assertEquals([
-            'nazev' => 'PRAHA12.com s.r.o.',
-            'ulice' => 'Komořanská 178/35',
-            'mesto' => 'Praha 4',
-            'psc' => '14300',
-            'tel' => Array(),
-            'email' => 'fakturace@praha12.com',
+            'nazev' => 'SPOJE.NET s.r.o.',
+            'ulice' => 'Závěrka 473/8',
+            'mesto' => 'Praha 6',
+            'psc' => '16900',
+            'tel' => '+420 233 358 050',
+            'email' => 'office@spoje.net',
             'stat' => 'code:CZ',
-            'ic' => '04700813',
-            'dic' => 'CZ04700813',
+            'ic' => '29034736',
+            'dic' => 'CZ29034736',
             'platceDph' => true,
-            'typVztahuK' => 'typVztahu.dodavatel'
+            'typVztahuK' => 'typVztahu.dodavatel',
                 ], $this->object->getInvoiceSuplier());
     }
 
@@ -106,14 +106,14 @@ class ConvertorTest extends \PHPUnit\Framework\TestCase {
      */
     public function testdomInvoiceToArray() {
         $this->assertEquals([
-            'id' => 'ext:fc:VF2022648',
-            'cisDosle' => 'VF2022648',
-            'uuid' => '281A61D4-EBC2-E961-E033-A27486040088',
-            'datVyst' => '2020-12-01',
-            'poznam' => 'Tržby z prodeje služeb',
-            'popis' => 'Tržby z prodeje služeb',
+            'id' => 'ext:fc:VF1-6877/2020',
+            'cisDosle' => 'VF1-6877/2020',
+            'uuid' => 'C2220638-2F14-9103-D6E2-6AF19C1C3537',
+            'datVyst' => '2020-09-29',
+            'poznam' => 'Kredit - Domény',
+            'popis' => 'Kredit - Domény',
             'mena' => 'code:CZK',
-            'typDokl' => 'code:FAKTURA'
+            'typDokl' => 'code:FAKTURA',
                 ], $this->object->domInvoiceToArray($this->object->getXmlDomDocument()->getElementsByTagName('Invoice')));
     }
 
@@ -122,17 +122,17 @@ class ConvertorTest extends \PHPUnit\Framework\TestCase {
      */
     public function testinvoiceSuplier() {
         $this->assertEquals([
-            'nazev' => 'PRAHA12.com s.r.o.',
-            'ulice' => 'Komořanská 178/35',
-            'mesto' => 'Praha 4',
-            'psc' => '14300',
-            'tel' => Array(),
-            'email' => 'fakturace@praha12.com',
+            'nazev' => 'SPOJE.NET s.r.o.',
+            'ulice' => 'Závěrka 473/8',
+            'mesto' => 'Praha 6',
+            'psc' => '16900',
+            'tel' => '+420 233 358 050',
+            'email' => 'office@spoje.net',
             'stat' => 'code:CZ',
-            'ic' => '04700813',
-            'dic' => 'CZ04700813',
+            'ic' => '29034736',
+            'dic' => 'CZ29034736',
             'platceDph' => true,
-            'typVztahuK' => 'typVztahu.dodavatel'
+            'typVztahuK' => 'typVztahu.dodavatel',
                 ], $this->object->invoiceSuplier());
     }
 
@@ -142,15 +142,15 @@ class ConvertorTest extends \PHPUnit\Framework\TestCase {
     public function testinvoiceCustomer() {
         $this->assertEquals([
             'nazev' => 'Vítězslav Dvořák',
-            'ulice' => 'Melodická 1417/11',
-            'mesto' => 'Praha - Stodůlky',
-            'psc' => '15800',
-            'tel' => Array(),
-            'email' => Array(),
+            'ulice' => 'Tehovská 642/3',
+            'mesto' => 'Praha 10',
+            'psc' => '10000',
+            'tel' => '',
+            'email' => 'info@vitexsoftware.cz',
             'stat' => 'code:CZ',
-            'ic' => Array(),
-            'dic' => Array(),
-            'platceDph' => true,
+            'ic' => '69438676',
+            'dic' => '',
+            'platceDph' => true
                 ], $this->object->invoiceCustomer());
     }
 
@@ -158,7 +158,7 @@ class ConvertorTest extends \PHPUnit\Framework\TestCase {
      * @covers AbraFlexi\Imap2AF\Convertor::paymentMeans
      */
     public function testpaymentMeans() {
-        $this->assertEquals(['datSplat' => '2020-12-15'], $this->object->paymentMeans());
+        $this->assertEquals(['datSplat' => '2020-10-13'], $this->object->paymentMeans());
     }
 
     /**
@@ -170,18 +170,18 @@ class ConvertorTest extends \PHPUnit\Framework\TestCase {
         'ucetni' => true,
         'typCenyDphK' => 'typCeny.sDph',
         'typSzbDphK' => 'typSzbDph.dphZakl',
-        'kratkyPopis' => '',
-        'nazev' => 'Tarif WiFi Max 60/20 pro členy 12/2020',
-        'cenaMj' => '349.000000',
-        'sumCelkem' => '349.0',
-        'sumZkl' => 288.43,
-        'nakupCena' => 288.43,
-        'cenaZaklVcDph' => 349.0,
-        'dan' => 60.57,
+        'kratkyPopis' => 'KREDIT_DOMENA',
+        'nazev' => 'Kredit - Domény',
+        'cenaMj' => '605.0',
+        'sumCelkem' => '605.0',
+        'sumZkl' => 500.0,
+        'nakupCena' => 500.0,
+        'cenaZaklVcDph' => 605.0,
+        'dan' => 105.0,
         'mnozMj' => '1.0',
         'stavMJ' => '1.0',
-        'jednotka' => 'MES',
-        'sumDph' => '60.57',
+        'jednotka' => 'KS',
+        'sumDph' => '105.0',
             ]], $this->object->invoiceItems());
     }
 
@@ -190,14 +190,14 @@ class ConvertorTest extends \PHPUnit\Framework\TestCase {
      */
     public function testinvoiceInfo() {
         $this->assertEquals([
-            'id' => 'ext:fc:VF2022648',
-            'cisDosle' => 'VF2022648',
-            'uuid' => '281A61D4-EBC2-E961-E033-A27486040088',
-            'datVyst' => '2020-12-01',
-            'poznam' => 'Tržby z prodeje služeb',
-            'popis' => 'Tržby z prodeje služeb',
+            'id' => 'ext:fc:VF1-6877/2020',
+            'cisDosle' => 'VF1-6877/2020',
+            'uuid' => 'C2220638-2F14-9103-D6E2-6AF19C1C3537',
+            'datVyst' => '2020-09-29',
+            'poznam' => 'Kredit - Domény',
+            'popis' => 'Kredit - Domény',
             'mena' => 'code:CZK',
-            'typDokl' => 'code:FAKTURA'
+            'typDokl' => 'code:FAKTURA',
                 ], $this->object->invoiceInfo());
     }
 

@@ -102,6 +102,7 @@ switch ($testServer) {
 }
 
 
-define('ISDOC_FILE', __DIR__ . '/Faktura_VF2022648.isdoc');
-define('ISDOCX_FILE', __DIR__ . '/Faktura-VF2022648.isdocx');
-
+define('ISDOC_FILE', __DIR__ . '/Faktura_VF1_6877_2020.isdoc');
+define('ISDOCX_FILE', __DIR__ . '/Faktura_VF1_6877_2020.isdocx');
+define('ACCEPT_PROVIDER_IDS', '04700813,29034736');
+define('DENY_PROVIDER_IDS', '69438676');

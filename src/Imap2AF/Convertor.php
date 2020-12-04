@@ -59,9 +59,9 @@ class Convertor extends Parser {
         $suplierArray['ulice'] = $suplierArrayRaw['PostalAddress']['StreetName'] . ' ' . $suplierArrayRaw['PostalAddress']['BuildingNumber'];
         $suplierArray['mesto'] = $suplierArrayRaw['PostalAddress']['CityName'];
         $suplierArray['psc'] = $suplierArrayRaw['PostalAddress']['PostalZone'];
-        $suplierArray['tel'] = $suplierArrayRaw['Contact']['Telephone'];
-        $suplierArray['email'] = $suplierArrayRaw['Contact']['ElectronicMail'];
-        $suplierArray['stat'] = 'code:' . $suplierArrayRaw['PostalAddress']['Country']['IdentificationCode'];
+        $suplierArray['tel'] = array_key_exists('Telephone', $suplierArrayRaw['Contact']) ? $suplierArrayRaw['Contact']['Telephone'] : '';
+        $suplierArray['email'] = array_key_exists('ElectronicMail', $suplierArrayRaw['Contact']) ? $suplierArrayRaw['Contact']['ElectronicMail'] : '';
+        $suplierArray['stat'] = empty($suplierArrayRaw['PostalAddress']['Country']['IdentificationCode']) ? '' : 'code:' . $suplierArrayRaw['PostalAddress']['Country']['IdentificationCode'];
         $suplierArray['ic'] = $suplierArrayRaw['PartyIdentification']['ID'];
         $suplierArray['dic'] = $suplierArrayRaw['PartyTaxScheme']['CompanyID'];
         $suplierArray['platceDph'] = ($suplierArrayRaw['PartyTaxScheme']['TaxScheme'] == 'VAT');
@@ -83,12 +83,12 @@ class Convertor extends Parser {
         if ($customer->count()) {
             $customerArrayRaw = current(self::domToArray($customer->item(0)));
             $customerArray['nazev'] = $customerArrayRaw['PartyName']['Name'];
-            $customerArray['ulice'] = $customerArrayRaw['PostalAddress']['StreetName'] . ' ' . $customerArrayRaw['PostalAddress']['BuildingNumber'];
+            $customerArray['ulice'] = $customerArrayRaw['PostalAddress']['StreetName'] . ' ' . (empty($customerArrayRaw['PostalAddress']['BuildingNumber']) ? '' : $customerArrayRaw['PostalAddress']['BuildingNumber']);
             $customerArray['mesto'] = $customerArrayRaw['PostalAddress']['CityName'];
             $customerArray['psc'] = $customerArrayRaw['PostalAddress']['PostalZone'];
-            $customerArray['tel'] = $customerArrayRaw['Contact']['Telephone'];
-            $customerArray['email'] = $customerArrayRaw['Contact']['ElectronicMail'];
-            $customerArray['stat'] = 'code:' . $customerArrayRaw['PostalAddress']['Country']['IdentificationCode'];
+            $customerArray['tel'] = array_key_exists('Telephone', $customerArrayRaw['Contact']) ? $customerArrayRaw['Contact']['Telephone'] : '';
+            $customerArray['email'] = array_key_exists('ElectronicMail', $customerArrayRaw['Contact']) ? $customerArrayRaw['Contact']['ElectronicMail'] : '';
+            $customerArray['stat'] = empty($customerArrayRaw['PostalAddress']['Country']['IdentificationCode']) ? '' : 'code:' . $customerArrayRaw['PostalAddress']['Country']['IdentificationCode'];
             $customerArray['ic'] = $customerArrayRaw['PartyIdentification']['ID'];
             $customerArray['dic'] = $customerArrayRaw['PartyTaxScheme']['CompanyID'];
             $customerArray['platceDph'] = ($customerArrayRaw['PartyTaxScheme']['TaxScheme'] == 'VAT');
@@ -296,7 +296,7 @@ class Convertor extends Parser {
         ];
         $itemArrayRaw = self::domToArray($item);
 
-        $itemArray['nazev'] = $itemArrayRaw['Item']['Description'];
+        $itemArray['nazev'] = array_key_exists('Description', $itemArrayRaw['Item']) ? $itemArrayRaw['Item']['Description'] : '';
         $itemArray['cenaMj'] = $itemArrayRaw['UnitPriceTaxInclusive'];
 
         if (isset($itemArrayRaw['LineExtensionAmount']) && ($itemArrayRaw['LineExtensionAmount'] != '0.0')) {

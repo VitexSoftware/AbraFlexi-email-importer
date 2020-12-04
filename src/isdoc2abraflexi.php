@@ -17,11 +17,13 @@ define('EASE_LOGGER', 'syslog|console');
 require_once __DIR__ . '/init.php';
 
 
-$imp = new Importer();
+$imp = new Importer('file');
 $imp->logBanner(Functions::cfg('EASE_APPNAME'));
 if ($imp->checkSetup() === true) {
-    foreach (glob($argv[1]) as $filename) {
-        $imp->importIsdocFiles($filename, []);
+    $isdocs = [];
+    foreach (glob($argv[1]) as $isdocFile) {
+        $isdocs[basename($isdocFile)] = $isdocFile;
     }
+    $imp->importIsdocFiles($isdocs, []);
 }
 

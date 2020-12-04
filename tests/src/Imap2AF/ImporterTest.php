@@ -19,7 +19,7 @@ class ImporterTest extends \PHPUnit\Framework\TestCase {
      * This method is called before a test is executed.
      */
     protected function setUp(): void {
-        $this->object = new Importer();
+        $this->object = new Importer('test');
     }
 
     /**
@@ -282,12 +282,9 @@ class ImporterTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @covers AbraFlexi\Imap2AF\Importer::checkSetup
-     * @todo   Implement testcheckSetup().
      */
     public function testcheckSetup() {
-        $this->assertEquals('', $this->object->checkSetup());
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete('This test has not been implemented yet.');
+        $this->assertTrue($this->object->checkSetup());
     }
 
     /**

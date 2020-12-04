@@ -128,7 +128,7 @@ class Parser extends \Ease\Sand {
             }
         }
 
-        return $result;
+        return empty($result) ? '' : $result;
     }
 
     /**

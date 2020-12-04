@@ -17,7 +17,7 @@ define('EASE_LOGGER', 'syslog|console');
 require_once __DIR__ . '/init.php';
 
 
-$imp = new Importer();
+$imp = new Importer('mail');
 $imp->logBanner(Functions::cfg('EASE_APPNAME'));
 if ($imp->checkSetup() === true) {
     $mailbox = new Mailboxer();
