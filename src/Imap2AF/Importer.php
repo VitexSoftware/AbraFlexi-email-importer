@@ -756,8 +756,12 @@ class Importer extends FakturaPrijata {
      */
     public function isKnownInvoice($invoice) {
         $conditions['cisDosle'] = $invoice->getDataValue('cisDosle');
-        $found = $invoice->getFlexiData(null, $conditions);
-        return ($invoice->lastResponseCode == 200) && !empty($found);
+        try {
+            $found = $invoice->getFlexiData('', $conditions);
+        } catch (\AbraFlexi\Exception $exc) {
+            $this->addStatusMessage($exc->getMessage(), 'error');
+        }
+       return ($invoice->lastResponseCode == 200) && !empty($found);
     }
 
     /**

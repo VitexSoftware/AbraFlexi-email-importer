@@ -11,3 +11,4 @@ imap2af.json
 /nbproject/
 .phpdoc
 /.phpunit.result.cache
+.env

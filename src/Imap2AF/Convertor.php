@@ -65,8 +65,10 @@ class Convertor extends Parser {
         $suplierArray['ulice'] = $suplierArrayRaw['PostalAddress']['StreetName'] . ' ' . $suplierArrayRaw['PostalAddress']['BuildingNumber'];
         $suplierArray['mesto'] = $suplierArrayRaw['PostalAddress']['CityName'];
         $suplierArray['psc'] = $suplierArrayRaw['PostalAddress']['PostalZone'];
-        $suplierArray['tel'] = array_key_exists('Telephone', $suplierArrayRaw['Contact']) ? $suplierArrayRaw['Contact']['Telephone'] : '';
-        $suplierArray['email'] = array_key_exists('ElectronicMail', $suplierArrayRaw['Contact']) ? $suplierArrayRaw['Contact']['ElectronicMail'] : '';
+        if (is_array($suplierArrayRaw['Contact'])) {
+            $suplierArray['tel'] = array_key_exists('Telephone', $suplierArrayRaw['Contact']) ? $suplierArrayRaw['Contact']['Telephone'] : '';
+            $suplierArray['email'] = array_key_exists('ElectronicMail', $suplierArrayRaw['Contact']) ? $suplierArrayRaw['Contact']['ElectronicMail'] : '';
+        }
         $suplierArray['stat'] = empty($suplierArrayRaw['PostalAddress']['Country']['IdentificationCode']) ? '' : 'code:' . $suplierArrayRaw['PostalAddress']['Country']['IdentificationCode'];
         $suplierArray['ic'] = $suplierArrayRaw['PartyIdentification']['ID'];
         $suplierArray['dic'] = $suplierArrayRaw['PartyTaxScheme']['CompanyID'];
@@ -298,7 +300,11 @@ class Convertor extends Parser {
         ];
         $itemArrayRaw = self::domToArray($item);
 
-        $itemArray['nazev'] = array_key_exists('Description', $itemArrayRaw['Item']) ? $itemArrayRaw['Item']['Description'] : '';
+        if (is_array($itemArrayRaw['Item'])) {
+            $itemArray['nazev'] = array_key_exists('Description', $itemArrayRaw['Item']) ? $itemArrayRaw['Item']['Description'] : '';
+        } else {
+            $itemArray['nazev'] = 'n/a';
+        }
         $itemArray['cenaMj'] = $itemArrayRaw['UnitPriceTaxInclusive'];
 
         if (isset($itemArrayRaw['LineExtensionAmount']) && ($itemArrayRaw['LineExtensionAmount'] != '0.0')) {
@@ -341,29 +347,30 @@ class Convertor extends Parser {
             $itemArray['sumCelkem'] = $itemArrayRaw['LineExtensionAmountTaxInclusive'];
         }
 
+        if (is_array($itemArrayRaw['Item'])) {
 
-        if (array_key_exists('CatalogueItemIdentification',
-                        $itemArrayRaw['Item'])) {
-            if (array_key_exists('ID',
-                            $itemArrayRaw['Item']['CatalogueItemIdentification']) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search($itemArray['nazev'],
-                            $this->storageBlacklist) == false)) {
-                $itemArray['typPolozkyK'] = 'typPolozky.katalog';
-                if (!empty($itemArrayRaw['Item']['CatalogueItemIdentification']['ID'])) {
-                    $itemArray['eanKod'] = $itemArrayRaw['Item']['CatalogueItemIdentification']['ID'];
+            if (array_key_exists('CatalogueItemIdentification', $itemArrayRaw['Item'])) {
+                if (array_key_exists('ID',
+                                $itemArrayRaw['Item']['CatalogueItemIdentification']) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search($itemArray['nazev'],
+                                $this->storageBlacklist) == false)) {
+                    $itemArray['typPolozkyK'] = 'typPolozky.katalog';
+                    if (!empty($itemArrayRaw['Item']['CatalogueItemIdentification']['ID'])) {
+                        $itemArray['eanKod'] = $itemArrayRaw['Item']['CatalogueItemIdentification']['ID'];
+                    }
                 }
             }
-        }
 
-        if (array_key_exists('SellersItemIdentification', $itemArrayRaw['Item'])) {
-            if (array_key_exists('ID',
-                            $itemArrayRaw['Item']['SellersItemIdentification']) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search($itemArray['nazev'],
-                            $this->storageBlacklist) == false)) {
+            if (array_key_exists('SellersItemIdentification', $itemArrayRaw['Item'])) {
+                if (array_key_exists('ID',
+                                $itemArrayRaw['Item']['SellersItemIdentification']) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search($itemArray['nazev'],
+                                $this->storageBlacklist) == false)) {
 
-                $itemArray['typPolozkyK'] = 'typPolozky.katalog';
-            }
-            if (array_key_exists('SellersItemIdentification',
-                            $itemArrayRaw['Item']) && !empty($itemArrayRaw['Item']['SellersItemIdentification']['ID'])) {
-                $itemArray['kratkyPopis'] = $itemArrayRaw['Item']['SellersItemIdentification']['ID'];
+                    $itemArray['typPolozkyK'] = 'typPolozky.katalog';
+                }
+                if (array_key_exists('SellersItemIdentification',
+                                $itemArrayRaw['Item']) && !empty($itemArrayRaw['Item']['SellersItemIdentification']['ID'])) {
+                    $itemArray['kratkyPopis'] = $itemArrayRaw['Item']['SellersItemIdentification']['ID'];
+                }
             }
         }
         if (!empty($itemArrayRaw['Note'])) {
