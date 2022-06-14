@@ -27,6 +27,12 @@ class Parser extends \Ease\Sand {
      * @var DOMDocument 
      */
     protected $xmlDomDocument;
+    
+    /**
+     * 
+     * @var array
+     */
+    private $invoiceFiles = [];
 
     /**
      * 

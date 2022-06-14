@@ -11,7 +11,7 @@
     "require": {
         "ext-imap": "*",
         "ext-zip": "*",
-        "spojenet/flexibee": "2.0.x-dev",
+        "spojenet/flexibee": "dev-main",
         "vitexsoftware/flexibee-bricks": "dev-abraflexi",
         "php-imap/php-imap": "dev-master",
         "lightools/xml": "*"

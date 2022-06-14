@@ -63,16 +63,14 @@ class Mailboxer extends Mailbox {
      * @param string $name     name of property to set up
      * @param string $constant load default property value from constant / ENV
      */
-    public function setupProperty($options, $name, $constant = null) {
+    public function setupProperty($options, $name, $constant = false) {
         if (array_key_exists($name, $options)) {
             $this->$name = $options[$name];
-        } elseif (array_key_exists($constant, $options)) {
+        } elseif ($constant && array_key_exists($constant, $options)) {
             $this->$name = $options[$constant];
         } else { // If No values specified we must use constants or environment
-            if (property_exists($this, $name) && !empty($constant) && defined($constant)) {
-                $this->$name = constant($constant);
-            } elseif (property_exists($this, $name) && ($env = getenv($constant)) && !empty($env)) {
-                $this->$name = getenv($constant);
+            if ($constant && (empty(\Ease\Functions::cfg($constant)) === false)) {
+                $this->$name = \Ease\Functions::cfg($constant);
             }
         }
     }

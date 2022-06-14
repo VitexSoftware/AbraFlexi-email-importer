@@ -16,7 +16,6 @@ define('EASE_LOGGER', 'syslog|console');
 
 require_once __DIR__ . '/init.php';
 
-
 $imp = new Importer('file');
 $imp->logBanner(Functions::cfg('EASE_APPNAME'));
 if ($imp->checkSetup() === true) {

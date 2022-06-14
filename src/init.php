@@ -14,7 +14,7 @@ require_once '../vendor/autoload.php';
 if (file_exists('../client.json')) {
     \Ease\Shared::singleton()->loadConfig('../client.json', true);
 }
-if(file_exists('../imap2af.json')){
+if (file_exists('../imap2af.json')) {
     \Ease\Shared::singleton()->loadConfig('../imap2af.json', true);
 }
 \Ease\Locale::singleton('cs_CZ', '../i18n', 'imap2af');

@@ -94,6 +94,24 @@ class Importer extends FakturaPrijata {
     private $source;
 
     /**
+     * 
+     * @var array
+     */
+    private $invoicesToImport;
+
+    /**
+     * 
+     * @var array
+     */
+    private $taxes = [];
+
+    /**
+     * 
+     * @var array
+     */
+    private $invoiceFiles = [];
+
+    /**
      * Import engine
      * 
      * @param string $source   import invoices as ext:$source:hash
@@ -198,7 +216,7 @@ class Importer extends FakturaPrijata {
             'typSzbDphK' => 'typSzbDph.dphOsv',
             'kratkyPopis' => ''
         ];
-        $itemArrayRaw = self::domToArray($item);
+        $itemArrayRaw = Convertor::domToArray($item);
 
         $itemArray['nazev'] = $itemArrayRaw['Item']['Description'];
         $itemArray['cenaMj'] = $itemArrayRaw['UnitPriceTaxInclusive'];
@@ -437,7 +455,7 @@ class Importer extends FakturaPrijata {
                 }
 
                 if (isset($this->configuration['cleanprocessed']) && ( $this->configuration['cleanprocessed'] != 'false')) {
-                    $this->cleanUp();
+                    $this->cleanUp($invoicesImported);
                 }
             }
         }
@@ -583,8 +601,6 @@ class Importer extends FakturaPrijata {
         unset($invoiceItem['dan']);
         unset($invoiceItem['procentodane']);
 
-
-
         $this->priceList->dataReset();
         $this->priceList->takeData(array_merge($this->newItemDefaults,
                         $invoiceItem));
@@ -641,7 +657,7 @@ class Importer extends FakturaPrijata {
      * @return array
      */
     public function getPaymentMeans($xmlDomDocument) {
-        return $this->domPaymentMeansToArray($xmlDomDocument->getElementsByTagName('PaymentMeans'));
+        return Convertor::domPaymentMeansToArray($xmlDomDocument->getElementsByTagName('PaymentMeans'));
     }
 
     /**
@@ -697,7 +713,7 @@ class Importer extends FakturaPrijata {
         $element->removeChild($element->getElementsByTagName('LegalMonetaryTotal')->item(0));
         $element->removeChild($element->getElementsByTagName('PaymentMeans')->item(0));
 
-        $invoiceInfo = $this->domInvoiceToArray($xmlDomDocument->getElementsByTagName('Invoice'));
+        $invoiceInfo = Convertor::domInvoiceToArray($xmlDomDocument->getElementsByTagName('Invoice'));
 
 //        return array_merge($invoiceInfo, $taxTotal);
         return $invoiceInfo;
@@ -711,7 +727,7 @@ class Importer extends FakturaPrijata {
      */
     public function domLMTotalToArray($taxTotal) {
         $lmTotalArray = [];
-        $lmTotalArrayRaw = self::domToArray($taxTotal->item(0));
+        $lmTotalArrayRaw = Convertor::domToArray($taxTotal->item(0));
 
         /*
           <TaxExclusiveAmount>3550.44000</TaxExclusiveAmount>

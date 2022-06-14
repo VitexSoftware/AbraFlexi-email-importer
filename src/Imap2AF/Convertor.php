@@ -29,13 +29,19 @@ class Convertor extends Parser {
     public $storageBlacklist = [];
 
     /**
+     * 
+     * @var array
+     */
+    private $configuration = [];
+
+    /**
      * Convert Dom based invoice Payment Element to Array
      *
      * @param \DOMNodeList $payment
      * 
      * @return array
      */
-    public function domPaymentMeansToArray($payment) {
+    public static function domPaymentMeansToArray($payment) {
         $paymentArray = [];
         $paymentArrayRaw = current(self::domToArray($payment->item(0)));
 
@@ -142,14 +148,11 @@ class Convertor extends Parser {
      * Convert Dom based invoice Element to Array
      *
      * @param \DOMNodeList $invoice
+     * @param array $invoiceArray Invoice content override
+     * 
      * @return array
      */
-    public function domInvoiceToArray($invoice) {
-        if (isset($this->configuration['invoiceDefaults'])) {
-            $invoiceArray = $this->configuration['invoiceDefaults'];
-        } else {
-            $invoiceArray = [];
-        }
+    public static function domInvoiceToArray($invoice, $invoiceArray = []) {
         $invoiceArrayRaw = self::domToArray($invoice->item(0));
 
         $invoiceArray['id'] = 'ext:fc:' . $invoiceArrayRaw['ID'];
@@ -162,7 +165,6 @@ class Convertor extends Parser {
         }
         $invoiceArray['mena'] = 'code:' . $invoiceArrayRaw['LocalCurrencyCode'];
         $invoiceArray['typDokl'] = 'code:FAKTURA';
-
 
 //        $invoiceArray['datSplat'] = '';
         return $invoiceArray;
