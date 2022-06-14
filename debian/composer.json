@@ -17,7 +17,7 @@
         "ext-imap": "*",
         "ext-zip": "*",
         "deb/abraflexi-bricks": "*",
-        "php-imap/php-imap": "dev-master",
+        "php-imap/php-imap": "*",
         "lightools/xml": "*"
     },
     "autoload": {
