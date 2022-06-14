@@ -13,7 +13,7 @@
         "ext-zip": "*",
         "spojenet/flexibee": "dev-main",
         "vitexsoftware/flexibee-bricks": "dev-abraflexi",
-        "php-imap/php-imap": "dev-master",
+        "php-imap/php-imap": "*",
         "lightools/xml": "*"
     },
     "require-dev": {
