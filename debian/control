@@ -8,7 +8,8 @@ Homepage: https://github.com/VitexSoftware/AbraFlexi-email-importer
 
 Package: abraflexi-email-importer
 Multi-Arch: foreign
-Depends: ${misc:Depends}, php-cli, php-imap, php-zip, php-spojenet-abraflexi, php-vitexsoftware-ease-bricks, php-vitexsoftware-ease-html, php-vitexsoftware-abraflexi-bricks
+Pre-Depends: php-cli, php-imap, php-zip
+Depends: ${misc:Depends}, php-spojenet-abraflexi, php-vitexsoftware-ease-bricks, php-vitexsoftware-ease-html, php-vitexsoftware-abraflexi-bricks
 Suggests: abraflexi-server,abraflexi-client-config, abraflexi-digest, abraflexi-matcher, abraflexi-reminder, abraflexi-contract-invoices
 Architecture: all
 Description: mail to AbraFlexi importer
