@@ -398,9 +398,10 @@ class Importer extends FakturaPrijata {
     public function mainLoop(array $inputFiles, array $senders) {
 
         foreach ($inputFiles as $inputFile => $inputFilePath) {
-            if ($this->parser->loadFile($inputFilePath)) {
+            $renamed = sys_get_temp_dir() . '/' . $inputFile;
+            if (rename($inputFilePath, $renamed) && $this->parser->loadFile($renamed)) {
                 $invoice = $this->xmlDomToInvoice();
-                $invoice->setDataValue('id', 'ext:' . $this->source . ':' . md5_file($inputFilePath));
+                $invoice->setDataValue('id', 'ext:' . $this->source . ':' . md5_file($renamed));
 
                 if ($this->isForMe($invoice) === false) {
                     $invoice->addStatusMessage(sprintf(_('Invoice for somebody else %s - skipping'),
@@ -761,7 +762,7 @@ class Importer extends FakturaPrijata {
         } catch (\AbraFlexi\Exception $exc) {
             $this->addStatusMessage($exc->getMessage(), 'error');
         }
-       return ($invoice->lastResponseCode == 200) && !empty($found);
+        return ($invoice->lastResponseCode == 200) && !empty($found);
     }
 
     /**

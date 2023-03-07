@@ -4,7 +4,7 @@
  * Imap2AbraFlexi ISDOC Parser
  *
  * @author     Vítězslav Dvořák <info@vitexsofware.cz>
- * @copyright  (G) 2019-2020 Vitex Software
+ * @copyright  (G) 2019-2023 Vitex Software
  */
 
 namespace AbraFlexi\Imap2AF;
@@ -27,7 +27,7 @@ class Parser extends \Ease\Sand {
      * @var DOMDocument 
      */
     protected $xmlDomDocument;
-    
+
     /**
      * 
      * @var array

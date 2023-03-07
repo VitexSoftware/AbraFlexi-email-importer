@@ -102,6 +102,7 @@ class Mailboxer extends Mailbox {
         $this->addStatusMessage(_('Connecting to mailbox') . ' ' . $this->imapLogin . ' ' . $this->imapPath, 'debug');
         try {
             $mailsIds = $this->searchMailbox('ALL');
+            $this->addStatusMessage(count($mailsIds) . ' ' . _('messages found'), 'debug');
         } catch (ConnectionException $ex) {
             throw new Exception("IMAP connection failed: " . $ex);
         }
