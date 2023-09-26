@@ -119,7 +119,7 @@ class Convertor extends Parser {
     /**
      * Convert Dom based invoice TaxTotal Element to Array
      *
-     * @param \DOMNodeList $invoice
+     * @param \DOMNodeList $taxTotal
      * 
      * @return array
      */

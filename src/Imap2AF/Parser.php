@@ -14,7 +14,8 @@ namespace AbraFlexi\Imap2AF;
  *
  * @author Vítězslav Dvořák <info@vitexsoftware.cz>
  */
-class Parser extends \Ease\Sand {
+class Parser extends \Ease\Sand
+{
 
     /**
      * XML Loader
@@ -24,7 +25,7 @@ class Parser extends \Ease\Sand {
 
     /**
      * XML Data as DOM
-     * @var DOMDocument 
+     * @var \DOMDocument 
      */
     protected $xmlDomDocument;
 
@@ -38,7 +39,8 @@ class Parser extends \Ease\Sand {
      * 
      * @param string filen to load
      */
-    public function __construct($init = null) {
+    public function __construct($init = null)
+    {
         $this->loader = new \Lightools\Xml\XmlLoader();
         if (!empty($init) && file_exists($init)) {
             $this->loadFile($init);
@@ -50,11 +52,11 @@ class Parser extends \Ease\Sand {
      *
      * @param array $invoiceFiles
      */
-    public function cleanUp($invoiceFiles) {
+    public function cleanUp($invoiceFiles)
+    {
         foreach ($invoiceFiles as $invoiceID => $invoiceExtID) {
 
             $fileToDelete = $this->invoiceFiles[$invoiceExtID];
-
             if (unlink($fileToDelete)) {
                 $this->addStatusMessage(sprintf('Invoice %s file %s deleted',
                                 $invoiceExtID, $this->invoiceFiles[$invoiceExtID]));
@@ -67,7 +69,6 @@ class Parser extends \Ease\Sand {
             $dirToDelete = dirname($fileToDelete);
             $pdfToDelete = $dirToDelete . '/' . str_replace('.isdoc', '.pdf',
                             basename($fileToDelete));
-
             if (file_exists($pdfToDelete)) {
                 if (unlink($pdfToDelete)) {
                     $this->addStatusMessage(sprintf('Invoice %s file %s deleted',
@@ -101,9 +102,9 @@ class Parser extends \Ease\Sand {
      * 
      * @return array
      */
-    public static function domToArray($root) {
+    public static function domToArray($root)
+    {
         $result = array();
-
         if ($root->hasAttributes()) {
             $attrs = $root->attributes;
             foreach ($attrs as $attr) {
@@ -144,7 +145,8 @@ class Parser extends \Ease\Sand {
      * 
      * @return string extracted .isdoc
      */
-    public function unpackIsdocX($filename) {
+    public function unpackIsdocX($filename)
+    {
         $dir = sys_get_temp_dir() . '/';
         $zip = \zip_open($filename);
         if ($zip) {
@@ -182,7 +184,8 @@ class Parser extends \Ease\Sand {
      * 
      * @return boolean parsing status
      */
-    public function loadFile($inputFile) {
+    public function loadFile($inputFile)
+    {
         $this->addStatusMessage('loading: ' . $inputFile, 'debug');
         return pathinfo($inputFile, PATHINFO_EXTENSION) == 'isdocx' ? $this->loadISDOCx($inputFile) : $this->loadISDOC($inputFile); //TODO: Check Mime  
     }
@@ -194,7 +197,8 @@ class Parser extends \Ease\Sand {
      * 
      * @return boolean parsing status
      */
-    public function loadISDOCx($inputFile) {
+    public function loadISDOCx($inputFile)
+    {
         return $this->loadISDOC($this->unpackIsdocX($inputFile));
     }
 
@@ -205,7 +209,8 @@ class Parser extends \Ease\Sand {
      * 
      * @return boolean parsing status
      */
-    public function loadISDOC($filename) {
+    public function loadISDOC($filename)
+    {
         $this->xmlDomDocument = $this->loader->loadXml(file_get_contents($filename));
         return $this->xmlDomDocument->hasChildNodes();
     }
@@ -215,8 +220,8 @@ class Parser extends \Ease\Sand {
      * 
      * @return \DOMDocument
      */
-    public function getXmlDomDocument() {
+    public function getXmlDomDocument()
+    {
         return $this->xmlDomDocument;
     }
-
 }

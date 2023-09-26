@@ -16,6 +16,7 @@
     "require": {
         "ext-imap": "*",
         "ext-zip": "*",
+        "deb/abraflexi": "*",
         "deb/abraflexi-bricks": "*",
         "php-imap/php-imap": "*",
         "lightools/xml": "*"

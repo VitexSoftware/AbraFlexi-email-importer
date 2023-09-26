@@ -9,14 +9,15 @@
 
 namespace AbraFlexi\Imap2AF;
 
-use Ease\Functions;
-
 define('EASE_APPNAME', 'Imap2AbraFlexi');
 
 require_once __DIR__ . '/init.php';
 
 $imp = new Importer('mail');
-$imp->logBanner(\Ease\Shared::appName());
+if (\Ease\Functions::cfg('APP_DEBUG') == 'True') {
+    $imp->logBanner(\Ease\Shared::appName() . ' v' . \Ease\Shared::appVersion());
+}
+
 if ($imp->checkSetup() === true) {
     $mailbox = new Mailboxer();
     $imp->importIsdocFiles($mailbox->saveIsdocs(), $mailbox->senders);

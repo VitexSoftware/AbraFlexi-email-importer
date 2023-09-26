@@ -30,7 +30,8 @@ use Lightools\Xml\XmlLoader;
  *
  * @author Vítězslav Dvořák <info@vitexsoftware.cz>
  */
-class Importer extends FakturaPrijata {
+class Importer extends FakturaPrijata
+{
 
     /**
      * Default values for new Pricelist Item
@@ -117,7 +118,8 @@ class Importer extends FakturaPrijata {
      * @param string $source   import invoices as ext:$source:hash
      * @param array  $options
      */
-    public function __construct($source, $options = array()) {
+    public function __construct($source, $options = array())
+    {
         parent::__construct(null, $options);
         $this->source = $source;
         $want = \Ease\Functions::cfg('ACCEPT_PROVIDER_IDS');
@@ -146,7 +148,8 @@ class Importer extends FakturaPrijata {
      * @param array $isdocs
      * @param array $senders
      */
-    public function importIsdocFiles($isdocs, $senders) {
+    public function importIsdocFiles($isdocs, $senders)
+    {
         $this->invoicesToImport = $isdocs;
         if (!empty($isdocs)) {
             $this->mainLoop($this->invoicesToImport, $senders);
@@ -154,29 +157,22 @@ class Importer extends FakturaPrijata {
     }
 
     /**
-     * Load ISDOC File
+     * Compile Invoice
      *
-     * @param string $filename invoice filename Faktura_VF1_7761_2019.isdocx
-     * @param string $filrPath real filename on disk
-     * 
      * @return FakturaPrijata
      */
-    public function xmlDomToInvoice() {
+    public function xmlDomToInvoice()
+    {
         $invoiceSuplier = $this->parser->invoiceSuplier();
         $invoiceCustomer = $this->parser->invoiceCustomer();
         $invoiceItems = $this->parser->invoiceItems();
         $paymentMeans = $this->parser->paymentMeans();
         $invoiceInfo = $this->parser->invoiceInfo();
-
         $invoiceInfo['ic'] = $invoiceCustomer['ic'];
-
         $suplierAbraFlexiID = $this->getSuplierAbraFlexiID($invoiceSuplier);
-
         $invoice = new FakturaPrijata($invoiceInfo);
-
         $invoice->setDataValue('datSplat', $paymentMeans['datSplat']);
         $invoice->setDataValue('banka', $this->conf('ABRAFLEXI_BANK') ? RO::code($this->conf('ABRAFLEXI_BANK')) : null );
-
         $checker = new Adresar();
         if ($checker->recordExists(['ic' => $invoiceSuplier['ic']])) {
             $invoice->setDataValue('firma', 'in:' . $invoiceSuplier['ic']);
@@ -193,7 +189,8 @@ class Importer extends FakturaPrijata {
         return $invoice;
     }
 
-    public function invoiceItems() {
+    public function invoiceItems()
+    {
         $invoiceItems = [];
         foreach ($this->parser->invoiceItems() as $invoiceItem) {
             $invoiceItems[] = $this->domInvoiceItemToArray($invoiceItem);
@@ -208,7 +205,8 @@ class Importer extends FakturaPrijata {
      * 
      * @return array
      */
-    public function domInvoiceItemToArray($item) {
+    public function domInvoiceItemToArray($item)
+    {
         $itemArray = [
             'typPolozkyK' => 'typPolozky.text',
             'ucetni' => false,
@@ -217,10 +215,8 @@ class Importer extends FakturaPrijata {
             'kratkyPopis' => ''
         ];
         $itemArrayRaw = Convertor::domToArray($item);
-
         $itemArray['nazev'] = $itemArrayRaw['Item']['Description'];
         $itemArray['cenaMj'] = $itemArrayRaw['UnitPriceTaxInclusive'];
-
         if (isset($itemArrayRaw['LineExtensionAmount']) && ($itemArrayRaw['LineExtensionAmount'] != '0.0')) {
             $itemArray['typPolozkyK'] = 'typPolozky.ucetni';
             $itemArray['ucetni'] = true;
@@ -231,7 +227,6 @@ class Importer extends FakturaPrijata {
                 $itemArray['typCenyDphK'] = 'typCeny.sDph';
             }
             $itemArray['typSzbDphK'] = $this->taxes[intval($itemArrayRaw['ClassifiedTaxCategory']['Percent'])];
-
             if (isset($this->configuration['invoiceRoundingDefaults']) && isset($this->configuration['roundingList'])) {
                 if (array_search($itemArray['nazev'],
                                 $this->configuration['roundingList']) !== false) {
@@ -301,12 +296,11 @@ class Importer extends FakturaPrijata {
      * 
      * @return array PricelistIDs
      */
-    public function importInvoiceItems(&$invoiceItems) {
+    public function importInvoiceItems(&$invoiceItems)
+    {
         $pricelistIDs = [];
         $this->priceList = new Cenik();
-
         $invoiceItems = $this->recountForPricelist($invoiceItems);
-
         foreach ($invoiceItems as $invoiceItemID => $invoiceItem) {
             $pricelistIDs[$invoiceItemID] = null;
             if (array_search($invoiceItem['nazev'], $this->storageBlacklist) !== false) {
@@ -330,10 +324,8 @@ class Importer extends FakturaPrijata {
                         $this->addStatusMessage(sprintf(_('Item %s insert to AbraFlexi Pricelist failed'), $invoiceItem['nazev']), 'error');
                     } else {
                         $pricelistIDs[$invoiceItemID] = $newPriceListItem;
-
                         $this->addStatusMessage(sprintf(_('Item was added to AbraFlexi Pricelist as %s'),
                                         $newPriceListItem), 'success');
-
 //                        $newStorageItem = $this->addItemToStorage($this->priceList,
 //                                0);
 //                        if (is_null($newStorageItem) || ($newStorageItem['success'] != 'true')) {
@@ -353,11 +345,12 @@ class Importer extends FakturaPrijata {
     /**
      * Insert given invoice to AbraFlexi
      *
-     * @param FakturaPrijata $invoicesToImport
+     * @param FakturaPrijata $invoice
      * 
      * @return boolean insertation status
      */
-    public function importInvoice(&$invoice) {
+    public function importInvoice(&$invoice)
+    {
 //                $invoice->setDataValue('stitky', 'IMAP2AF');
 
         if ($this->conf('FORCE_INCOMING_INVOICE_TYPE')) {
@@ -383,7 +376,8 @@ class Importer extends FakturaPrijata {
      * 
      * @return boolean
      */
-    public function isForMe(FakturaPrijata $invoice) {
+    public function isForMe(FakturaPrijata $invoice)
+    {
         $suppliersId = str_replace('in:', '', $invoice->getDataValue('firma'));
         return (array_key_exists($suppliersId, $this->wantList) && ($this->wantList[$suppliersId] === true) ||
                 $this->myInfo->getDataValue('ic') === $invoice->getDataValue('ic'));
@@ -395,14 +389,14 @@ class Importer extends FakturaPrijata {
      * @param array $inputFiles Listo of ISDOC files paths
      * @param array $senders List of sender emails for each invoice
      */
-    public function mainLoop(array $inputFiles, array $senders) {
+    public function mainLoop(array $inputFiles, array $senders)
+    {
 
         foreach ($inputFiles as $inputFile => $inputFilePath) {
             $renamed = sys_get_temp_dir() . '/' . $inputFile;
             if (rename($inputFilePath, $renamed) && $this->parser->loadFile($renamed)) {
                 $invoice = $this->xmlDomToInvoice();
                 $invoice->setDataValue('id', 'ext:' . $this->source . ':' . md5_file($renamed));
-
                 if ($this->isForMe($invoice) === false) {
                     $invoice->addStatusMessage(sprintf(_('Invoice for somebody else %s - skipping'),
                                     $invoice->getDataValue('cisDosle') . ' ' . str_replace('in:', 'ico:', $invoice->getDataValue('firma'))), 'info');
@@ -435,11 +429,8 @@ class Importer extends FakturaPrijata {
                 }
                 $invoice->unsetDataValue('sklad');
                 $invoicesImported = $this->importInvoice($invoice);
-
                 $path_parts = pathinfo($inputFilePath);
-
                 $unzippedDir = $path_parts['dirname'] . '/' . $path_parts['basename'] . 'unzipped';
-
                 if (file_exists($unzippedDir . '/manifest.xml')) {
 
                     $d = dir($unzippedDir);
@@ -468,7 +459,8 @@ class Importer extends FakturaPrijata {
      * 
      * @return boolean Measure Unit presence status
      */
-    public function handleMeasureUnit($unitCode) {
+    public function handleMeasureUnit($unitCode)
+    {
         $checker = new RW(RO::code($unitCode), ['evidence' => 'merna-jednotka', 'ignore404' => true]);
         return ($checker->lastResponseCode == 404) ? $checker->sync(['id' => RO::code($unitCode), 'nazev' => mb_strtolower($unitCode), 'poznam' => _('imported from invoice by mail')]) : true;
     }
@@ -480,14 +472,16 @@ class Importer extends FakturaPrijata {
      * 
      * @return SkladovaKarta
      */
-    public function addItemToStorage($pricelist, $count = 1) {
+    public function addItemToStorage($pricelist, $count = 1)
+    {
         $storager = new SkladovaKarta();
         $storager->setDataValue('stavMJ', $count);
         $storager->setDataValue('stitky', 'FLEXICEN');
         $storager->setDataValue('ucetObdobi', 'code:' . date('Y'));
         $storager->setDataValue('cenik', $pricelist->getDataValue('id'));
         $storager->setDataValue('sklad', 'code:' . $this->configuration['storage']);
-        return $storager->insertToAbraFlexi();
+        $storager->sync();
+        return $storager;
     }
 
     /**
@@ -495,11 +489,11 @@ class Importer extends FakturaPrijata {
      *
      * @param array $invoiceFiles
      */
-    public function cleanUp($invoiceFiles) {
+    public function cleanUp($invoiceFiles)
+    {
         foreach ($invoiceFiles as $invoiceID => $invoiceExtID) {
 
             $fileToDelete = $this->invoiceFiles[$invoiceExtID];
-
             if (unlink($fileToDelete)) {
                 $this->addStatusMessage(sprintf('Invoice %s file %s deleted',
                                 $invoiceExtID, $this->invoiceFiles[$invoiceExtID]));
@@ -512,7 +506,6 @@ class Importer extends FakturaPrijata {
             $dirToDelete = dirname($fileToDelete);
             $pdfToDelete = $dirToDelete . '/' . str_replace('.isdoc', '.pdf',
                             basename($fileToDelete));
-
             if (file_exists($pdfToDelete)) {
                 if (unlink($pdfToDelete)) {
                     $this->addStatusMessage(sprintf('Invoice %s file %s deleted',
@@ -546,13 +539,13 @@ class Importer extends FakturaPrijata {
      * 
      * @return boolean
      */
-    public function abraFlexiPricelistPresence($invoiceItemRaw) {
+    public function abraFlexiPricelistPresence($invoiceItemRaw)
+    {
         $productKnown = false;
         $invoiceItem = [];
         Functions::divDataArray($invoiceItemRaw, $invoiceItem, 'eanKod');
         Functions::divDataArray($invoiceItemRaw, $invoiceItem, 'kratkyPopis');
         Functions::divDataArray($invoiceItemRaw, $invoiceItem, 'nazev');
-
         if (count($invoiceItem)) {
             foreach ($invoiceItem as $column => $value) {
                 $fbpl = $this->priceList->getColumnsFromAbraFlexi(['id'],
@@ -574,9 +567,9 @@ class Importer extends FakturaPrijata {
      * @param array $invoiceItem
      * @return int item AbraFlexi ID
      */
-    public function addItemToPriceList($invoiceItem) {
+    public function addItemToPriceList($invoiceItem)
+    {
         $result = null;
-
         if (!isset($invoiceItem['stavMJ'])) {
             $this->addStatusMessage('item ' . serialize($invoiceItem) . ' without count',
                     'warning');
@@ -592,7 +585,6 @@ class Importer extends FakturaPrijata {
             'primarni' => true,
             'firma' => $invoiceItem['dodavatel']
         ];
-
         unset($invoiceItem['stavMJ']);
         if (isset($invoiceItem['jednotka'])) {
             $this->handleMeasureUnit($invoiceItem['jednotka']);
@@ -601,13 +593,10 @@ class Importer extends FakturaPrijata {
         }
         unset($invoiceItem['dan']);
         unset($invoiceItem['procentodane']);
-
         $this->priceList->dataReset();
         $this->priceList->takeData(array_merge($this->newItemDefaults,
                         $invoiceItem));
-
         $this->priceList->addArrayToBranch($providerInfo, 'dodavatele');
-
         $inserted = $this->priceList->insertToAbraFlexi();
         if ($this->priceList->lastResponseCode == 201) {
             $result = intval($inserted[0]['id']);
@@ -628,9 +617,9 @@ class Importer extends FakturaPrijata {
      * @param array $invoiceSuplier
      * @return int Suplier AbraFlexi AddressBook ID
      */
-    public function getSuplierAbraFlexiID($invoiceSuplier) {
+    public function getSuplierAbraFlexiID($invoiceSuplier)
+    {
         $suplierID = $this->abraFlexiSuplierPresence($invoiceSuplier);
-
         if (is_null($suplierID)) {
             $this->suplier->dataReset();
             $invoiceSuplier['poznam'] = _('Imported from mail');
@@ -657,7 +646,8 @@ class Importer extends FakturaPrijata {
      * 
      * @return array
      */
-    public function getPaymentMeans($xmlDomDocument) {
+    public function getPaymentMeans($xmlDomDocument)
+    {
         return Convertor::domPaymentMeansToArray($xmlDomDocument->getElementsByTagName('PaymentMeans'));
     }
 
@@ -668,7 +658,8 @@ class Importer extends FakturaPrijata {
      * 
      * @return int Suplier AbraFlexi AddressBook ID
      */
-    public function abraFlexiSuplierPresence($invoiceSuplier) {
+    public function abraFlexiSuplierPresence($invoiceSuplier)
+    {
         $suplierID = null;
         $suplierFound = $this->suplier->getColumnsFromAbraFlexi(['id'],
                 ['ic' => $invoiceSuplier['ic']]);
@@ -686,14 +677,13 @@ class Importer extends FakturaPrijata {
      * 
      * @return array of \AbraFlexi\FakturaPrijata properties
      */
-    public function getInvoiceInfo($xmlDomDocument) {
+    public function getInvoiceInfo($xmlDomDocument)
+    {
         //Remove Branches - See https://bugs.php.net/bug.php?id=61858
 
         $element = $xmlDomDocument->documentElement;
-
         $element->removeChild($element->getElementsByTagName('AccountingSupplierParty')->item(0));
         $element->removeChild($element->getElementsByTagName('AccountingCustomerParty')->item(0));
-
         $buyerCustomerParty = $element->getElementsByTagName('BuyerCustomerParty')->item(0);
         if (is_object($buyerCustomerParty)) {
             $element->removeChild($buyerCustomerParty);
@@ -704,18 +694,14 @@ class Importer extends FakturaPrijata {
             $element->removeChild($delivery);
         }
         $element->removeChild($element->getElementsByTagName('InvoiceLines')->item(0));
-
         //$taxTotal = $this->domTaxTotalToArray($xmlDomDocument->getElementsByTagName('TaxTotal'));
 
         $element->removeChild($element->getElementsByTagName('TaxTotal')->item(0));
-
         //$legalMonetaryTotal = $this->domLMTotalToArray($xmlDomDocument->getElementsByTagName('LegalMonetaryTotal'));
 
         $element->removeChild($element->getElementsByTagName('LegalMonetaryTotal')->item(0));
         $element->removeChild($element->getElementsByTagName('PaymentMeans')->item(0));
-
         $invoiceInfo = Convertor::domInvoiceToArray($xmlDomDocument->getElementsByTagName('Invoice'));
-
 //        return array_merge($invoiceInfo, $taxTotal);
         return $invoiceInfo;
     }
@@ -723,13 +709,14 @@ class Importer extends FakturaPrijata {
     /**
      * Convert Dom based invoice LegalMonetaryTotal Element to Array
      *
-     * @param DOMNodeList $invoice
+     * @param DOMNodeList $taxTotal
+     * 
      * @return array
      */
-    public function domLMTotalToArray($taxTotal) {
+    public function domLMTotalToArray($taxTotal)
+    {
         $lmTotalArray = [];
         $lmTotalArrayRaw = Convertor::domToArray($taxTotal->item(0));
-
         /*
           <TaxExclusiveAmount>3550.44000</TaxExclusiveAmount>
           <TaxInclusiveAmount>4296.00000</TaxInclusiveAmount>
@@ -745,7 +732,6 @@ class Importer extends FakturaPrijata {
         $lmTotalArray['sumCelkZakl'] = $lmTotalArrayRaw['TaxInclusiveAmount'];
         $lmTotalArray['sumZklZakl'] = $lmTotalArrayRaw['TaxableAmount'];
         $lmTotalArray['sumCelkem'] = $lmTotalArrayRaw['PayableAmount'];
-
         return $lmTotalArray;
     }
 
@@ -755,7 +741,8 @@ class Importer extends FakturaPrijata {
      * @param FakturaPrijata $invoice
      * @return boolean TRUE for known invoice; FALSE for unknown invoice
      */
-    public function isKnownInvoice($invoice) {
+    public function isKnownInvoice($invoice)
+    {
         $conditions['cisDosle'] = $invoice->getDataValue('cisDosle');
         try {
             $found = $invoice->getFlexiData('', $conditions);
@@ -769,9 +756,11 @@ class Importer extends FakturaPrijata {
      * Unpack isdocx file
      *
      * @param string $filename path to .isdocx
-     * @return string extracted .isdoc
+     * 
+     * @return string|boolean extracted .isdoc
      */
-    public function unpackIsdocX($filename) {
+    public function unpackIsdocX($filename)
+    {
         $dir = sys_get_temp_dir() . '/';
         $zip = \zip_open($filename);
         if ($zip) {
@@ -807,7 +796,8 @@ class Importer extends FakturaPrijata {
      *
      * @return boolean
      */
-    public function isConnected() {
+    public function isConnected()
+    {
         $connectStatus = false;
         $companer = new Company();
         $companies = $companer->getFlexiData();
@@ -824,9 +814,9 @@ class Importer extends FakturaPrijata {
     /**
      * Create AbraFlexi label
      */
-    public function createLabel() {
+    public function createLabel()
+    {
         $stitek = new Stitek();
-
         $stitekData = [
             "kod" => "FLEXICEN",
             "nazev" => "FLEXICEN",
@@ -834,9 +824,7 @@ class Importer extends FakturaPrijata {
             "vsbKatalog" => true,
             "vsbSkl" => true
         ];
-
         $stitekID = $stitek->getColumnsFromAbraFlexi('id', $stitekData);
-
         if (!isset($stitekID[0]['id'])) {
             $stitek->insertToAbraFlexi($stitekData);
         }
@@ -848,7 +836,8 @@ class Importer extends FakturaPrijata {
      * @param array $invoiceItems
      * @return array
      */
-    public function recountForPricelist($invoiceItems) {
+    public function recountForPricelist($invoiceItems)
+    {
         $storagePrices = (float) 0;
         $otherPrices = (float) 0;
         $topStoragePriceIndex = 0;
@@ -876,7 +865,6 @@ class Importer extends FakturaPrijata {
             $addPrice = $otherPrices / $storagePrices;
             $this->addStatusMessage('Add ' . $addPrice . ' from [' . implode(', ',
                             $recountItems) . '] to [' . implode(', ', $addPriceItems) . ']');
-
             foreach ($invoiceItems as $itemID => $itemData) {
                 if (array_search($itemData['nazev'], $this->storageBlacklist) === false) {
                     $invoiceItems[$itemID] = $this->addRecountedPrice($itemData,
@@ -893,7 +881,8 @@ class Importer extends FakturaPrijata {
      * @param array $itemData
      * @return array
      */
-    public function addRecountedPrice($itemData, $addPrice) {
+    public function addRecountedPrice($itemData, $addPrice)
+    {
         if (isset($itemData['sumCelkem'])) {
             $newPrice = floatval($itemData['sumCelkem']) + (floatval($itemData['sumCelkem']) * $addPrice);
             $itemData['cenaMjNakl'] = $newPrice;
@@ -909,7 +898,8 @@ class Importer extends FakturaPrijata {
      * 
      * @return string
      */
-    public function conf($key) {
+    public function conf($key)
+    {
         return array_key_exists($key, $this->configuration) ? $this->configuration[$key] : Functions::cfg($key);
     }
 
@@ -917,9 +907,9 @@ class Importer extends FakturaPrijata {
      * 
      * @return boolean
      */
-    public function checkSetup() {
+    public function checkSetup()
+    {
         $storageStatus = $bankStatus = true;
-
         $bank = $this->conf('ABRAFLEXI_BANK');
         if (empty($bank)) {
             $this->addStatusMessage(_('Default bank account is not set'), 'warning');
@@ -950,7 +940,8 @@ class Importer extends FakturaPrijata {
      * 
      * @return boolean
      */
-    public function checkStorage($storage) {
+    public function checkStorage($storage)
+    {
         $prober = new RO($storage, ['evidence' => 'sklad', 'ignore404' => true]);
         return $prober->lastResponseCode == 200;
     }
@@ -962,9 +953,9 @@ class Importer extends FakturaPrijata {
      * 
      * @return boolean
      */
-    public function checkBank($bank) {
+    public function checkBank($bank)
+    {
         $prober = new RO($bank, ['evidence' => 'bankovni-ucet', 'ignore404' => true]);
         return $prober->lastResponseCode == 200;
     }
-
 }

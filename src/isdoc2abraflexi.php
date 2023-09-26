@@ -9,14 +9,16 @@
 
 namespace AbraFlexi\Imap2AF;
 
-use Ease\Functions;
-
 define('EASE_APPNAME', 'isdoc2AbraFlexi');
 
 require_once __DIR__ . '/init.php';
 
 $imp = new Importer('file');
-$imp->logBanner(\Ease\Shared::appName());
+
+if (\Ease\Functions::cfg('APP_DEBUG') == 'True') {
+    $imp->logBanner(\Ease\Shared::appName() . ' v' . \Ease\Shared::appVersion());
+}
+
 if ($imp->checkSetup() === true) {
     $isdocs = [];
     foreach (glob($argv[1]) as $isdocFile) {
