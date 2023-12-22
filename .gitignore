@@ -12,3 +12,7 @@ imap2af.json
 .phpdoc
 /.phpunit.result.cache
 .env
+/debian/multiflexi-abraflexi-email-importer.debhelper.log
+/debian/multiflexi-abraflexi-email-importer.substvars
+/debian/multiflexi-abraflexi-email-importer/
+/debian/tmp/composer.json

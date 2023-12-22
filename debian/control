@@ -2,7 +2,7 @@ Source: abraflexi-email-importer
 Section: web
 Priority: optional
 Maintainer: "Vítězslav Dvořák" <info@vitexsoftware.cz>
-Build-Depends: debhelper (>=11~),composer, php-imap, php-zip
+Build-Depends: debhelper (>=11~),composer, php-imap, php-zip, moreutils, jq
 Standards-Version: 4.1.4
 Homepage: https://github.com/VitexSoftware/AbraFlexi-email-importer
 
@@ -14,3 +14,12 @@ Suggests: abraflexi-server,abraflexi-client-config, abraflexi-digest, abraflexi-
 Architecture: all
 Description: mail to AbraFlexi importer
  Utility for importning invoices from imap account to abraflexi.
+
+Package: multiflexi-abraflexi-email-importer
+Depends: abraflexi-email-importer, multiflexi
+Architecture: all
+Section: web
+Priority: optional
+Description: Add External Invoice importer for AbraFlexi to MultiFlexi
+ Import invoices from mailbox to AbraFlexi using MultiFlexi
+

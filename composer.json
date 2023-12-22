@@ -11,8 +11,8 @@
     "require": {
         "ext-imap": "*",
         "ext-zip": "*",
-        "spojenet/flexibee": "dev-main",
-        "vitexsoftware/flexibee-bricks": "dev-abraflexi",
+        "deb/flexibee": "dev-main",
+        "deb/abraflexi-bricks": "dev-abraflexi",
         "php-imap/php-imap": "dev-master",
         "lightools/xml": "*"
     },
@@ -22,11 +22,7 @@
     "autoload": {
         "psr-4": {
             "AbraFlexi\\Imap2AF\\": "src/Imap2AF/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Test\\AbraFlexi\\Imap2AF\\": "tests/src/Imap2AF/"
+usr/share/abraflexi-email-importer/Imap2AF
         }
     }
 }
