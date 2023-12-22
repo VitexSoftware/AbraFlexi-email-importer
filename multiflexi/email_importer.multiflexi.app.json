@@ -5,10 +5,10 @@
     "executable": "\/usr\/bin\/imap2abraflexi",
     "setup": "abraflexi-email-importer-init",
     "cmdparams": "",
-    "deploy": null,
-    "homepage": null,
-    "requirements": null,
-    "ociimage": "",
+    "deploy": "apt install abraflexi-email-importer",
+    "homepage": "https://github.com/VitexSoftware/AbraFlexi-email-importer",
+    "requirements": "AbraFlexi",
+    "ociimage": "docker.io/vitexsoftware/abraflexi-email-importer",
     "version": "",
     "environment": {
         "ABRAFLEXI_COMPANY": {
@@ -69,7 +69,7 @@
             "type": "text",
             "description": "",
             "defval": "",
-            "required": true,
+            "required": true
         },
         "MULTIFLEXI_STORAGE": {
             "type": "text",

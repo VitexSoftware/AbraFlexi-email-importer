@@ -9,3 +9,5 @@ override_dh_install:
 	sed -i -e 's/\.\.\/vendor/\/var\/lib\/abraflexi-email-importer/g'   debian/abraflexi-email-importer/usr/share/abraflexi-email-importer/*.php
 	sed -i -e 's/\.\.\/.env//'                                          debian/abraflexi-email-importer/usr/share/abraflexi-email-importer/*.php
 #	sed -i -e 's/\.\.\/i18n/\/usr\/share\/locale/g'                   debian/abraflexi-email-importer/usr/lib/abraflexi-email-importer/*.php
+	jq '.version = "'`dpkg-parsechangelog | sed -n 's/^Version: //p'| sed 's/~.*//'`'"'  debian/multiflexi-abraflexi-email-importer/usr/lib/abraflexi-email-importer/multiflexi/email_importer.multiflexi.app.json | sponge debian/multiflexi-abraflexi-email-importer/usr/lib/abraflexi-email-importer/multiflexi/email_importer.multiflexi.app.json
+
