@@ -20,19 +20,19 @@ use PhpImap\Mailbox;
  *
  * @author Vítězslav Dvořák <info@vitexsoftware.cz>
  */
-class Mailboxer extends Mailbox {
-
+class Mailboxer extends Mailbox
+{
     use Logging;
 
     /**
      *
-     * @var array 
+     * @var array
      */
     public $extIds = [];
 
     /**
      * Per invoice sender address list
-     * @var array 
+     * @var array
      */
     public $senders;
     private $mlogin;
@@ -43,10 +43,11 @@ class Mailboxer extends Mailbox {
     private $moptions = 'notls';
 
     /**
-     * 
+     *
      * @param array $params
      */
-    public function setUp($params = []) {
+    public function setUp($params = [])
+    {
         $this->setupProperty($params, 'msklad', 'ABRAFLEXI_SKLAD');
         $this->setupProperty($params, 'mlogin', 'IMAP_LOGIN');
         $this->setupProperty($params, 'mpassword', 'IMAP_PASSWORD');
@@ -63,7 +64,8 @@ class Mailboxer extends Mailbox {
      * @param string $name     name of property to set up
      * @param string $constant load default property value from constant / ENV
      */
-    public function setupProperty($options, $name, $constant = false) {
+    public function setupProperty($options, $name, $constant = '')
+    {
         if (array_key_exists($name, $options)) {
             $this->$name = $options[$name];
         } elseif ($constant && array_key_exists($constant, $options)) {
@@ -78,26 +80,28 @@ class Mailboxer extends Mailbox {
     /**
      * Mailbox handler
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->setUp(Shared::singleton()->configuration);
 
 // Create PhpImap\Mailbox instance for all further actions
         parent::__construct(
-                '{' . $this->mserver . ':' . $this->mport . '/' . $this->moptions . '}' . $this->mailbox, // IMAP server and mailbox folder
-                $this->mlogin, // Username for the before configured mailbox
-                $this->mpassword, // Password for the before configured username
-                sys_get_temp_dir() . '/', // Directory, where attachments will be saved (optional)
-                'UTF-8' // Server encoding (optional)
+            '{' . $this->mserver . ':' . $this->mport . '/' . $this->moptions . '}' . $this->mailbox, // IMAP server and mailbox folder
+            $this->mlogin, // Username for the before configured mailbox
+            $this->mpassword, // Password for the before configured username
+            sys_get_temp_dir() . '/', // Directory, where attachments will be saved (optional)
+            'UTF-8' // Server encoding (optional)
         );
     }
 
     /**
-     * 
+     *
      * @return array
-     * 
-     * @throws Exception 
+     *
+     * @throws Exception
      */
-    public function pullIsdocs() {
+    public function pullIsdocs()
+    {
         $isdocs = [];
         $this->addStatusMessage(_('Connecting to mailbox') . ' ' . $this->imapLogin . ' ' . $this->imapPath, 'debug');
         try {
@@ -109,8 +113,8 @@ class Mailboxer extends Mailbox {
 
         foreach ($mailsIds as $mailId) {
             $email = $this->getMail(
-                    $mailId, // ID of the email, you want to get
-                    false // Do NOT mark emails as seen (optional)
+                $mailId, // ID of the email, you want to get
+                false // Do NOT mark emails as seen (optional)
             );
 
             if ($email->hasAttachments()) {
@@ -128,15 +132,15 @@ class Mailboxer extends Mailbox {
 
     /**
      * Extract ISDOCx from Inbox
-     * 
+     *
      * @return array Isdoc Attachments on disk
      */
-    public function saveIsdocs() {
+    public function saveIsdocs()
+    {
         $saved = [];
         foreach ($this->pullIsdocs() as $filename => $attachment) {
             $saved[$filename] = $attachment->saveToDisk() ? $attachment->filePath : false;
         }
         return $saved;
     }
-
 }

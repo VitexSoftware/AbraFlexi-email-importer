@@ -14,8 +14,8 @@ namespace AbraFlexi\Imap2AF;
  *
  * @author vitex
  */
-class Convertor extends Parser {
-
+class Convertor extends Parser
+{
     /**
      * Current CZ taxes
      * @var array
@@ -29,7 +29,7 @@ class Convertor extends Parser {
     public $storageBlacklist = [];
 
     /**
-     * 
+     *
      * @var array
      */
     private $configuration = [];
@@ -38,10 +38,11 @@ class Convertor extends Parser {
      * Convert Dom based invoice Payment Element to Array
      *
      * @param \DOMNodeList $payment
-     * 
+     *
      * @return array
      */
-    public static function domPaymentMeansToArray($payment) {
+    public static function domPaymentMeansToArray($payment)
+    {
         $paymentArray = [];
         $paymentArrayRaw = current(self::domToArray($payment->item(0)));
 
@@ -54,10 +55,11 @@ class Convertor extends Parser {
      * Convert Dom based invoice item Element to Array
      *
      * @param \DOMNodeList $suplier
-     * 
+     *
      * @return array
      */
-    public function domSuplierToArray($suplier) {
+    public function domSuplierToArray($suplier)
+    {
         $suplierArray = [];
         $suplierArrayRaw = current(self::domToArray($suplier->item(0)));
 
@@ -82,10 +84,11 @@ class Convertor extends Parser {
      * Convert Dom based invoice item Element to Array
      *
      * @param \DOMNodeList $customer
-     * 
+     *
      * @return array
      */
-    public function domCustomerToArray($customer) {
+    public function domCustomerToArray($customer)
+    {
         $customerArray = [];
 
         if ($customer->count()) {
@@ -112,7 +115,8 @@ class Convertor extends Parser {
      *
      * @return array
      */
-    public function getInvoiceSuplier() {
+    public function getInvoiceSuplier()
+    {
         return $this->domSuplierToArray($this->xmlDomDocument->getElementsByTagName('AccountingSupplierParty'));
     }
 
@@ -120,10 +124,11 @@ class Convertor extends Parser {
      * Convert Dom based invoice TaxTotal Element to Array
      *
      * @param \DOMNodeList $taxTotal
-     * 
+     *
      * @return array
      */
-    public function domTaxTotalToArray($taxTotal) {
+    public function domTaxTotalToArray($taxTotal)
+    {
         $taxTotalArray = [];
         $taxTotalArrayRaw = self::domToArray($taxTotal->item(0));
 
@@ -136,7 +141,6 @@ class Convertor extends Parser {
             $taxTotalArray['sumDphZakl'] = $taxTotalArrayRaw['TaxSubTotal']['DifferenceTaxAmount'];
         } else {
             foreach ($taxSubTotal as $subTotalTax) {
-                
             }
         }
 
@@ -151,10 +155,11 @@ class Convertor extends Parser {
      *
      * @param \DOMNodeList $invoice
      * @param array $invoiceArray Invoice content override
-     * 
+     *
      * @return array
      */
-    public static function domInvoiceToArray($invoice, $invoiceArray = []) {
+    public static function domInvoiceToArray($invoice, $invoiceArray = [])
+    {
         $invoiceArrayRaw = self::domToArray($invoice->item(0));
 
         $invoiceArray['id'] = 'ext:fc:' . $invoiceArrayRaw['ID'];
@@ -177,7 +182,8 @@ class Convertor extends Parser {
      *
      * @return array
      */
-    public function invoiceSuplier() {
+    public function invoiceSuplier()
+    {
         return $this->domSuplierToArray($this->xmlDomDocument->getElementsByTagName('AccountingSupplierParty'));
     }
 
@@ -186,7 +192,8 @@ class Convertor extends Parser {
      *
      * @return array
      */
-    public function invoiceCustomer() {
+    public function invoiceCustomer()
+    {
         return $this->domCustomerToArray($this->xmlDomDocument->getElementsByTagName('AccountingCustomerParty'));
     }
 
@@ -195,15 +202,17 @@ class Convertor extends Parser {
      *
      * @return array
      */
-    public function paymentMeans() {
+    public function paymentMeans()
+    {
         return $this->domPaymentMeansToArray($this->xmlDomDocument->getElementsByTagName('PaymentMeans'));
     }
 
     /**
-     * 
+     *
      * @return array
      */
-    public function invoiceItems() {
+    public function invoiceItems()
+    {
         $invoiceItems = [];
         $invoiceLines = $this->xmlDomDocument->getElementsByTagName('InvoiceLine');
         if (count($invoiceLines)) {
@@ -219,7 +228,8 @@ class Convertor extends Parser {
      *
      * @return array of \AbraFlexi\FakturaPrijata properties
      */
-    public function invoiceInfo() {
+    public function invoiceInfo()
+    {
 //Remove Branches - See https://bugs.php.net/bug.php?id=61858
 
         $element = $this->xmlDomDocument->documentElement;
@@ -256,11 +266,12 @@ class Convertor extends Parser {
     /**
      * Convert Dom based invoice LegalMonetaryTotal Element to Array
      *
-     * @param \DOMNodeList $invoice
-     * 
+     * @param \DOMNodeList $taxTotal
+     *
      * @return array
      */
-    public function domLMTotalToArray($taxTotal) {
+    public function domLMTotalToArray($taxTotal)
+    {
         $lmTotalArray = [];
         $lmTotalArrayRaw = self::domToArray($taxTotal->item(0));
 
@@ -287,10 +298,11 @@ class Convertor extends Parser {
      * Convert Dom based invoice item Element to Array
      *
      * @param \DOMElement $item
-     * 
+     *
      * @return array
      */
-    public function domInvoiceItemToArray($item) {
+    public function domInvoiceItemToArray($item)
+    {
         $itemArray = [
             'typPolozkyK' => 'typPolozky.text',
             'ucetni' => false,
@@ -319,12 +331,20 @@ class Convertor extends Parser {
             $itemArray['typSzbDphK'] = $this->taxes[intval($itemArrayRaw['ClassifiedTaxCategory']['Percent'])];
 
             if (isset($this->configuration['invoiceRoundingDefaults']) && isset($this->configuration['roundingList'])) {
-                if (array_search($itemArray['nazev'],
-                                $this->configuration['roundingList']) !== false) {
-                    $this->addStatusMessage(sprintf(_('Rouding item %s found. Defaults used'),
-                                    $itemArray['nazev']));
-                    $itemArray = array_merge($itemArray,
-                            $this->configuration['invoiceRoundingDefaults']);
+                if (
+                    array_search(
+                        $itemArray['nazev'],
+                        $this->configuration['roundingList']
+                    ) !== false
+                ) {
+                    $this->addStatusMessage(sprintf(
+                        _('Rouding item %s found. Defaults used'),
+                        $itemArray['nazev']
+                    ));
+                    $itemArray = array_merge(
+                        $itemArray,
+                        $this->configuration['invoiceRoundingDefaults']
+                    );
                 }
             }
         } else {
@@ -348,11 +368,16 @@ class Convertor extends Parser {
         }
 
         if (is_array($itemArrayRaw['Item'])) {
-
             if (array_key_exists('CatalogueItemIdentification', $itemArrayRaw['Item'])) {
-                if (array_key_exists('ID',
-                                $itemArrayRaw['Item']['CatalogueItemIdentification']) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search($itemArray['nazev'],
-                                $this->storageBlacklist) == false)) {
+                if (
+                    array_key_exists(
+                        'ID',
+                        $itemArrayRaw['Item']['CatalogueItemIdentification']
+                    ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search(
+                        $itemArray['nazev'],
+                        $this->storageBlacklist
+                    ) == false)
+                ) {
                     $itemArray['typPolozkyK'] = 'typPolozky.katalog';
                     if (!empty($itemArrayRaw['Item']['CatalogueItemIdentification']['ID'])) {
                         $itemArray['eanKod'] = $itemArrayRaw['Item']['CatalogueItemIdentification']['ID'];
@@ -361,14 +386,23 @@ class Convertor extends Parser {
             }
 
             if (array_key_exists('SellersItemIdentification', $itemArrayRaw['Item'])) {
-                if (array_key_exists('ID',
-                                $itemArrayRaw['Item']['SellersItemIdentification']) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search($itemArray['nazev'],
-                                $this->storageBlacklist) == false)) {
-
+                if (
+                    array_key_exists(
+                        'ID',
+                        $itemArrayRaw['Item']['SellersItemIdentification']
+                    ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search(
+                        $itemArray['nazev'],
+                        $this->storageBlacklist
+                    ) == false)
+                ) {
                     $itemArray['typPolozkyK'] = 'typPolozky.katalog';
                 }
-                if (array_key_exists('SellersItemIdentification',
-                                $itemArrayRaw['Item']) && !empty($itemArrayRaw['Item']['SellersItemIdentification']['ID'])) {
+                if (
+                    array_key_exists(
+                        'SellersItemIdentification',
+                        $itemArrayRaw['Item']
+                    ) && !empty($itemArrayRaw['Item']['SellersItemIdentification']['ID'])
+                ) {
                     $itemArray['kratkyPopis'] = $itemArrayRaw['Item']['SellersItemIdentification']['ID'];
                 }
             }
@@ -380,5 +414,4 @@ class Convertor extends Parser {
 
         return $itemArray;
     }
-
 }

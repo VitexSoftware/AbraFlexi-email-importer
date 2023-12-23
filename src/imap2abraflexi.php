@@ -9,6 +9,8 @@
 
 namespace AbraFlexi\Imap2AF;
 
+require_once '../vendor/autoload.php';
+
 define('EASE_APPNAME', 'Imap2AbraFlexi');
 
 \Ease\Shared::init(['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY','ABRAFLEXI_BANK','ABRAFLEXI_STORAGE'], isset($argv[1]) ? $argv[1] : '../.env');

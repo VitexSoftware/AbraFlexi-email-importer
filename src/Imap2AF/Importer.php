@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Imap2AbraFlexi Import 
+ * Imap2AbraFlexi Import
  *
  * @author     Vítězslav Dvořák <info@vitexsofware.cz>
  * @copyright  (G) 2019-2020 Vitex Software
@@ -32,7 +32,6 @@ use Lightools\Xml\XmlLoader;
  */
 class Importer extends FakturaPrijata
 {
-
     /**
      * Default values for new Pricelist Item
      * @var array
@@ -72,13 +71,13 @@ class Importer extends FakturaPrijata
 
     /**
      *
-     * @var Convertor 
+     * @var Convertor
      */
     public $parser = null;
 
     /**
      *
-     * @var array 
+     * @var array
      */
     public $configuration = [];
 
@@ -95,26 +94,26 @@ class Importer extends FakturaPrijata
     private $source;
 
     /**
-     * 
+     *
      * @var array
      */
     private $invoicesToImport;
 
     /**
-     * 
+     *
      * @var array
      */
     private $taxes = [];
 
     /**
-     * 
+     *
      * @var array
      */
     private $invoiceFiles = [];
 
     /**
      * Import engine
-     * 
+     *
      * @param string $source   import invoices as ext:$source:hash
      * @param array  $options
      */
@@ -144,7 +143,7 @@ class Importer extends FakturaPrijata
 
     /**
      * Import mail messages from all or given senders
-     * 
+     *
      * @param array $isdocs
      * @param array $senders
      */
@@ -172,7 +171,7 @@ class Importer extends FakturaPrijata
         $suplierAbraFlexiID = $this->getSuplierAbraFlexiID($invoiceSuplier);
         $invoice = new FakturaPrijata($invoiceInfo);
         $invoice->setDataValue('datSplat', $paymentMeans['datSplat']);
-        $invoice->setDataValue('banka', $this->conf('ABRAFLEXI_BANK') ? RO::code($this->conf('ABRAFLEXI_BANK')) : null );
+        $invoice->setDataValue('banka', $this->conf('ABRAFLEXI_BANK') ? RO::code($this->conf('ABRAFLEXI_BANK')) : null);
         $checker = new Adresar();
         if ($checker->recordExists(['ic' => $invoiceSuplier['ic']])) {
             $invoice->setDataValue('firma', 'in:' . $invoiceSuplier['ic']);
@@ -202,7 +201,7 @@ class Importer extends FakturaPrijata
      * Convert Dom based invoice item Element to Array
      *
      * @param DOMElement $item
-     * 
+     *
      * @return array
      */
     public function domInvoiceItemToArray($item)
@@ -228,12 +227,20 @@ class Importer extends FakturaPrijata
             }
             $itemArray['typSzbDphK'] = $this->taxes[intval($itemArrayRaw['ClassifiedTaxCategory']['Percent'])];
             if (isset($this->configuration['invoiceRoundingDefaults']) && isset($this->configuration['roundingList'])) {
-                if (array_search($itemArray['nazev'],
-                                $this->configuration['roundingList']) !== false) {
-                    $this->addStatusMessage(sprintf(_('Rouding item %s found. Defaults used'),
-                                    $itemArray['nazev']));
-                    $itemArray = array_merge($itemArray,
-                            $this->configuration['invoiceRoundingDefaults']);
+                if (
+                    array_search(
+                        $itemArray['nazev'],
+                        $this->configuration['roundingList']
+                    ) !== false
+                ) {
+                    $this->addStatusMessage(sprintf(
+                        _('Rouding item %s found. Defaults used'),
+                        $itemArray['nazev']
+                    ));
+                    $itemArray = array_merge(
+                        $itemArray,
+                        $this->configuration['invoiceRoundingDefaults']
+                    );
                 }
             }
         } else {
@@ -257,11 +264,21 @@ class Importer extends FakturaPrijata
         }
 
 
-        if (array_key_exists('CatalogueItemIdentification',
-                        $itemArrayRaw['Item'])) {
-            if (array_key_exists('ID',
-                            $itemArrayRaw['Item']['CatalogueItemIdentification']) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search($itemArray['nazev'],
-                            $this->storageBlacklist) == false)) {
+        if (
+            array_key_exists(
+                'CatalogueItemIdentification',
+                $itemArrayRaw['Item']
+            )
+        ) {
+            if (
+                array_key_exists(
+                    'ID',
+                    $itemArrayRaw['Item']['CatalogueItemIdentification']
+                ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search(
+                    $itemArray['nazev'],
+                    $this->storageBlacklist
+                ) == false)
+            ) {
                 $itemArray['typPolozkyK'] = 'typPolozky.katalog';
                 if (!empty($itemArrayRaw['Item']['CatalogueItemIdentification']['ID'])) {
                     $itemArray['eanKod'] = $itemArrayRaw['Item']['CatalogueItemIdentification']['ID'];
@@ -270,14 +287,23 @@ class Importer extends FakturaPrijata
         }
 
         if (array_key_exists('SellersItemIdentification', $itemArrayRaw['Item'])) {
-            if (array_key_exists('ID',
-                            $itemArrayRaw['Item']['SellersItemIdentification']) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search($itemArray['nazev'],
-                            $this->storageBlacklist) == false)) {
-
+            if (
+                array_key_exists(
+                    'ID',
+                    $itemArrayRaw['Item']['SellersItemIdentification']
+                ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search(
+                    $itemArray['nazev'],
+                    $this->storageBlacklist
+                ) == false)
+            ) {
                 $itemArray['typPolozkyK'] = 'typPolozky.katalog';
             }
-            if (array_key_exists('SellersItemIdentification',
-                            $itemArrayRaw['Item']) && !empty($itemArrayRaw['Item']['SellersItemIdentification']['ID'])) {
+            if (
+                array_key_exists(
+                    'SellersItemIdentification',
+                    $itemArrayRaw['Item']
+                ) && !empty($itemArrayRaw['Item']['SellersItemIdentification']['ID'])
+            ) {
                 $itemArray['kratkyPopis'] = $itemArrayRaw['Item']['SellersItemIdentification']['ID'];
             }
         }
@@ -293,7 +319,7 @@ class Importer extends FakturaPrijata
      * Insert invoice items to pricelist & storage
      *
      * @param array $invoiceItems
-     * 
+     *
      * @return array PricelistIDs
      */
     public function importInvoiceItems(&$invoiceItems)
@@ -304,28 +330,33 @@ class Importer extends FakturaPrijata
         foreach ($invoiceItems as $invoiceItemID => $invoiceItem) {
             $pricelistIDs[$invoiceItemID] = null;
             if (array_search($invoiceItem['nazev'], $this->storageBlacklist) !== false) {
-                $this->addStatusMessage(sprintf(_('Blacklisted item %s import to pricelist skipped'),
-                                $invoiceItem['nazev']), 'info');
+                $this->addStatusMessage(sprintf(
+                    _('Blacklisted item %s import to pricelist skipped'),
+                    $invoiceItem['nazev']
+                ), 'info');
                 continue;
             }
 
             if ($this->abraFlexiPricelistPresence($invoiceItem)) {
                 $pricelistId = $this->priceList->lastResult['cenik'][0]['id'];
                 $pricelistIDs[$invoiceItemID] = $pricelistId;
-                $this->addStatusMessage(sprintf(_('Allready known item %s'),
-                                $invoiceItem['nazev']));
+                $this->addStatusMessage(sprintf(
+                    _('Allready known item %s'),
+                    $invoiceItem['nazev']
+                ));
             } else {
                 unset($invoiceItem['sklad']); //FIXME: choose storage properly
 
                 if ($invoiceItem['typPolozkyK'] == 'typPolozky.katalog') {
-
                     $newPriceListItem = $this->addItemToPriceList($invoiceItem);
                     if (is_null($newPriceListItem)) {
                         $this->addStatusMessage(sprintf(_('Item %s insert to AbraFlexi Pricelist failed'), $invoiceItem['nazev']), 'error');
                     } else {
                         $pricelistIDs[$invoiceItemID] = $newPriceListItem;
-                        $this->addStatusMessage(sprintf(_('Item was added to AbraFlexi Pricelist as %s'),
-                                        $newPriceListItem), 'success');
+                        $this->addStatusMessage(sprintf(
+                            _('Item was added to AbraFlexi Pricelist as %s'),
+                            $newPriceListItem
+                        ), 'success');
 //                        $newStorageItem = $this->addItemToStorage($this->priceList,
 //                                0);
 //                        if (is_null($newStorageItem) || ($newStorageItem['success'] != 'true')) {
@@ -346,7 +377,7 @@ class Importer extends FakturaPrijata
      * Insert given invoice to AbraFlexi
      *
      * @param FakturaPrijata $invoice
-     * 
+     *
      * @return boolean insertation status
      */
     public function importInvoice(&$invoice)
@@ -359,21 +390,25 @@ class Importer extends FakturaPrijata
 
         $invoiceInserted = $invoice->sync();
         if ($invoiceInserted) {
-            $this->addStatusMessage(sprintf(_('Invoice was inserted to AbraFlexi as %s'),
-                            $invoice->getRecordIdent()), 'success');
+            $this->addStatusMessage(sprintf(
+                _('Invoice was inserted to AbraFlexi as %s'),
+                $invoice->getRecordIdent()
+            ), 'success');
         } else {
-            $this->addStatusMessage(sprintf(_('Invoice %s insert to AbraFlexi failed'),
-                            $invoice->getRecordIdent()), 'error');
+            $this->addStatusMessage(sprintf(
+                _('Invoice %s insert to AbraFlexi failed'),
+                $invoice->getRecordIdent()
+            ), 'error');
         }
         return $invoiceInserted;
     }
 
     /**
-     * Check invoice recipent validity. We want invoice for us or from company 
+     * Check invoice recipent validity. We want invoice for us or from company
      * IDs in wantlist
-     * 
+     *
      * @param FakturaPrijata $invoice
-     * 
+     *
      * @return boolean
      */
     public function isForMe(FakturaPrijata $invoice)
@@ -398,14 +433,18 @@ class Importer extends FakturaPrijata
                 $invoice = $this->xmlDomToInvoice();
                 $invoice->setDataValue('id', 'ext:' . $this->source . ':' . md5_file($renamed));
                 if ($this->isForMe($invoice) === false) {
-                    $invoice->addStatusMessage(sprintf(_('Invoice for somebody else %s - skipping'),
-                                    $invoice->getDataValue('cisDosle') . ' ' . str_replace('in:', 'ico:', $invoice->getDataValue('firma'))), 'info');
+                    $invoice->addStatusMessage(sprintf(
+                        _('Invoice for somebody else %s - skipping'),
+                        $invoice->getDataValue('cisDosle') . ' ' . str_replace('in:', 'ico:', $invoice->getDataValue('firma'))
+                    ), 'info');
                     continue;
                 }
 
                 if ($this->isKnownInvoice($invoice)) {
-                    $invoice->addStatusMessage(sprintf(_('Already known invoice %s - skipping'),
-                                    $invoice->getMyKey()), 'warning');
+                    $invoice->addStatusMessage(sprintf(
+                        _('Already known invoice %s - skipping'),
+                        $invoice->getMyKey()
+                    ), 'warning');
                     continue;
                 }
 
@@ -432,14 +471,16 @@ class Importer extends FakturaPrijata
                 $path_parts = pathinfo($inputFilePath);
                 $unzippedDir = $path_parts['dirname'] . '/' . $path_parts['basename'] . 'unzipped';
                 if (file_exists($unzippedDir . '/manifest.xml')) {
-
                     $d = dir($unzippedDir);
                     while (false !== ($attachment = $d->read())) {
                         if (($attachment != 'manifest.xml') && !is_dir($unzippedDir . '/' . $attachment)) {
                             $attached = Priloha::addAttachmentFromFile($invoice, $unzippedDir . '/' . $attachment);
                             if ($attached->getRecordIdent()) {
-                                $this->addStatusMessage(sprintf(_('%s version of invoice %s attached'),
-                                                $attachment, $invoice->getRecordCode()), 'success');
+                                $this->addStatusMessage(sprintf(
+                                    _('%s version of invoice %s attached'),
+                                    $attachment,
+                                    $invoice->getRecordCode()
+                                ), 'success');
                             }
                         }
                     }
@@ -454,9 +495,9 @@ class Importer extends FakturaPrijata
     }
 
     /**
-     * 
+     *
      * @param string $unitCode
-     * 
+     *
      * @return boolean Measure Unit presence status
      */
     public function handleMeasureUnit($unitCode)
@@ -469,7 +510,7 @@ class Importer extends FakturaPrijata
      * Add item to PriceList
      *
      * @param Cenik $pricelist
-     * 
+     *
      * @return SkladovaKarta
      */
     public function addItemToStorage($pricelist, $count = 1)
@@ -492,41 +533,61 @@ class Importer extends FakturaPrijata
     public function cleanUp($invoiceFiles)
     {
         foreach ($invoiceFiles as $invoiceID => $invoiceExtID) {
-
             $fileToDelete = $this->invoiceFiles[$invoiceExtID];
             if (unlink($fileToDelete)) {
-                $this->addStatusMessage(sprintf('Invoice %s file %s deleted',
-                                $invoiceExtID, $this->invoiceFiles[$invoiceExtID]));
+                $this->addStatusMessage(sprintf(
+                    'Invoice %s file %s deleted',
+                    $invoiceExtID,
+                    $this->invoiceFiles[$invoiceExtID]
+                ));
             } else {
-                $this->addStatusMessage(sprintf('Invoice %s file %s delete failed',
-                                $invoiceExtID, $this->invoiceFiles[$invoiceExtID]),
-                        'warning');
+                $this->addStatusMessage(
+                    sprintf(
+                        'Invoice %s file %s delete failed',
+                        $invoiceExtID,
+                        $this->invoiceFiles[$invoiceExtID]
+                    ),
+                    'warning'
+                );
             }
 
             $dirToDelete = dirname($fileToDelete);
-            $pdfToDelete = $dirToDelete . '/' . str_replace('.isdoc', '.pdf',
-                            basename($fileToDelete));
+            $pdfToDelete = $dirToDelete . '/' . str_replace(
+                '.isdoc',
+                '.pdf',
+                basename($fileToDelete)
+            );
             if (file_exists($pdfToDelete)) {
                 if (unlink($pdfToDelete)) {
-                    $this->addStatusMessage(sprintf('Invoice %s file %s deleted',
-                                    $invoiceExtID, $pdfToDelete));
+                    $this->addStatusMessage(sprintf(
+                        'Invoice %s file %s deleted',
+                        $invoiceExtID,
+                        $pdfToDelete
+                    ));
                     rmdir($dirToDelete);
                 } else {
-                    $this->addStatusMessage(sprintf('Invoice %s file %s delete failed',
-                                    $invoiceExtID, $pdfToDelete), 'warning');
+                    $this->addStatusMessage(sprintf(
+                        'Invoice %s file %s delete failed',
+                        $invoiceExtID,
+                        $pdfToDelete
+                    ), 'warning');
                 }
             }
 
 
             if (isset($this->invoiceFiles[$invoiceExtID . 'x'])) {
                 if (unlink($this->invoiceFiles[$invoiceExtID . 'x'])) {
-                    $this->addStatusMessage(sprintf('Original Invoice %s file %s deleted',
-                                    $invoiceExtID,
-                                    $this->invoiceFiles[$invoiceExtID . 'x']));
+                    $this->addStatusMessage(sprintf(
+                        'Original Invoice %s file %s deleted',
+                        $invoiceExtID,
+                        $this->invoiceFiles[$invoiceExtID . 'x']
+                    ));
                 } else {
-                    $this->addStatusMessage(sprintf('Original Invoice %s file %s delete failed',
-                                    $invoiceExtID,
-                                    $this->invoiceFiles[$invoiceExtID . 'x']), 'warning');
+                    $this->addStatusMessage(sprintf(
+                        'Original Invoice %s file %s delete failed',
+                        $invoiceExtID,
+                        $this->invoiceFiles[$invoiceExtID . 'x']
+                    ), 'warning');
                 }
             }
         }
@@ -536,7 +597,7 @@ class Importer extends FakturaPrijata
      * Query AbraFlexi priceList for given item name
      *
      * @param string $invoiceItemRaw Looking for
-     * 
+     *
      * @return boolean
      */
     public function abraFlexiPricelistPresence($invoiceItemRaw)
@@ -548,8 +609,10 @@ class Importer extends FakturaPrijata
         Functions::divDataArray($invoiceItemRaw, $invoiceItem, 'nazev');
         if (count($invoiceItem)) {
             foreach ($invoiceItem as $column => $value) {
-                $fbpl = $this->priceList->getColumnsFromAbraFlexi(['id'],
-                        [$column => $value]);
+                $fbpl = $this->priceList->getColumnsFromAbraFlexi(
+                    ['id'],
+                    [$column => $value]
+                );
                 if ($this->priceList->lastResponseCode == 200) {
                     if (!empty(current($fbpl))) {
                         $productKnown = true;
@@ -565,14 +628,17 @@ class Importer extends FakturaPrijata
      * Insert PriceList item to AbraFlexi
      *
      * @param array $invoiceItem
+     *
      * @return int item AbraFlexi ID
      */
     public function addItemToPriceList($invoiceItem)
     {
         $result = null;
         if (!isset($invoiceItem['stavMJ'])) {
-            $this->addStatusMessage('item ' . serialize($invoiceItem) . ' without count',
-                    'warning');
+            $this->addStatusMessage(
+                'item ' . serialize($invoiceItem) . ' without count',
+                'warning'
+            );
             $invoiceItem['stavMJ'] = 1;
         }
 
@@ -594,19 +660,27 @@ class Importer extends FakturaPrijata
         unset($invoiceItem['dan']);
         unset($invoiceItem['procentodane']);
         $this->priceList->dataReset();
-        $this->priceList->takeData(array_merge($this->newItemDefaults,
-                        $invoiceItem));
+        $this->priceList->takeData(array_merge(
+            $this->newItemDefaults,
+            $invoiceItem
+        ));
         $this->priceList->addArrayToBranch($providerInfo, 'dodavatele');
         $inserted = $this->priceList->insertToAbraFlexi();
         if ($this->priceList->lastResponseCode == 201) {
             $result = intval($inserted[0]['id']);
-            $this->priceList->addStatusMessage(sprintf(_('PriceList item %s as %s'),
-                            $invoiceItem['nazev'],
-                            $this->priceList->getRecordIdent() . ' ' . $inserted[0]['ref']),
-                    'success');
+            $this->priceList->addStatusMessage(
+                sprintf(
+                    _('PriceList item %s as %s'),
+                    $invoiceItem['nazev'],
+                    $this->priceList->getRecordIdent() . ' ' . $inserted[0]['ref']
+                ),
+                'success'
+            );
         } else {
-            $this->priceList->addStatusMessage(sprintf(_('PriceList item %s insertation failed'),
-                            $invoiceItem['nazev']), 'error');
+            $this->priceList->addStatusMessage(sprintf(
+                _('PriceList item %s insertation failed'),
+                $invoiceItem['nazev']
+            ), 'error');
         }
         return $result;
     }
@@ -626,14 +700,20 @@ class Importer extends FakturaPrijata
             $this->suplier->takeData($invoiceSuplier);
             $inserted = $this->suplier->insertToAbraFlexi();
             if ($this->suplier->lastResponseCode == 201) {
-                $this->suplier->addStatusMessage(sprintf(_('AddressBook item %s as %s'),
-                                $invoiceSuplier['nazev'],
-                                $this->suplier->url . $inserted[0]['ref']),
-                        'success');
+                $this->suplier->addStatusMessage(
+                    sprintf(
+                        _('AddressBook item %s as %s'),
+                        $invoiceSuplier['nazev'],
+                        $this->suplier->url . $inserted[0]['ref']
+                    ),
+                    'success'
+                );
                 $suplierID = intval($inserted[0]['id']);
             } else {
-                $this->suplier->addStatusMessage(sprintf(_('AddressBook item %s insertation failed'),
-                                $invoiceSuplier['nazev']), 'error');
+                $this->suplier->addStatusMessage(sprintf(
+                    _('AddressBook item %s insertation failed'),
+                    $invoiceSuplier['nazev']
+                ), 'error');
             }
         }
         return $suplierID;
@@ -643,7 +723,7 @@ class Importer extends FakturaPrijata
      * Obtain Payment info by Parsing ISDOC Dom
      *
      * @param DOMDocument $xmlDomDocument
-     * 
+     *
      * @return array
      */
     public function getPaymentMeans($xmlDomDocument)
@@ -655,14 +735,16 @@ class Importer extends FakturaPrijata
      * Obtain Suplier AbraFlexi AddressBook ID or NULL
      *
      * @param array $invoiceSuplier
-     * 
+     *
      * @return int Suplier AbraFlexi AddressBook ID
      */
     public function abraFlexiSuplierPresence($invoiceSuplier)
     {
         $suplierID = null;
-        $suplierFound = $this->suplier->getColumnsFromAbraFlexi(['id'],
-                ['ic' => $invoiceSuplier['ic']]);
+        $suplierFound = $this->suplier->getColumnsFromAbraFlexi(
+            ['id'],
+            ['ic' => $invoiceSuplier['ic']]
+        );
         if (array_key_exists(0, $suplierFound) && array_key_exists('id', $suplierFound[0])) {
             $suplierID = intval($suplierFound[0]['id']);
         }
@@ -674,7 +756,7 @@ class Importer extends FakturaPrijata
      * Parse ISDOC invoice DOMDocument to
      *
      * @param DOMDocument $xmlDomDocument
-     * 
+     *
      * @return array of \AbraFlexi\FakturaPrijata properties
      */
     public function getInvoiceInfo($xmlDomDocument)
@@ -710,7 +792,7 @@ class Importer extends FakturaPrijata
      * Convert Dom based invoice LegalMonetaryTotal Element to Array
      *
      * @param DOMNodeList $taxTotal
-     * 
+     *
      * @return array
      */
     public function domLMTotalToArray($taxTotal)
@@ -756,7 +838,7 @@ class Importer extends FakturaPrijata
      * Unpack isdocx file
      *
      * @param string $filename path to .isdocx
-     * 
+     *
      * @return string|boolean extracted .isdoc
      */
     public function unpackIsdocX($filename)
@@ -771,8 +853,10 @@ class Importer extends FakturaPrijata
             }
             while ($zip_entry = \zip_read($zip)) {
                 if (\zip_entry_open($zip, $zip_entry, "r")) {
-                    $buf = \zip_entry_read($zip_entry,
-                            \zip_entry_filesize($zip_entry));
+                    $buf = \zip_entry_read(
+                        $zip_entry,
+                        \zip_entry_filesize($zip_entry)
+                    );
                     $unpacked = $unpackTo . "/" . \zip_entry_name($zip_entry);
                     $fp = fopen($unpacked, "w+");
                     chmod($unpackTo . "/" . \zip_entry_name($zip_entry), 0777);
@@ -863,12 +947,16 @@ class Importer extends FakturaPrijata
 
         if (count($recountItems)) {
             $addPrice = $otherPrices / $storagePrices;
-            $this->addStatusMessage('Add ' . $addPrice . ' from [' . implode(', ',
-                            $recountItems) . '] to [' . implode(', ', $addPriceItems) . ']');
+            $this->addStatusMessage('Add ' . $addPrice . ' from [' . implode(
+                ', ',
+                $recountItems
+            ) . '] to [' . implode(', ', $addPriceItems) . ']');
             foreach ($invoiceItems as $itemID => $itemData) {
                 if (array_search($itemData['nazev'], $this->storageBlacklist) === false) {
-                    $invoiceItems[$itemID] = $this->addRecountedPrice($itemData,
-                            $addPrice);
+                    $invoiceItems[$itemID] = $this->addRecountedPrice(
+                        $itemData,
+                        $addPrice
+                    );
                 }
             }
         }
@@ -893,9 +981,9 @@ class Importer extends FakturaPrijata
 
     /**
      * Configuration value
-     * 
+     *
      * @param string $key
-     * 
+     *
      * @return string
      */
     public function conf($key)
@@ -904,7 +992,7 @@ class Importer extends FakturaPrijata
     }
 
     /**
-     * 
+     *
      * @return boolean
      */
     public function checkSetup()
@@ -935,9 +1023,9 @@ class Importer extends FakturaPrijata
 
     /**
      * Check given storage avilbility
-     * 
+     *
      * @param string $storage
-     * 
+     *
      * @return boolean
      */
     public function checkStorage($storage)
@@ -948,9 +1036,9 @@ class Importer extends FakturaPrijata
 
     /**
      * Check given bank account availbility
-     * 
+     *
      * @param string $bank
-     * 
+     *
      * @return boolean
      */
     public function checkBank($bank)

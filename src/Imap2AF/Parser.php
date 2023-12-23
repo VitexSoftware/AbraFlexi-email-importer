@@ -16,7 +16,6 @@ namespace AbraFlexi\Imap2AF;
  */
 class Parser extends \Ease\Sand
 {
-
     /**
      * XML Loader
      * @var \Lightools\Xml\XmlLoader
@@ -25,21 +24,22 @@ class Parser extends \Ease\Sand
 
     /**
      * XML Data as DOM
-     * @var \DOMDocument 
+     * @var \DOMDocument
      */
     protected $xmlDomDocument;
 
     /**
-     * 
+     *
      * @var array
      */
     private $invoiceFiles = [];
 
     /**
-     * 
-     * @param string filen to load
+     * ISDOC Parser
+     *
+     * @param string $init file to load
      */
-    public function __construct($init = null)
+    public function __construct($init = '')
     {
         $this->loader = new \Lightools\Xml\XmlLoader();
         if (!empty($init) && file_exists($init)) {
@@ -55,41 +55,61 @@ class Parser extends \Ease\Sand
     public function cleanUp($invoiceFiles)
     {
         foreach ($invoiceFiles as $invoiceID => $invoiceExtID) {
-
             $fileToDelete = $this->invoiceFiles[$invoiceExtID];
             if (unlink($fileToDelete)) {
-                $this->addStatusMessage(sprintf('Invoice %s file %s deleted',
-                                $invoiceExtID, $this->invoiceFiles[$invoiceExtID]));
+                $this->addStatusMessage(sprintf(
+                    'Invoice %s file %s deleted',
+                    $invoiceExtID,
+                    $this->invoiceFiles[$invoiceExtID]
+                ));
             } else {
-                $this->addStatusMessage(sprintf('Invoice %s file %s delete failed',
-                                $invoiceExtID, $this->invoiceFiles[$invoiceExtID]),
-                        'warning');
+                $this->addStatusMessage(
+                    sprintf(
+                        'Invoice %s file %s delete failed',
+                        $invoiceExtID,
+                        $this->invoiceFiles[$invoiceExtID]
+                    ),
+                    'warning'
+                );
             }
 
             $dirToDelete = dirname($fileToDelete);
-            $pdfToDelete = $dirToDelete . '/' . str_replace('.isdoc', '.pdf',
-                            basename($fileToDelete));
+            $pdfToDelete = $dirToDelete . '/' . str_replace(
+                '.isdoc',
+                '.pdf',
+                basename($fileToDelete)
+            );
             if (file_exists($pdfToDelete)) {
                 if (unlink($pdfToDelete)) {
-                    $this->addStatusMessage(sprintf('Invoice %s file %s deleted',
-                                    $invoiceExtID, $pdfToDelete));
+                    $this->addStatusMessage(sprintf(
+                        'Invoice %s file %s deleted',
+                        $invoiceExtID,
+                        $pdfToDelete
+                    ));
                     rmdir($dirToDelete);
                 } else {
-                    $this->addStatusMessage(sprintf('Invoice %s file %s delete failed',
-                                    $invoiceExtID, $pdfToDelete), 'warning');
+                    $this->addStatusMessage(sprintf(
+                        'Invoice %s file %s delete failed',
+                        $invoiceExtID,
+                        $pdfToDelete
+                    ), 'warning');
                 }
             }
 
 
             if (isset($this->invoiceFiles[$invoiceExtID . 'x'])) {
                 if (unlink($this->invoiceFiles[$invoiceExtID . 'x'])) {
-                    $this->addStatusMessage(sprintf('Original Invoice %s file %s deleted',
-                                    $invoiceExtID,
-                                    $this->invoiceFiles[$invoiceExtID . 'x']));
+                    $this->addStatusMessage(sprintf(
+                        'Original Invoice %s file %s deleted',
+                        $invoiceExtID,
+                        $this->invoiceFiles[$invoiceExtID . 'x']
+                    ));
                 } else {
-                    $this->addStatusMessage(sprintf('Original Invoice %s file %s delete failed',
-                                    $invoiceExtID,
-                                    $this->invoiceFiles[$invoiceExtID . 'x']), 'warning');
+                    $this->addStatusMessage(sprintf(
+                        'Original Invoice %s file %s delete failed',
+                        $invoiceExtID,
+                        $this->invoiceFiles[$invoiceExtID . 'x']
+                    ), 'warning');
                 }
             }
         }
@@ -99,7 +119,7 @@ class Parser extends \Ease\Sand
      * Convert DOM to Array
      *
      * @param \DOMNode $root
-     * 
+     *
      * @return array
      */
     public static function domToArray($root)
@@ -142,7 +162,7 @@ class Parser extends \Ease\Sand
      * Unpack isdocx file
      *
      * @param string $filename path to .isdocx
-     * 
+     *
      * @return string extracted .isdoc
      */
     public function unpackIsdocX($filename)
@@ -157,8 +177,10 @@ class Parser extends \Ease\Sand
             }
             while ($zip_entry = \zip_read($zip)) {
                 if (\zip_entry_open($zip, $zip_entry, "r")) {
-                    $buf = \zip_entry_read($zip_entry,
-                            \zip_entry_filesize($zip_entry));
+                    $buf = \zip_entry_read(
+                        $zip_entry,
+                        \zip_entry_filesize($zip_entry)
+                    );
                     $unpacked = $unpackTo . "/" . \zip_entry_name($zip_entry);
                     $fp = fopen($unpacked, "w+");
                     chmod($unpackTo . "/" . \zip_entry_name($zip_entry), 0777);
@@ -169,7 +191,7 @@ class Parser extends \Ease\Sand
                         $filename = $unpacked;
                     }
                 } else {
-                    return false;
+                    return '';
                 }
             }
             zip_close($zip);
@@ -181,20 +203,20 @@ class Parser extends \Ease\Sand
      * Load ISDOC or ISDOCx File
      *
      * @param string $inputFile real filename on disk
-     * 
+     *
      * @return boolean parsing status
      */
     public function loadFile($inputFile)
     {
         $this->addStatusMessage('loading: ' . $inputFile, 'debug');
-        return pathinfo($inputFile, PATHINFO_EXTENSION) == 'isdocx' ? $this->loadISDOCx($inputFile) : $this->loadISDOC($inputFile); //TODO: Check Mime  
+        return pathinfo($inputFile, PATHINFO_EXTENSION) == 'isdocx' ? $this->loadISDOCx($inputFile) : $this->loadISDOC($inputFile); //TODO: Check Mime
     }
 
     /**
      * Load ISDOCx File
      *
      * @param string $inputFile real filename on disk
-     * 
+     *
      * @return boolean parsing status
      */
     public function loadISDOCx($inputFile)
@@ -205,8 +227,8 @@ class Parser extends \Ease\Sand
     /**
      * Load ISDOC File
      *
-     * @param string $filrPath real filename on disk
-     * 
+     * @param string $filename real filename on disk
+     *
      * @return boolean parsing status
      */
     public function loadISDOC($filename)
@@ -217,7 +239,7 @@ class Parser extends \Ease\Sand
 
     /**
      * Current ISDOC as DOM object
-     * 
+     *
      * @return \DOMDocument
      */
     public function getXmlDomDocument()
