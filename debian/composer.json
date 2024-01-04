@@ -23,7 +23,7 @@
     },
     "autoload": {
         "psr-4": {
-            "AbraFlexi\\Imap2AF\\": "/usr/share/abraflexi-email-importer/Imap2AF/"
+            "AbraFlexi\\Imap2AF\\": "/usr/lib/abraflexi-email-importer/Imap2AF/"
         }
     },
     "repositories": [
