@@ -71,11 +71,17 @@
             "defval": "",
             "required": true
         },
-        "MULTIFLEXI_STORAGE": {
+        "ABRAFLEXI_STORAGE": {
             "type": "text",
             "description": "Default storage for new items",
             "defval": "SKLAD",
-            "required": 1
+            "required": 0
+        },
+        "ABRAFLEXI_DOCTYPE": {
+            "type": "text",
+            "description": "code of the type of invoices received",
+            "defval": "FAKTURA",
+            "required": 0
         }
     },
     "multiflexi": "1.9.2.240"
