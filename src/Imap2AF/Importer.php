@@ -12,7 +12,9 @@ namespace AbraFlexi\Imap2AF;
 use AbraFlexi\Adresar;
 use AbraFlexi\Cenik;
 use AbraFlexi\Company;
+use AbraFlexi\Exception;
 use AbraFlexi\FakturaPrijata;
+use AbraFlexi\Functions as AF;
 use AbraFlexi\Nastaveni;
 use AbraFlexi\Priloha;
 use AbraFlexi\RO;
@@ -121,13 +123,13 @@ class Importer extends FakturaPrijata
     {
         parent::__construct(null, $options);
         $this->source = $source;
-        $want = \Ease\Functions::cfg('ACCEPT_PROVIDER_IDS');
+        $want = Functions::cfg('ACCEPT_PROVIDER_IDS');
         if (empty($want) === false) {
             foreach (strstr($want, ',') ? explode(',', $want) : [$want] as $id) {
                 $this->wantList[$id] = true;
             }
         }
-        $donwant = \Ease\Functions::cfg('DENY_PROVIDER_IDS');
+        $donwant = Functions::cfg('DENY_PROVIDER_IDS');
         if (empty($donwant) === false) {
             foreach (strstr($donwant, ',') ? explode(',', $donwant) : [$donwant] as $id) {
                 $this->wantList[$id] = false;
@@ -170,8 +172,9 @@ class Importer extends FakturaPrijata
         $invoiceInfo['ic'] = $invoiceCustomer['ic'];
         $suplierAbraFlexiID = $this->getSuplierAbraFlexiID($invoiceSuplier);
         $invoice = new FakturaPrijata($invoiceInfo);
+        $invoice->setDataValue('typDokl', AF::code($this->conf('ABRAFLEXI_DOCTYPE')));
         $invoice->setDataValue('datSplat', $paymentMeans['datSplat']);
-        $invoice->setDataValue('banka', $this->conf('ABRAFLEXI_BANK') ? RO::code($this->conf('ABRAFLEXI_BANK')) : null);
+        $invoice->setDataValue('banka', $this->conf('ABRAFLEXI_BANK') ? AF::code($this->conf('ABRAFLEXI_BANK')) : null);
         $checker = new Adresar();
         if ($checker->recordExists(['ic' => $invoiceSuplier['ic']])) {
             $invoice->setDataValue('firma', 'in:' . $invoiceSuplier['ic']);
@@ -181,7 +184,7 @@ class Importer extends FakturaPrijata
             $invoiceItem['dodavatel'] = $suplierAbraFlexiID;
             $invoiceItem['origin'] = $invoice->getDataValue('cisDosle');
             if ($invoiceItem['typPolozkyK'] == 'typPolozky.katalog') {
-                $invoiceItem['sklad'] = $this->conf('ABRAFLEXI_STORAGE') ? RO::code($this->conf('ABRAFLEXI_STORAGE')) : null;
+                $invoiceItem['sklad'] = $this->conf('ABRAFLEXI_STORAGE') ? AF::code($this->conf('ABRAFLEXI_STORAGE')) : null;
             }
             $invoice->addArrayToBranch($invoiceItem, 'polozkyFaktury');
         }
@@ -228,10 +231,10 @@ class Importer extends FakturaPrijata
             $itemArray['typSzbDphK'] = $this->taxes[intval($itemArrayRaw['ClassifiedTaxCategory']['Percent'])];
             if (isset($this->configuration['invoiceRoundingDefaults']) && isset($this->configuration['roundingList'])) {
                 if (
-                    array_search(
-                        $itemArray['nazev'],
-                        $this->configuration['roundingList']
-                    ) !== false
+                        array_search(
+                            $itemArray['nazev'],
+                            $this->configuration['roundingList']
+                        ) !== false
                 ) {
                     $this->addStatusMessage(sprintf(
                         _('Rouding item %s found. Defaults used'),
@@ -265,19 +268,19 @@ class Importer extends FakturaPrijata
 
 
         if (
-            array_key_exists(
-                'CatalogueItemIdentification',
-                $itemArrayRaw['Item']
-            )
+                array_key_exists(
+                    'CatalogueItemIdentification',
+                    $itemArrayRaw['Item']
+                )
         ) {
             if (
-                array_key_exists(
-                    'ID',
-                    $itemArrayRaw['Item']['CatalogueItemIdentification']
-                ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search(
-                    $itemArray['nazev'],
-                    $this->storageBlacklist
-                ) == false)
+                    array_key_exists(
+                        'ID',
+                        $itemArrayRaw['Item']['CatalogueItemIdentification']
+                    ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search(
+                        $itemArray['nazev'],
+                        $this->storageBlacklist
+                    ) == false)
             ) {
                 $itemArray['typPolozkyK'] = 'typPolozky.katalog';
                 if (!empty($itemArrayRaw['Item']['CatalogueItemIdentification']['ID'])) {
@@ -288,21 +291,21 @@ class Importer extends FakturaPrijata
 
         if (array_key_exists('SellersItemIdentification', $itemArrayRaw['Item'])) {
             if (
-                array_key_exists(
-                    'ID',
-                    $itemArrayRaw['Item']['SellersItemIdentification']
-                ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search(
-                    $itemArray['nazev'],
-                    $this->storageBlacklist
-                ) == false)
+                    array_key_exists(
+                        'ID',
+                        $itemArrayRaw['Item']['SellersItemIdentification']
+                    ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search(
+                        $itemArray['nazev'],
+                        $this->storageBlacklist
+                    ) == false)
             ) {
                 $itemArray['typPolozkyK'] = 'typPolozky.katalog';
             }
             if (
-                array_key_exists(
-                    'SellersItemIdentification',
-                    $itemArrayRaw['Item']
-                ) && !empty($itemArrayRaw['Item']['SellersItemIdentification']['ID'])
+                    array_key_exists(
+                        'SellersItemIdentification',
+                        $itemArrayRaw['Item']
+                    ) && !empty($itemArrayRaw['Item']['SellersItemIdentification']['ID'])
             ) {
                 $itemArray['kratkyPopis'] = $itemArrayRaw['Item']['SellersItemIdentification']['ID'];
             }
@@ -502,8 +505,8 @@ class Importer extends FakturaPrijata
      */
     public function handleMeasureUnit($unitCode)
     {
-        $checker = new RW(RO::code($unitCode), ['evidence' => 'merna-jednotka', 'ignore404' => true]);
-        return ($checker->lastResponseCode == 404) ? $checker->sync(['id' => RO::code($unitCode), 'nazev' => mb_strtolower($unitCode), 'poznam' => _('imported from invoice by mail')]) : true;
+        $checker = new RW(AF::code($unitCode), ['evidence' => 'merna-jednotka', 'ignore404' => true]);
+        return ($checker->lastResponseCode == 404) ? $checker->sync(['id' => AF::code($unitCode), 'nazev' => mb_strtolower($unitCode), 'poznam' => _('imported from invoice by mail')]) : true;
     }
 
     /**
@@ -629,7 +632,7 @@ class Importer extends FakturaPrijata
      *
      * @param array $invoiceItem
      *
-     * @return int item AbraFlexi ID
+     * @return int|null item AbraFlexi ID
      */
     public function addItemToPriceList($invoiceItem)
     {
@@ -828,7 +831,7 @@ class Importer extends FakturaPrijata
         $conditions['cisDosle'] = $invoice->getDataValue('cisDosle');
         try {
             $found = $invoice->getFlexiData('', $conditions);
-        } catch (\AbraFlexi\Exception $exc) {
+        } catch (Exception $exc) {
             $this->addStatusMessage($exc->getMessage(), 'error');
         }
         return ($invoice->lastResponseCode == 200) && !empty($found);
@@ -1002,7 +1005,7 @@ class Importer extends FakturaPrijata
         if (empty($bank)) {
             $this->addStatusMessage(_('Default bank account is not set'), 'warning');
         } else {
-            $bankStatus = $this->checkBank(RO::code($bank));
+            $bankStatus = $this->checkBank(AF::code($bank));
             if ($bankStatus === false) {
                 $this->addStatusMessage(sprintf(_('Default bank %s not exists'), $bank), 'error');
             }
@@ -1012,7 +1015,7 @@ class Importer extends FakturaPrijata
         if (empty($storage)) {
             $this->addStatusMessage(_('Default storage is not set'), 'warning');
         } else {
-            $storageStatus = $this->checkStorage(RO::code($storage));
+            $storageStatus = $this->checkStorage(AF::code($storage));
             if ($storageStatus === false) {
                 $this->addStatusMessage(sprintf(_('Default storage %s not exists'), $storage), 'warning');
             }
