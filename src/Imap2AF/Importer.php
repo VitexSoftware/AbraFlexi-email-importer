@@ -739,7 +739,7 @@ class Importer extends FakturaPrijata
      *
      * @param array $invoiceSuplier
      *
-     * @return int Suplier AbraFlexi AddressBook ID
+     * @return int|null Suplier AbraFlexi AddressBook ID
      */
     public function abraFlexiSuplierPresence($invoiceSuplier)
     {
@@ -820,10 +820,11 @@ class Importer extends FakturaPrijata
         return $lmTotalArray;
     }
 
-    /**
+    /**e
      * Check for Invoice Presence in AbraFlexi
      *
      * @param FakturaPrijata $invoice
+     *
      * @return boolean TRUE for known invoice; FALSE for unknown invoice
      */
     public function isKnownInvoice($invoice)
