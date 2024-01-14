@@ -81,7 +81,7 @@
             "type": "text",
             "description": "code of the type of invoices received",
             "defval": "FAKTURA",
-            "required": 0
+            "required": 1
         }
     },
     "multiflexi": "1.9.2.240"
