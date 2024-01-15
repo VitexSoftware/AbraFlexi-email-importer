@@ -41,6 +41,7 @@ class Parser extends \Ease\Sand
      */
     public function __construct($init = '')
     {
+        $this->setObjectName();
         $this->loader = new \Lightools\Xml\XmlLoader();
         if (!empty($init) && file_exists($init)) {
             $this->loadFile($init);
@@ -165,38 +166,31 @@ class Parser extends \Ease\Sand
      *
      * @return string extracted .isdoc
      */
-    public function unpackIsdocX($filename)
+    public function unpackIsdocX(string $filename)
     {
+        $unpackto = '';
         $dir = sys_get_temp_dir() . '/';
-        $zip = \zip_open($filename);
-        if ($zip) {
-            $unpackTo = $dir . basename($filename) . 'unzipped';
+        $zip = new \ZipArchive();
+        if ($zip->open($filename) === true) {
+            $unpackTo = $dir . basename($filename) . 'unzipped/';
             if (!file_exists($unpackTo)) {
                 mkdir($unpackTo);
                 chmod($unpackTo, 0777);
             }
-            while ($zip_entry = \zip_read($zip)) {
-                if (\zip_entry_open($zip, $zip_entry, "r")) {
-                    $buf = \zip_entry_read(
-                        $zip_entry,
-                        \zip_entry_filesize($zip_entry)
-                    );
-                    $unpacked = $unpackTo . "/" . \zip_entry_name($zip_entry);
-                    $fp = fopen($unpacked, "w+");
-                    chmod($unpackTo . "/" . \zip_entry_name($zip_entry), 0777);
-                    fwrite($fp, $buf);
-                    fclose($fp);
-                    \zip_entry_close($zip_entry);
-                    if (substr($unpacked, -6) == '.isdoc') {
-                        $filename = $unpacked;
-                    }
-                } else {
-                    return '';
+            $zip->extractTo($unpackTo);
+
+            for ($i = 0; $i < $zip->numFiles; $i++) {
+                $unpacked = $zip->getNameIndex($i);
+                if (substr($unpacked, -6) == '.isdoc') {
+                    $filename = $unpacked;
                 }
             }
-            zip_close($zip);
+
+            $zip->close();
+        } else {
+            $this->addStatusMessage(_('Error unpacking archive') . ': ' . $filename, 'error');
         }
-        return $filename;
+        return $unpackTo . $filename;
     }
 
     /**

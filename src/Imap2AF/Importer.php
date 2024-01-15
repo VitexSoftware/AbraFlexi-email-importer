@@ -146,8 +146,8 @@ class Importer extends FakturaPrijata
     /**
      * Import mail messages from all or given senders
      *
-     * @param array $isdocs
-     * @param array $senders
+     * @param array $isdocs  list of Isdoc filenames and its downloaded files
+     * @param array $senders list of isdoc filenames and its senders
      */
     public function importIsdocFiles($isdocs, $senders)
     {
