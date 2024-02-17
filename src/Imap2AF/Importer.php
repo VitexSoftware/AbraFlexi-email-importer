@@ -389,7 +389,15 @@ class Importer extends FakturaPrijata
             $invoice->setDataValue('typDokl', $this->conf('FORCE_INCOMING_INVOICE_TYPE'));
         }
 
-        $invoiceInserted = $invoice->sync();
+        try {
+          $invoiceInserted = $invoice->sync();
+        } catch (\AbraFlexi\Exception $exc) {
+          if (strstr($exc->getMessage(), 'neexistuje') ===-1){
+            throw $exc;
+          }
+          
+        }
+
         if ($invoiceInserted) {
             $this->addStatusMessage(sprintf(
                 _('Invoice was inserted to AbraFlexi as %s'),
