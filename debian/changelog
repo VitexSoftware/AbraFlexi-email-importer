@@ -1,4 +1,4 @@
-abraflexi-email-importer (0.3.12) UNRELEASED; urgency=medium
+abraflexi-email-importer (1.0.0) UNRELEASED; urgency=medium
 
   [ CyberVitexus ]
   * Initial release.
@@ -7,5 +7,6 @@ abraflexi-email-importer (0.3.12) UNRELEASED; urgency=medium
 
   [ vitex ]
   * PHPStan used[C
+  * v1.0.0 release
 
- -- vitex <info@vitexsoftware.cz>  Tue, 14 Jun 2022 18:33:58 +0200
+ -- vitex <info@vitexsoftware.cz>  Sat, 17 Feb 2024 23:30:55 +0100

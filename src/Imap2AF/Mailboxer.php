@@ -4,7 +4,7 @@
  * Imap2AbraFlexi MailBox handler
  *
  * @author     Vítězslav Dvořák <info@vitexsofware.cz>
- * @copyright  (G) 2019-2020 Vitex Software
+ * @copyright  (G) 2019-2024 Vitex Software
  */
 
 namespace AbraFlexi\Imap2AF;
@@ -40,7 +40,18 @@ class Mailboxer extends Mailbox
     private $mport;
     private $mserver;
     private $mpassword;
+
+    /**
+     *
+     * @var string
+     */
     private $moptions = 'notls';
+
+    /**
+     *
+     * @var array
+     */
+    private $attachments = [];
 
     /**
      *
@@ -110,7 +121,7 @@ class Mailboxer extends Mailbox
         } catch (ConnectionException $ex) {
             throw new Exception("IMAP connection failed: " . $ex);
         }
-
+        $this->attachments = [];
         foreach ($mailsIds as $mailId) {
             $email = $this->getMail(
                 $mailId, // ID of the email, you want to get
@@ -121,6 +132,7 @@ class Mailboxer extends Mailbox
                 foreach ($email->getAttachments() as $attachmentRaw) {
                     if (strstr(strtolower($attachmentRaw->name), '.isdoc')) {
                         $isdocs[$attachmentRaw->name] = $attachmentRaw;
+                        $this->attachments[$attachmentRaw->name] = $mailId;
                         $this->senders[$attachmentRaw->name] = property_exists($email->headers, 'replay_to') ? $email->headers->reply_to[0]->mailbox . '@' . $email->headers->reply_to[0]->host : $email->headers->from[0]->mailbox . '@' . $email->headers->from[0]->host;
                         $this->addStatusMessage(sprintf(_('Isdoc File %s Found in mail from %s '), $attachmentRaw->name, $this->senders[$attachmentRaw->name]));
                     }
@@ -128,6 +140,18 @@ class Mailboxer extends Mailbox
             }
         }
         return $isdocs;
+    }
+
+    /**
+     * Obtain number of mail which is attachment source
+     *
+     * @param string $attachment
+     *
+     * @return int
+     */
+    public function attachmentMailId($attachment)
+    {
+        return $this->attachments[$attachment];
     }
 
     /**
@@ -142,5 +166,18 @@ class Mailboxer extends Mailbox
             $saved[$filename] = $attachment->saveToDisk() ? $attachment->filePath : false;
         }
         return $saved;
+    }
+
+    /**
+     * Move mail to another folder
+     *
+     * @param string $folder name of new folder
+     */
+    public function createFolder($folderName)
+    {
+        if (!imap_createmailbox($this->getImapStream(), imap_utf7_encode($this->imapPath . $folderName))) {
+            throw new Exception('Cannot create mailbox: ' . imap_last_error());
+        }
+        return true;
     }
 }

@@ -4,7 +4,7 @@
  * Imap2AbraFlexi Import
  *
  * @author     Vítězslav Dvořák <info@vitexsofware.cz>
- * @copyright  (G) 2019-2020 Vitex Software
+ * @copyright  (G) 2019-2024 Vitex Software
  */
 
 namespace AbraFlexi\Imap2AF;
@@ -25,6 +25,7 @@ use DOMDocument;
 use DOMElement;
 use DOMNodeList;
 use Ease\Functions;
+use Ease\Shared;
 use Lightools\Xml\XmlLoader;
 
 /**
@@ -44,8 +45,7 @@ class Importer extends FakturaPrijata
      * Items to skip
      * @var array
      */
-    public $storageBlacklist = ['Zaokrouhlení dokladu', 'Balné', 'Zaokrouhleno',
-        'Autorská odměna'];
+    public $storageBlacklist = [];
 
     /**
      * AbraFlexi pricelist Object
@@ -121,15 +121,16 @@ class Importer extends FakturaPrijata
      */
     public function __construct($source, $options = array())
     {
+        $this->storageBlacklist = [_('Document rounding'), _('Package'), _('Rounding'), _('Author\'s fee')];
         parent::__construct(null, $options);
         $this->source = $source;
-        $want = Functions::cfg('ACCEPT_PROVIDER_IDS');
+        $want = Shared::cfg('ACCEPT_PROVIDER_IDS');
         if (empty($want) === false) {
             foreach (strstr($want, ',') ? explode(',', $want) : [$want] as $id) {
                 $this->wantList[$id] = true;
             }
         }
-        $donwant = Functions::cfg('DENY_PROVIDER_IDS');
+        $donwant = Shared::cfg('DENY_PROVIDER_IDS');
         if (empty($donwant) === false) {
             foreach (strstr($donwant, ',') ? explode(',', $donwant) : [$donwant] as $id) {
                 $this->wantList[$id] = false;
@@ -343,10 +344,7 @@ class Importer extends FakturaPrijata
             if ($this->abraFlexiPricelistPresence($invoiceItem)) {
                 $pricelistId = $this->priceList->lastResult['cenik'][0]['id'];
                 $pricelistIDs[$invoiceItemID] = $pricelistId;
-                $this->addStatusMessage(sprintf(
-                    _('Allready known item %s'),
-                    $invoiceItem['nazev']
-                ));
+                $this->addStatusMessage(sprintf(_('Already known item %s'), $invoiceItem['nazev']));
             } else {
                 unset($invoiceItem['sklad']); //FIXME: choose storage properly
 
@@ -444,13 +442,9 @@ class Importer extends FakturaPrijata
                 }
 
                 if ($this->isKnownInvoice($invoice)) {
-                    $invoice->addStatusMessage(sprintf(
-                        _('Already known invoice %s - skipping'),
-                        $invoice->getMyKey()
-                    ), 'warning');
+                    $this->alreadyKnownInvoice($invoice, $inputFile);
                     continue;
                 }
-
 
                 $invoiceItems = $invoice->getSubItems();
                 if (!empty($invoiceItems)) {
@@ -469,6 +463,7 @@ class Importer extends FakturaPrijata
                 } else {
                     $this->addStatusMessage(_('No items to process loaded'), 'warning');
                 }
+                $invoiceFiles = [$renamed];
                 $invoice->unsetDataValue('sklad');
                 $invoicesImported = $this->importInvoice($invoice);
                 $path_parts = pathinfo($inputFilePath);
@@ -477,6 +472,7 @@ class Importer extends FakturaPrijata
                     $d = dir($unzippedDir);
                     while (false !== ($attachment = $d->read())) {
                         if (($attachment != 'manifest.xml') && !is_dir($unzippedDir . '/' . $attachment)) {
+                            $invoiceFiles[] = $unzippedDir . '/' . $attachment;
                             $attached = Priloha::addAttachmentFromFile($invoice, $unzippedDir . '/' . $attachment);
                             if ($attached->getRecordIdent()) {
                                 $this->addStatusMessage(sprintf(
@@ -489,10 +485,8 @@ class Importer extends FakturaPrijata
                     }
                     $d->close();
                 }
-
-                if (isset($this->configuration['cleanprocessed']) && ( $this->configuration['cleanprocessed'] != 'false')) {
-                    $this->cleanUp($invoicesImported);
-                }
+                $invoiceFiles[] = $unzippedDir . '/';
+                $this->cleanUp($invoiceFiles);
             }
         }
     }
@@ -535,63 +529,9 @@ class Importer extends FakturaPrijata
      */
     public function cleanUp($invoiceFiles)
     {
-        foreach ($invoiceFiles as $invoiceID => $invoiceExtID) {
-            $fileToDelete = $this->invoiceFiles[$invoiceExtID];
-            if (unlink($fileToDelete)) {
-                $this->addStatusMessage(sprintf(
-                    'Invoice %s file %s deleted',
-                    $invoiceExtID,
-                    $this->invoiceFiles[$invoiceExtID]
-                ));
-            } else {
-                $this->addStatusMessage(
-                    sprintf(
-                        'Invoice %s file %s delete failed',
-                        $invoiceExtID,
-                        $this->invoiceFiles[$invoiceExtID]
-                    ),
-                    'warning'
-                );
-            }
-
-            $dirToDelete = dirname($fileToDelete);
-            $pdfToDelete = $dirToDelete . '/' . str_replace(
-                '.isdoc',
-                '.pdf',
-                basename($fileToDelete)
-            );
-            if (file_exists($pdfToDelete)) {
-                if (unlink($pdfToDelete)) {
-                    $this->addStatusMessage(sprintf(
-                        'Invoice %s file %s deleted',
-                        $invoiceExtID,
-                        $pdfToDelete
-                    ));
-                    rmdir($dirToDelete);
-                } else {
-                    $this->addStatusMessage(sprintf(
-                        'Invoice %s file %s delete failed',
-                        $invoiceExtID,
-                        $pdfToDelete
-                    ), 'warning');
-                }
-            }
-
-
-            if (isset($this->invoiceFiles[$invoiceExtID . 'x'])) {
-                if (unlink($this->invoiceFiles[$invoiceExtID . 'x'])) {
-                    $this->addStatusMessage(sprintf(
-                        'Original Invoice %s file %s deleted',
-                        $invoiceExtID,
-                        $this->invoiceFiles[$invoiceExtID . 'x']
-                    ));
-                } else {
-                    $this->addStatusMessage(sprintf(
-                        'Original Invoice %s file %s delete failed',
-                        $invoiceExtID,
-                        $this->invoiceFiles[$invoiceExtID . 'x']
-                    ), 'warning');
-                }
+        foreach ($invoiceFiles as $fileToDelete) {
+            if (file_exists($fileToDelete)) {
+                unlink($fileToDelete);
             }
         }
     }
@@ -820,13 +760,14 @@ class Importer extends FakturaPrijata
         return $lmTotalArray;
     }
 
-    /**e
+    /*     * e
      * Check for Invoice Presence in AbraFlexi
      *
      * @param FakturaPrijata $invoice
      *
      * @return boolean TRUE for known invoice; FALSE for unknown invoice
      */
+
     public function isKnownInvoice($invoice)
     {
         $conditions['cisDosle'] = $invoice->getDataValue('cisDosle');
@@ -992,7 +933,7 @@ class Importer extends FakturaPrijata
      */
     public function conf($key)
     {
-        return array_key_exists($key, $this->configuration) ? $this->configuration[$key] : Functions::cfg($key);
+        return array_key_exists($key, $this->configuration) ? $this->configuration[$key] : Shared::cfg($key);
     }
 
     /**
@@ -1049,5 +990,24 @@ class Importer extends FakturaPrijata
     {
         $prober = new RO($bank, ['evidence' => 'bankovni-ucet', 'ignore404' => true]);
         return $prober->lastResponseCode == 200;
+    }
+
+    public function moveMessageToDoneFolder($inputFile)
+    {
+        $this->addStatusMessage(sprintf(_('Moving mail with %s'), $inputFile));
+    }
+
+    public function alreadyKnownInvoice($invoice, $inputFile)
+    {
+        $invoice->addStatusMessage(sprintf(_('Already known invoice %s - skipping'), $invoice->getMyKey()), 'warning');
+        if (array_key_exists($inputFile, $this->invoicesToImport)) {
+            if (file_exists($this->invoicesToImport[$inputFile])) {
+                unlink($this->invoicesToImport[$inputFile]);
+            }
+            $renamed = sys_get_temp_dir() . '/' . $inputFile;
+            if (file_exists($renamed)) {
+                unlink($renamed);
+            }
+        }
     }
 }

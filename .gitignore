@@ -16,3 +16,4 @@ imap2af.json
 /debian/multiflexi-abraflexi-email-importer.substvars
 /debian/multiflexi-abraflexi-email-importer/
 /debian/tmp/composer.json
+/.vscode/

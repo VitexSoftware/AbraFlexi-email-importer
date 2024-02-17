@@ -1,0 +1,255 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: AbraFlexi-email-importer\n"
+"POT-Creation-Date: 2024-02-18 00:06+0100\n"
+"PO-Revision-Date: 2024-02-18 00:06+0100\n"
+"Last-Translator: Vítězslav Dvořák <info@vitexsoftware.cz>\n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.2.2\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: ../..\n"
+"X-Poedit-SearchPath-0: ../src\n"
+"X-Poedit-SearchPathExcluded-0: ../vendor\n"
+
+#: ../src/Imap2AF/Convertor.php:107
+msgid "No customer data in invoice ?!?"
+msgstr "No customer data in invoice ?!?"
+
+#: ../src/Imap2AF/Convertor.php:341 ../src/Imap2AF/Importer.php:241
+#, php-format
+msgid "Rouding item %s found. Defaults used"
+msgstr "Rouding item %s found. Defaults used"
+
+#: ../src/Imap2AF/Importer.php:124
+msgid "Document rounding"
+msgstr "Document rounding"
+
+#: ../src/Imap2AF/Importer.php:124
+msgid "Package"
+msgstr "Package"
+
+#: ../src/Imap2AF/Importer.php:124
+msgid "Rounding"
+msgstr "Rounding"
+
+#: ../src/Imap2AF/Importer.php:124
+msgid "Author's fee"
+msgstr "Author's fee"
+
+#: ../src/Imap2AF/Importer.php:338
+#, php-format
+msgid "Blacklisted item %s import to pricelist skipped"
+msgstr "Blacklisted item %s import to pricelist skipped"
+
+#: ../src/Imap2AF/Importer.php:347
+#, php-format
+msgid "Already known item %s"
+msgstr "Already known item %s"
+
+#: ../src/Imap2AF/Importer.php:354
+#, php-format
+msgid "Item %s insert to AbraFlexi Pricelist failed"
+msgstr "Item %s insert to AbraFlexi Pricelist failed"
+
+#: ../src/Imap2AF/Importer.php:358
+#, php-format
+msgid "Item was added to AbraFlexi Pricelist as %s"
+msgstr "Item was added to AbraFlexi Pricelist as %s"
+
+#: ../src/Imap2AF/Importer.php:395
+#, php-format
+msgid "Invoice was inserted to AbraFlexi as %s"
+msgstr "Invoice was inserted to AbraFlexi as %s"
+
+#: ../src/Imap2AF/Importer.php:400
+#, php-format
+msgid "Invoice %s insert to AbraFlexi failed"
+msgstr "Invoice %s insert to AbraFlexi failed"
+
+#: ../src/Imap2AF/Importer.php:438
+#, php-format
+msgid "Invoice for somebody else %s - skipping"
+msgstr "Invoice for somebody else %s - skipping"
+
+#: ../src/Imap2AF/Importer.php:464
+msgid "No items to process loaded"
+msgstr "No items to process loaded"
+
+#: ../src/Imap2AF/Importer.php:479
+#, php-format
+msgid "%s version of invoice %s attached"
+msgstr "%s version of invoice %s attached"
+
+#: ../src/Imap2AF/Importer.php:503
+msgid "imported from invoice by mail"
+msgstr "imported from invoice by mail"
+
+#: ../src/Imap2AF/Importer.php:592
+msgid "Imported from invoice by email"
+msgstr "Imported from invoice by email"
+
+#: ../src/Imap2AF/Importer.php:616
+#, php-format
+msgid "PriceList item %s as %s"
+msgstr "PriceList item %s as %s"
+
+#: ../src/Imap2AF/Importer.php:624
+#, php-format
+msgid "PriceList item %s insertation failed"
+msgstr "PriceList item %s insertation failed"
+
+#: ../src/Imap2AF/Importer.php:642
+msgid "Imported from mail"
+msgstr "Imported from mail"
+
+#: ../src/Imap2AF/Importer.php:648
+#, php-format
+msgid "AddressBook item %s as %s"
+msgstr "AddressBook item %s as %s"
+
+#: ../src/Imap2AF/Importer.php:657
+#, php-format
+msgid "AddressBook item %s insertation failed"
+msgstr "AddressBook item %s insertation failed"
+
+#: ../src/Imap2AF/Importer.php:948
+msgid "Default bank account is not set"
+msgstr "Default bank account is not set"
+
+#: ../src/Imap2AF/Importer.php:952
+#, php-format
+msgid "Default bank %s not exists"
+msgstr "Default bank %s not exists"
+
+#: ../src/Imap2AF/Importer.php:958
+msgid "Default storage is not set"
+msgstr "Default storage is not set"
+
+#: ../src/Imap2AF/Importer.php:962
+#, php-format
+msgid "Default storage %s not exists"
+msgstr "Default storage %s not exists"
+
+#: ../src/Imap2AF/Importer.php:997
+#, php-format
+msgid "Moving mail with %s"
+msgstr "Moving mail with %s"
+
+#: ../src/Imap2AF/Importer.php:1002
+#, php-format
+msgid "Already known invoice %s - skipping"
+msgstr "Already known invoice %s - skipping"
+
+#: ../src/Imap2AF/MailImporter.php:41
+#, php-format
+msgid "New DONE_FOLDER folder %s created"
+msgstr "New DONE_FOLDER folder %s created"
+
+#: ../src/Imap2AF/Mailboxer.php:117
+msgid "Connecting to mailbox"
+msgstr "Connecting to mailbox"
+
+#: ../src/Imap2AF/Mailboxer.php:120
+msgid "messages found"
+msgstr "messages found"
+
+#: ../src/Imap2AF/Mailboxer.php:137
+#, php-format
+msgid "Isdoc File %s Found in mail from %s "
+msgstr "Isdoc File %s Found in mail from %s "
+
+#: ../src/Imap2AF/Parser.php:191
+msgid "Error unpacking archive"
+msgstr "Error unpacking archive"
+
+#~ msgid "Instance name cannot be empty"
+#~ msgstr "Instance name cannot be empty"
+
+#~ msgid "AbraFlexi API URL cannot be empty"
+#~ msgstr "AbraFlexi API URL cannot be empty"
+
+#~ msgid "User name cannot be empty"
+#~ msgstr "User name cannot be empty"
+
+#~ msgid "API User password cannot be empty"
+#~ msgstr "API User password cannot be empty"
+
+#~ msgid "Company code cannot be empty"
+#~ msgstr "Company code cannot be empty"
+
+#~ msgid "AbraFlexi API URL cannot end with slash"
+#~ msgstr "AbraFlexi API URL cannot end with slash"
+
+#~ msgid "Name is empty"
+#~ msgstr "Name is empty"
+
+#, php-format
+#~ msgid "Executable %s does not exist in search PATH"
+#~ msgstr "Executable %s does not exist in search PATH"
+
+#, php-format
+#~ msgid "Executable %s found as %s"
+#~ msgstr "Executable %s found as %s"
+
+#, php-format
+#~ msgid "label %s created"
+#~ msgstr "label %s created"
+
+#, php-format
+#~ msgid "Hook %s was registered"
+#~ msgstr "Hook %s was registered"
+
+#, php-format
+#~ msgid "Hook %s not registered"
+#~ msgstr "Hook %s not registered"
+
+#~ msgid "ChangesAPI was enabled"
+#~ msgstr "ChangesAPI was enabled"
+
+#~ msgid "ChangesAPI was disabled"
+#~ msgstr "ChangesAPI was disabled"
+
+#, php-format
+#~ msgid "Company with no ID"
+#~ msgstr "Company with no ID"
+
+#, php-format
+#~ msgid "Company created"
+#~ msgstr "Company created"
+
+#, php-format
+#~ msgid "Setting Environment %s to %s"
+#~ msgstr "Setting Environment %s to %s"
+
+#, php-format
+#~ msgid "New %s"
+#~ msgstr "New %s"
+
+#, php-format
+#~ msgid "Edit %s"
+#~ msgstr "Edit %s"
+
+#, php-format
+#~ msgid "Remove %s"
+#~ msgstr "Remove %s"
+
+#, php-format
+#~ msgid "Create new %s"
+#~ msgstr "Create new %s"
+
+#, php-format
+#~ msgid "Editing %s"
+#~ msgstr "Editing %s"
+
+#, php-format
+#~ msgid "Removing %s"
+#~ msgstr "Removing %s"
+
+#, php-format
+#~ msgid "Are you sure you wish to delete %%d row of %s ?"
+#~ msgstr "Are you sure you wish to delete %%d row of %s ?"

@@ -1,0 +1,1576 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: AbraFlexi-email-importer\n"
+"POT-Creation-Date: 2024-02-17 23:56+0100\n"
+"PO-Revision-Date: 2024-02-18 00:06+0100\n"
+"Last-Translator: Vítězslav Dvořák <info@vitexsoftware.cz>\n"
+"Language-Team: \n"
+"Language: cs_CZ\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Poedit 3.2.2\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: ../..\n"
+"X-Poedit-SearchPath-0: ../src\n"
+"X-Poedit-SearchPathExcluded-0: ../vendor\n"
+
+#: ../src/Imap2AF/Convertor.php:107
+msgid "No customer data in invoice ?!?"
+msgstr "Ve faktuře nejsou data uživatele ?!?"
+
+#: ../src/Imap2AF/Convertor.php:341 ../src/Imap2AF/Importer.php:241
+#, php-format
+msgid "Rouding item %s found. Defaults used"
+msgstr "Zaokroulovaná položka %s nalezena. Výchozí hodnoty užity"
+
+#: ../src/Imap2AF/Importer.php:124
+msgid "Document rounding"
+msgstr "Zaokrouhlení"
+
+#: ../src/Imap2AF/Importer.php:124
+msgid "Package"
+msgstr "Balné"
+
+#: ../src/Imap2AF/Importer.php:124
+msgid "Rounding"
+msgstr "Zaokrouhlení"
+
+#: ../src/Imap2AF/Importer.php:124
+msgid "Author's fee"
+msgstr "Autorský poplatek"
+
+#: ../src/Imap2AF/Importer.php:338
+#, php-format
+msgid "Blacklisted item %s import to pricelist skipped"
+msgstr "Vyjmenovaná položka %s přeskakuji import do ceníku"
+
+#: ../src/Imap2AF/Importer.php:347
+#, php-format
+msgid "Already known item %s"
+msgstr "Již známá položka %s"
+
+#: ../src/Imap2AF/Importer.php:354
+#, php-format
+msgid "Item %s insert to AbraFlexi Pricelist failed"
+msgstr "Nezdařilo se vkládní ceníkové položky %s do AbraFlexi"
+
+#: ../src/Imap2AF/Importer.php:358
+#, php-format
+msgid "Item was added to AbraFlexi Pricelist as %s"
+msgstr "Položka byla přidána do ceníku AbraFlexi jako %s"
+
+#: ../src/Imap2AF/Importer.php:395
+#, php-format
+msgid "Invoice was inserted to AbraFlexi as %s"
+msgstr "Invoice was inserted to AbraFlexi as %s"
+
+#: ../src/Imap2AF/Importer.php:400
+#, php-format
+msgid "Invoice %s insert to AbraFlexi failed"
+msgstr "Vládání faktury %s do AbraFlexi se nezdařilo"
+
+#: ../src/Imap2AF/Importer.php:438
+#, php-format
+msgid "Invoice for somebody else %s - skipping"
+msgstr "Faktura někoho jiného %s - přeskakuju"
+
+#: ../src/Imap2AF/Importer.php:464
+msgid "No items to process loaded"
+msgstr "Žádné položky ke zpracování nebyly nahrány"
+
+#: ../src/Imap2AF/Importer.php:479
+#, php-format
+msgid "%s version of invoice %s attached"
+msgstr "%s version faktury %s přiložena"
+
+#: ../src/Imap2AF/Importer.php:503
+msgid "imported from invoice by mail"
+msgstr "naimportováno z faktury z mailu"
+
+#: ../src/Imap2AF/Importer.php:592
+msgid "Imported from invoice by email"
+msgstr "Importováno z faktury z mailu"
+
+#: ../src/Imap2AF/Importer.php:616
+#, php-format
+msgid "PriceList item %s as %s"
+msgstr "Ceníková položka %s jako %s"
+
+#: ../src/Imap2AF/Importer.php:624
+#, php-format
+msgid "PriceList item %s insertation failed"
+msgstr "Chyba vkládání položky ceníku %s"
+
+#: ../src/Imap2AF/Importer.php:642
+msgid "Imported from mail"
+msgstr "Importováno z mailu"
+
+#: ../src/Imap2AF/Importer.php:648
+#, php-format
+msgid "AddressBook item %s as %s"
+msgstr "Položka adresáře %s jako %s"
+
+#: ../src/Imap2AF/Importer.php:657
+#, php-format
+msgid "AddressBook item %s insertation failed"
+msgstr "AddressBook item %s insertation failed"
+
+#: ../src/Imap2AF/Importer.php:948
+msgid "Default bank account is not set"
+msgstr "Výchozí bankovní účet nebyl nastaven"
+
+#: ../src/Imap2AF/Importer.php:952
+#, php-format
+msgid "Default bank %s not exists"
+msgstr "Výchozí banka %s neexistuje"
+
+#: ../src/Imap2AF/Importer.php:958
+msgid "Default storage is not set"
+msgstr "Výchozí sklad nebyl nastaven"
+
+#: ../src/Imap2AF/Importer.php:962
+#, php-format
+msgid "Default storage %s not exists"
+msgstr "Výchozí sklad %s neexistuje"
+
+#: ../src/Imap2AF/Importer.php:997
+#, php-format
+msgid "Moving mail with %s"
+msgstr "Moving mail with %s"
+
+#: ../src/Imap2AF/Importer.php:1002
+#, php-format
+msgid "Already known invoice %s - skipping"
+msgstr "Již známá %s - přeskakuji"
+
+#: ../src/Imap2AF/MailImporter.php:41
+#, php-format
+msgid "New DONE_FOLDER folder %s created"
+msgstr "Složka DONE_FOLDER %s byla vytvořena"
+
+#: ../src/Imap2AF/Mailboxer.php:117
+msgid "Connecting to mailbox"
+msgstr "Připojování k mailboxu"
+
+#: ../src/Imap2AF/Mailboxer.php:120
+msgid "messages found"
+msgstr "zpráva nalezena"
+
+#: ../src/Imap2AF/Mailboxer.php:137
+#, php-format
+msgid "Isdoc File %s Found in mail from %s "
+msgstr "Soubor Isdoc %s nalezen v mailu od %s "
+
+#: ../src/Imap2AF/Parser.php:191
+msgid "Error unpacking archive"
+msgstr "Chyba rozbalování archivu"
+
+#, php-format
+#~ msgid "label %s created"
+#~ msgstr "štítek %s byl vytvořen"
+
+#, php-format
+#~ msgid "Hook %s was registered"
+#~ msgstr "Hook %s byl registrován"
+
+#, php-format
+#~ msgid "Hook %s not registered"
+#~ msgstr "Hook %s nebyl registrován"
+
+#~ msgid "ChangesAPI was enabled"
+#~ msgstr "API Změn bylo povoleno"
+
+#~ msgid "ChangesAPI was disabled"
+#~ msgstr "API změn bylo zakázáno"
+
+#, php-format
+#~ msgid "Company with no ID"
+#~ msgstr "Společnost bez ID"
+
+#, php-format
+#~ msgid "Company created"
+#~ msgstr "Společnos byla vytvořena"
+
+#~ msgid "Token generated"
+#~ msgstr "Token byl vygenerován"
+
+#~ msgid "Account is disabled"
+#~ msgstr "Účet je zakázán"
+
+#~ msgid "invalid password"
+#~ msgstr "chybné heslo"
+
+#, php-format
+#~ msgid "user %s does not exist"
+#~ msgstr "uživatel %s neexistuje"
+
+#~ msgid "Name is empty"
+#~ msgstr "Jméno je prázdné"
+
+#, php-format
+#~ msgid "Make sure the executable %s exists"
+#~ msgstr "Ujistěte se, že příkaz %s existuje"
+
+#, php-format
+#~ msgid "Executable %s does not exist in search PATH %s"
+#~ msgstr "Příkaz %s není v prohledávané cestě %s"
+
+#, php-format
+#~ msgid "file %s is not executable"
+#~ msgstr "soubor %s není spustitelný"
+
+#, php-format
+#~ msgid "executable %s not found"
+#~ msgstr "spustitelný soubor %s nenalezen"
+
+#, php-format
+#~ msgid "consider: %s"
+#~ msgstr "zvažte: %s"
+
+#, php-format
+#~ msgid "Application removal %d %s"
+#~ msgstr "Odstranění aplikace %d %s"
+
+#, php-format
+#~ msgid "Unassigned from %d companys"
+#~ msgstr "Odebráno z %d společnosti"
+
+#, php-format
+#~ msgid "%s RunTemplate removal"
+#~ msgstr "%s Předloh běhu odstraněno"
+
+#, php-format
+#~ msgid "%d Config fields removed"
+#~ msgstr "%d konfiguračních polí odstraněno"
+
+#, php-format
+#~ msgid "%d Jobs removed"
+#~ msgstr "%d úloh odstraněno"
+
+#, php-format
+#~ msgid "Application %s was assigned to %s company"
+#~ msgstr "Aplikace %s byla přiřazeno ke společnosti %s"
+
+#, php-format
+#~ msgid "Application %s was unassigned from %s company"
+#~ msgstr "Aplkace %s byla odebrána ze společnosti %s"
+
+#~ msgid "Job ID"
+#~ msgstr "ID úlohy"
+
+#~ msgid "Application"
+#~ msgstr "Aplikace"
+
+#~ msgid "Exit Code"
+#~ msgstr "Kód při ukončení"
+
+#~ msgid "Standard Output"
+#~ msgstr "Standartní výstup"
+
+#~ msgid "Standard Error"
+#~ msgstr "Standartní chybový výstup"
+
+#~ msgid "Job start time"
+#~ msgstr "Čas spuštění úlohy"
+
+#~ msgid "Job Finish time"
+#~ msgstr "Čas ukončení úlohy"
+
+#~ msgid "Company"
+#~ msgstr "Společnost"
+
+#~ msgid "Launcher"
+#~ msgstr "Spouštěč"
+
+#, php-format
+#~ msgid "Setting Environment %s to %s"
+#~ msgstr "Nastavuji prostředí %s na %s"
+
+#~ msgid "ID"
+#~ msgstr "ID"
+
+#~ msgid "Subject"
+#~ msgstr "Předmět"
+
+#~ msgid "Status"
+#~ msgstr "Stav"
+
+#, php-format
+#~ msgid "New %s"
+#~ msgstr "Nový %s"
+
+#, php-format
+#~ msgid "Edit %s"
+#~ msgstr "Uprav %s"
+
+#, php-format
+#~ msgid "Remove %s"
+#~ msgstr "Odstranit %s"
+
+#, php-format
+#~ msgid "Create new %s"
+#~ msgstr "Vytvořit nový %s"
+
+#, php-format
+#~ msgid "Editing %s"
+#~ msgstr "Upravuji %s"
+
+#, php-format
+#~ msgid "Removing %s"
+#~ msgstr "Odstraňuji %s"
+
+#, php-format
+#~ msgid "Are you sure you wish to delete %%d row of %s ?"
+#~ msgstr "Opravdu chceš smazat %%d řádků z %s ?"
+
+#, php-format
+#~ msgid "Missing ColumnInfo name for %s/%s"
+#~ msgstr "Chybí informace o jménu pro %s/%s"
+
+#, php-format
+#~ msgid "Missing ColumnInfo type for %s/%s"
+#~ msgstr "Chybí informace o typu pro %s/%s"
+
+#~ msgid "Id"
+#~ msgstr "Id"
+
+#~ msgid "Updated"
+#~ msgstr "Aktualizováno"
+
+#~ msgid "Created"
+#~ msgstr "Vytvořeno"
+
+#, php-format
+#~ msgid "%s is not valid email"
+#~ msgstr "%s není platným emailem"
+
+#, php-format
+#~ msgid "A %s is required"
+#~ msgstr "%s je vyžadován"
+
+#, php-format
+#~ msgid "A %s is not unique"
+#~ msgstr "%s není jedinečný"
+
+#, php-format
+#~ msgid "Field Type is not set for %s "
+#~ msgstr "Typ políčka není nastaven pr  %s "
+
+#, php-format
+#~ msgid "Column \"%s\" of %s without type definition"
+#~ msgstr "Políčko \"%s\" z %s bez definice typu"
+
+#~ msgid "Yes"
+#~ msgstr "Ano"
+
+#~ msgid "No"
+#~ msgstr "Ne"
+
+#~ msgid "Dismis"
+#~ msgstr "Zrušit"
+
+#~ msgid "Perform initial setup"
+#~ msgstr "Vykonávám počáteční nastavení"
+
+#~ msgid "Setup command"
+#~ msgstr "Příkaz pro nastavení"
+
+#~ msgid "Message"
+#~ msgstr "Zpráva"
+
+#~ msgid "User"
+#~ msgstr "Uživatel"
+
+#~ msgid "Instance name cannot be empty"
+#~ msgstr "Jméno instance nemůže být prázdné"
+
+#~ msgid "Server API URL cannot be empty"
+#~ msgstr "Adresa URL API serveru nemůže být prázdné"
+
+#~ msgid "Pohoda Server API URL cannot contain port"
+#~ msgstr "API URL Serveru Pohody nemůže obsahovat port"
+
+#~ msgid "User name cannot be empty"
+#~ msgstr "Jméno uživatele nemůže být prázdné"
+
+#~ msgid "API User password cannot be empty"
+#~ msgstr "AbraFlexi API Heslo nemůže být prázdné"
+
+#~ msgid "Company code cannot be empty"
+#~ msgstr "Kód firmy nemůže být prázdný"
+
+#~ msgid "Server API URL cannot end with slash"
+#~ msgstr "Adresa API URL nemůže končit lomítkem"
+
+#~ msgid "Code"
+#~ msgstr "Kód"
+
+#~ msgid "Name"
+#~ msgstr "Jméno"
+
+#~ msgid "Show"
+#~ msgstr "Zobrazit"
+
+#~ msgid "State"
+#~ msgstr "Stav"
+
+#~ msgid "watching Changes"
+#~ msgstr "sledování změn"
+
+#~ msgid "Edit"
+#~ msgstr "Upravit"
+
+#~ msgid "Register"
+#~ msgstr "Registrovat"
+
+#~ msgid "Application name"
+#~ msgstr "Jméno aplikace"
+
+#~ msgid "Application Description"
+#~ msgstr "Popisek aplikace"
+
+#~ msgid "Path to binary"
+#~ msgstr "Cesta k binárce"
+
+#~ msgid "Setup Command"
+#~ msgstr "Příkaz pro nastavení"
+
+#~ msgid "Command used to setup new company for use with command"
+#~ msgstr "Příkaz použitý pro nastavení nové společnosti pro použití s příkazem"
+
+#~ msgid "Command arguments"
+#~ msgstr "Parametry příkazu"
+
+#~ msgid "you can use macros like {ABRAFLEXI_URL} or custom defined config fields."
+#~ msgstr "je možné použít makra jako {ABRAFLEXI_URL} nebo uživatelsky definovaná pole."
+
+#~ msgid "Application Icon"
+#~ msgstr "Ikona Aplikace"
+
+#~ msgid "Enabled"
+#~ msgstr "Povoleno"
+
+#~ msgid "Application Homepage"
+#~ msgstr "Domovská stránka aplikace"
+
+#~ msgid "Application deploy command"
+#~ msgstr "Příkaz pro instalaci aplikace"
+
+#~ msgid "Save"
+#~ msgstr "Ulož"
+
+#~ msgid "Disabled"
+#~ msgstr "Zakázáno"
+
+#~ msgid "Set"
+#~ msgstr "Nastavit"
+
+#~ msgid "Config fields"
+#~ msgstr "Pole nastavení"
+
+#~ msgid "Launch time"
+#~ msgstr "Čas spuštění"
+
+#~ msgid "Not launched yet"
+#~ msgstr "Zatím nespuštěno"
+
+#~ msgid "Timer"
+#~ msgstr "Časovač"
+
+#~ msgid "Download"
+#~ msgstr "Stahnout"
+
+#~ msgid "Launch now"
+#~ msgstr "Spustit okamžitě"
+
+#~ msgid "Launch"
+#~ msgstr "Spustit"
+
+#~ msgid "Job Config"
+#~ msgstr "Konfigurace úlohy"
+
+#~ msgid "Configure App Environment"
+#~ msgstr "Nastavení prostředí aplikace"
+
+#~ msgid "Job History"
+#~ msgstr "Historie úloh"
+
+#~ msgid "Last 10 jobs"
+#~ msgstr "Posledních 10 úloh"
+
+#, php-format
+#~ msgid "Updating availbility status of application %s to %s"
+#~ msgstr "Aktualizuji status aplikace %s na %s"
+
+#~ msgid "enabled"
+#~ msgstr "povoleno"
+
+#~ msgid "disabled"
+#~ msgstr "zakázáno"
+
+#~ msgid "Configure"
+#~ msgstr "Konfigurace"
+
+#~ msgid "Login"
+#~ msgstr "Login"
+
+#~ msgid "Password"
+#~ msgstr "Heslo"
+
+#~ msgid "Sign In"
+#~ msgstr "Přihlásit"
+
+#~ msgid "Password recovery"
+#~ msgstr "Obnova hesla"
+
+#~ msgid "choose Customer"
+#~ msgstr "zvolte zákazníka"
+
+#~ msgid "Customer"
+#~ msgstr "Zákazník"
+
+#~ msgid "choose Server"
+#~ msgstr "zvolte server"
+
+#~ msgid "Server"
+#~ msgstr "Server"
+
+#~ msgid "choose Company"
+#~ msgstr "zvolte společnost"
+
+#~ msgid "Save and back"
+#~ msgstr "Ulož a vrať se"
+
+#~ msgid "Save and next"
+#~ msgstr "Ulož a pokračuj"
+
+#~ msgid "Company name"
+#~ msgstr "Název společnosti"
+
+#~ msgid "Company selector"
+#~ msgstr "Volba společnosti"
+
+#~ msgid "firma_s_r_o_ or 30000"
+#~ msgstr "firma_s_r_o_ nebo 30000"
+
+#~ msgid "For AbraFlexi use lowercase and for Pohoda use mServer port number"
+#~ msgstr "Pro AbraFlexi použijte malá písmena a pro Pohodu číslo portu mServeru"
+
+#~ msgid "Organization ID"
+#~ msgstr "ID Organizace"
+
+#~ msgid "Send notification to"
+#~ msgstr "Zasílat upozornění na"
+
+#~ msgid "Choose server"
+#~ msgstr "Zvolte server"
+
+#~ msgid "Company Logo"
+#~ msgstr "Logo společnosti"
+
+#~ msgid "write permission"
+#~ msgstr "právo zápisu"
+
+#~ msgid "Setup performed"
+#~ msgstr "Prvotní nastavení provedeno"
+
+#~ msgid "WebHook established"
+#~ msgstr "Webhook nastaven"
+
+#~ msgid "none"
+#~ msgstr "nic"
+
+#~ msgid "New config field type"
+#~ msgstr "Typ nového konfiguračního políčka"
+
+#~ msgid "New config field Keyword"
+#~ msgstr "Klíčové slovo nového konfiguračního políčka"
+
+#~ msgid "Default value"
+#~ msgstr "Výchozí hodnota"
+
+#~ msgid "New config field description"
+#~ msgstr "Popisek nového konfiguračního pole"
+
+#~ msgid "Required"
+#~ msgstr "Vyžadováno"
+
+#~ msgid "Update"
+#~ msgstr "Aktualizovat"
+
+#~ msgid "Add"
+#~ msgstr "Přidat"
+
+#~ msgid "Text"
+#~ msgstr "Text"
+
+#~ msgid "Number"
+#~ msgstr "Číslo"
+
+#~ msgid "Date"
+#~ msgstr "Datum"
+
+#~ msgid "Email"
+#~ msgstr "Email"
+
+#~ msgid "Yes/No"
+#~ msgstr "Ano/Ne"
+
+#~ msgid "File upload"
+#~ msgstr "Nahrání souboru"
+
+#~ msgid "Requied"
+#~ msgstr "Requied"
+
+#~ msgid "Choose customer"
+#~ msgstr "Zvol zákazníka"
+
+#~ msgid "Reload"
+#~ msgstr "Obnovit"
+
+#~ msgid "Filter"
+#~ msgstr "Filtrovat"
+
+#~ msgid "All pages"
+#~ msgstr "Všechny stránky"
+
+#~ msgid "Apps"
+#~ msgstr "Appky"
+
+#~ msgid "Servers"
+#~ msgstr "Servery"
+
+#~ msgid "Customers"
+#~ msgstr "Zákazníci"
+
+#~ msgid "Companies"
+#~ msgstr "Společnosti"
+
+#~ msgid "Assigned"
+#~ msgstr "Přiřazeno"
+
+#~ msgid "AbraFlexi company code"
+#~ msgstr "Kód společnosti  AbraFlexi"
+
+#~ msgid "Confirm company Delete"
+#~ msgstr "Potvrzení smazání společnosti"
+
+#~ msgid "Keyword"
+#~ msgstr "Klíč"
+
+#~ msgid "Value"
+#~ msgstr "Hodonota"
+
+#~ msgid "Update Keyname"
+#~ msgstr "Aktualizace názvu klíče"
+
+#~ msgid "Update value"
+#~ msgstr "Aktualizace hodnoty"
+
+#~ msgid "New Config field"
+#~ msgstr "Nové konfigurační Pole"
+
+#~ msgid "Create New field here"
+#~ msgstr "Vytvořit zde nové pole"
+
+#~ msgid "New Config value"
+#~ msgstr "Nové konfigurační políčka"
+
+#~ msgid "Enter New field value here"
+#~ msgstr "Vložte zde honotu nového pole"
+
+#~ msgid "Add new field"
+#~ msgstr "Přidat nové pole"
+
+#, php-format
+#~ msgid "%s items"
+#~ msgstr "%s položek"
+
+#~ msgid "New Configuration Key"
+#~ msgstr "Nový konfigurační klíč"
+
+#~ msgid "New Configuration value"
+#~ msgstr "Nová konfigurační hodnota"
+
+#~ msgid "Save / Add"
+#~ msgstr "Uložit / Přidat"
+
+#~ msgid "From"
+#~ msgstr "Od"
+
+#~ msgid "To"
+#~ msgstr "Do"
+
+#~ msgid "Yearly"
+#~ msgstr "Ročně"
+
+#~ msgid "Monthly"
+#~ msgstr "Měsíčně"
+
+#~ msgid "Weekly"
+#~ msgstr "Týdně"
+
+#~ msgid "Daily"
+#~ msgstr "Denně"
+
+#~ msgid "Hourly"
+#~ msgstr "Hodinově"
+
+#~ msgid "Job Info"
+#~ msgstr "Info úlohy"
+
+#~ msgid "Exitcode"
+#~ msgstr "Kód při ukončení"
+
+#~ msgid "Scheduled"
+#~ msgstr "Naplánováno"
+
+#~ msgid "Begin"
+#~ msgstr "Začátek"
+
+#~ msgid "Not Yet Started"
+#~ msgstr "Zatím nespuštěno"
+
+#~ msgid "End"
+#~ msgstr "Konec"
+
+#~ msgid "Not Yet Ended"
+#~ msgstr "Zatím neukončeno"
+
+#~ msgid "Launched by"
+#~ msgstr "Kým spuštěno"
+
+#~ msgid "Job"
+#~ msgstr "Úloha"
+
+#~ msgid "Environment"
+#~ msgstr "Prostředí"
+
+#~ msgid "Save App Schedule"
+#~ msgstr "Uložit naplánování Aplikace"
+
+#~ msgid "Launch after"
+#~ msgstr "Spustit po"
+
+#~ msgid "No server registered yet. Please register one."
+#~ msgstr "Žádný server není zatím registrován. Zaregistrujte prosím nějaký."
+
+#~ msgid "No customer registered yet. Please register one."
+#~ msgstr "Žádný zákazník není zatím registrován. Zaregistrujte prosím nějaký."
+
+#~ msgid "No company registered yet. Please register one."
+#~ msgstr "Žádná společnost není zatím registrován. Zaregistrujte prosím nějaký."
+
+#~ msgid "No application registered yet. Please register one."
+#~ msgstr "Žádná aplikace není zatím registrována. Zaregistrujte prosím nějakou."
+
+#~ msgid "Applications"
+#~ msgstr "Aplikace"
+
+#~ msgid "Logs"
+#~ msgstr "Logy"
+
+#~ msgid "System"
+#~ msgstr "System"
+
+#~ msgid "Jobs"
+#~ msgstr "Úlohy"
+
+#~ msgid "Sign Off"
+#~ msgstr "Odhlášení"
+
+#~ msgid "Register Application"
+#~ msgstr "Registruj Aplikaci"
+
+#~ msgid "Application list"
+#~ msgstr "Seznam aplikací"
+
+#~ msgid "Register new Server"
+#~ msgstr "Registrovant nový server"
+
+#~ msgid "Instance list"
+#~ msgstr "Seznam instancí"
+
+#~ msgid "New Company"
+#~ msgstr "Nová společnost"
+
+#~ msgid "Listing"
+#~ msgstr "Přehled"
+
+#~ msgid "New Customer"
+#~ msgstr "Nový uživatel"
+
+#~ msgid "Admin"
+#~ msgstr "Admin"
+
+#~ msgid "New Admin"
+#~ msgstr "Nový Admin"
+
+#~ msgid "Click to hide messages"
+#~ msgstr "Klikněte pro skrytí zpráv"
+
+#~ msgid "build"
+#~ msgstr "sestavení"
+
+#~ msgid "age"
+#~ msgstr "věk"
+
+#~ msgid "First Name"
+#~ msgstr "Jméno"
+
+#~ msgid "Lastname"
+#~ msgstr "Příjmení"
+
+#~ msgid "Server Type"
+#~ msgstr "Typ Serveru"
+
+#~ msgid "Server instance Name"
+#~ msgstr "Jméno instance Serveru"
+
+#~ msgid "RestAPI endpoint url"
+#~ msgstr "Koncový bod RestAPI"
+
+#~ msgid "REST API Username"
+#~ msgstr "Uživatelské jméno pro RestAPI"
+
+#~ msgid "Rest API Password"
+#~ msgstr "Heslo pro RestAPI"
+
+#~ msgid "No server specified"
+#~ msgstr "Sever nebyl určen"
+
+#~ msgid "Stormware Pohoda"
+#~ msgstr "Stormware Pohoda"
+
+#~ msgid "Firstname"
+#~ msgstr "Jméno"
+
+#~ msgid "Username"
+#~ msgstr "Uživatelské jméno"
+
+#~ msgid "missing login"
+#~ msgstr "chybějící přihlašovací jméno"
+
+#~ msgid "missing password"
+#~ msgstr "chybí heslo"
+
+#~ msgid "About"
+#~ msgstr "O Programu"
+
+#~ msgid "About Program"
+#~ msgstr "O Programu"
+
+#~ msgid "Vitex Software"
+#~ msgstr "Vitex Software"
+
+#~ msgid "Applications used by Company"
+#~ msgstr "Aplikace používané společnosti"
+
+#, php-format
+#~ msgid "Choose Applications to use with %s company"
+#~ msgstr "Zvolte aplikace k použití se společností %s"
+
+#~ msgid "(Un)Assign Applications"
+#~ msgstr "(Od) přiřadit aplikace"
+
+#~ msgid "Application Saved"
+#~ msgstr "Aplikace uložena"
+
+#~ msgid "Error saving Application"
+#~ msgstr "Chyba ukládání Aplikace"
+
+#~ msgid "New Application"
+#~ msgstr "Nová Aplikace"
+
+#~ msgid "Not yet"
+#~ msgstr "Zatím ne"
+
+#~ msgid "Config fields editor"
+#~ msgstr "Editor Konfiguračních položek"
+
+#~ msgid "Configuration"
+#~ msgstr "Konfigurace"
+
+#~ msgid "Application Log"
+#~ msgstr "Logy Aplikace"
+
+#~ msgid "All Application Jobs history"
+#~ msgstr "Historie úloh aplikace"
+
+#~ msgid "Export"
+#~ msgstr "Export"
+
+#~ msgid "Image"
+#~ msgstr "Obrázek"
+
+#~ msgid "Description"
+#~ msgstr "Popis"
+
+#~ msgid "Executable"
+#~ msgstr "Binárka"
+
+#~ msgid "Modified"
+#~ msgstr "Upraveno"
+
+#~ msgid "HomePage"
+#~ msgstr "Domovská stránka"
+
+#~ msgid "Requirements"
+#~ msgstr "Požadavky"
+
+#~ msgid "Icon"
+#~ msgstr "Ikona"
+
+#~ msgid "Command not found"
+#~ msgstr "Příkaz nenalezen"
+
+#~ msgid "Register new"
+#~ msgstr "Registrovant nový"
+
+#~ msgid "Launch in Background"
+#~ msgstr "Spustit na pozadí"
+
+#~ msgid "Schedule"
+#~ msgstr "Naplánovat"
+
+#~ msgid "Cancel"
+#~ msgstr "Zrušit"
+
+#~ msgid "Company setup"
+#~ msgstr "Nastavení společnosti"
+
+#~ msgid "Setup tasks"
+#~ msgstr "Nastavení úloh"
+
+#~ msgid "Application launcher"
+#~ msgstr "Spouštěč aplikace"
+
+#~ msgid "Periodical Tasks"
+#~ msgstr "Opakované úlohy"
+
+#~ msgid "Delete company"
+#~ msgstr "Smazat společnost"
+
+#~ msgid "job queue"
+#~ msgstr "fronta úloh"
+
+#~ msgid "Company Tasks"
+#~ msgstr "Úlohy společnosti"
+
+#~ msgid "Assigned applications"
+#~ msgstr "Přiřazené aplikace"
+
+#~ msgid "Company Deleted"
+#~ msgstr "Společnost byla smazána"
+
+#~ msgid "Error deleting Company"
+#~ msgstr "Chyba mazání společnosti"
+
+#~ msgid "Company list"
+#~ msgstr "Přehled společností"
+
+#~ msgid "Setup"
+#~ msgstr "Nastavení"
+
+#~ msgid "Tasks"
+#~ msgstr "Úlohy"
+
+#~ msgid "Delete"
+#~ msgstr "Smazat"
+
+#~ msgid "Company Saved"
+#~ msgstr "Společnost uložen"
+
+#~ msgid "Error saving Company"
+#~ msgstr "Chyba ukládání společnosti"
+
+#, php-format
+#~ msgid "%d used configurations removed"
+#~ msgstr "%d použitých konfigurací bylo odstraněno"
+
+#~ msgid "Configuration removed"
+#~ msgstr "Konfigurace odstraněna"
+
+#~ msgid "Config field Saved"
+#~ msgstr "Konfigurační položka uložena"
+
+#~ msgid "Error saving Config field"
+#~ msgstr "Chyba ukládání požky nastavení"
+
+#~ msgid "App custom configuration fields"
+#~ msgstr "Políčka uživatelské konfigurace aplikace"
+
+#~ msgid "Config Fields"
+#~ msgstr "Konfigurační pole"
+
+#~ msgid "Back to app"
+#~ msgstr "Zpět do apky"
+
+#~ msgid "No Administrator found"
+#~ msgstr "Administrátor nenalezen"
+
+#~ msgid "invalid mail address"
+#~ msgstr "neplatná mailová adresa"
+
+#, php-format
+#~ msgid "Mail address %s is already registered"
+#~ msgstr "Mailová adresa %s je již registrována"
+
+#~ msgid "password is too short"
+#~ msgstr "heslo je příliš krátké"
+
+#~ msgid "Password control does not match"
+#~ msgstr "Kontrola hesla nesouhlasí"
+
+#, php-format
+#~ msgid "Username %s is used. Please choose another one"
+#~ msgstr "Uživatelské jméno %s je již použito. Prosím zvolte jiné"
+
+#~ msgid "Admin account created"
+#~ msgstr "Účet administrátora vytvořen"
+
+#~ msgid "User account created"
+#~ msgstr "Úživatelský účet byl vytvořen"
+
+#~ msgid "Sign On info"
+#~ msgstr "Přihlašovací údaje"
+
+#, php-format
+#~ msgid "Your new %s account:"
+#~ msgstr "Tvůj nový účet %s:"
+
+#, php-format
+#~ msgid "New Sign On to %s: %s"
+#~ msgstr "Nové přihlášení k %s: %s"
+
+#~ msgid "New User"
+#~ msgstr "Nový uživatel"
+
+#~ msgid "Administrator create failed"
+#~ msgstr "Nepodařilo se vytvořit adminstrátora"
+
+#~ msgid "New Administrator"
+#~ msgstr "Nový Administrátor"
+
+#~ msgid "Singn On"
+#~ msgstr "Registrace"
+
+#~ msgid "User name"
+#~ msgstr "Uživatelské Jméno"
+
+#~ msgid "Password confirmation"
+#~ msgstr "Potvrzení hesla"
+
+#~ msgid "eMail address"
+#~ msgstr "emailová adresa"
+
+#~ msgid "finish registration"
+#~ msgstr "ukončit registraci"
+
+#~ msgid "Customer Saved"
+#~ msgstr "Zákazník uložen"
+
+#~ msgid "Error saving Customer"
+#~ msgstr "Chyba ukládání uživatele"
+
+#~ msgid "App custom config Fields"
+#~ msgstr "Uživatelská konfigurace aplikace"
+
+#~ msgid "Config fields Saved"
+#~ msgstr "Konfigurační položka uložena"
+
+#~ msgid "Error saving Config fields"
+#~ msgstr "Chyba ukládání konfiguračního políčka"
+
+#~ msgid "Multi Flexi"
+#~ msgstr "Multi Flexi"
+
+#~ msgid "There is no administrators in the database."
+#~ msgstr "V databázi není zatím žádný administrátor."
+
+#~ msgid "Create first Administrator Account"
+#~ msgstr "Nejprve vytvořte účet administrátora"
+
+#~ msgid "Archived Job Run"
+#~ msgstr "Archivované spuštění úlohy"
+
+#~ msgid "Output"
+#~ msgstr "Výstup"
+
+#~ msgid "Errors"
+#~ msgstr "Chyby"
+
+#~ msgid "Job history"
+#~ msgstr "Historie úloh"
+
+#~ msgid "Dismis All"
+#~ msgstr "Zrušit vśe"
+
+#~ msgid "App Run"
+#~ msgstr "Spuštění aplikace"
+
+#~ msgid "Welcome to Multi Flexi"
+#~ msgstr "Vítejte do MultiFlexi"
+
+#~ msgid "Sign in"
+#~ msgstr "Přihlásit"
+
+#~ msgid "the username you chose"
+#~ msgstr "vaše uživatelské jméno"
+
+#~ msgid "Lost password recovery"
+#~ msgstr "Obnova ztraceného hesla"
+
+#~ msgid "Good bye"
+#~ msgstr "Nashledanou"
+
+#~ msgid "Thank you for your patronage and look forward to another visit"
+#~ msgstr "Díky za váš zájem a těším se na další návštěvu"
+
+#~ msgid "Last 20 Jobs"
+#~ msgstr "Posledních 20 úloh"
+
+#~ msgid "Schedule Job run"
+#~ msgstr "Naplánování spuštění úlohy"
+
+#~ msgid "Job details"
+#~ msgstr "Podrobonosti úlohy"
+
+#~ msgid "Please enter your email."
+#~ msgstr "Prosím zadejte svůj email."
+
+#, php-format
+#~ msgid "unknow email address %s"
+#~ msgstr "neznámá mailová adresa %s"
+
+#, php-format
+#~ msgid "New password for %s"
+#~ msgstr "Nové heslo pro %s"
+
+#~ msgid "Sign On informations was changed"
+#~ msgstr "Přihlašovací údaje byly změněny"
+
+#, php-format
+#~ msgid "Your new password was sent to %s"
+#~ msgstr "Vaše nové heslo bylo odesláno na %s"
+
+#~ msgid "Tip"
+#~ msgstr "Tip"
+
+#~ msgid "Forgot your password? Enter your e-mail address you entered during the registration and we will send you a new one."
+#~ msgstr "Zapoměli jste heslo ? Vložte svojí e-mailovou adresu kterou jste zadali během registrace a my vám pošleme nové."
+
+#~ msgid "Password Recovery"
+#~ msgstr "Obnova hesla"
+
+#~ msgid "Sent New Password"
+#~ msgstr "Nastav nové heslo"
+
+#~ msgid "Continue"
+#~ msgstr "Pokračuj"
+
+#, php-format
+#~ msgid "Periodical tasks for %s company"
+#~ msgstr "Opakované úlohy pro společnost %s"
+
+#~ msgid "Schedule Job"
+#~ msgstr "Naplánovat úlohu"
+
+#~ msgid "app_id not specified"
+#~ msgstr "app_id není zadáno"
+
+#~ msgid "Job Canceled"
+#~ msgstr "Úloha zrušena"
+
+#~ msgid "Server instance Saved"
+#~ msgstr "Instance serveru uložena"
+
+#~ msgid "Error saving Server instance"
+#~ msgstr "Chyba ukládání instance serveru"
+
+#~ msgid "Server instance"
+#~ msgstr "Instance serveru"
+
+#~ msgid "New Server instance"
+#~ msgstr "Nová instance serveru"
+
+#~ msgid "Server list"
+#~ msgstr "Přehled serverů"
+
+#~ msgid "Type"
+#~ msgstr "Typ"
+
+#~ msgid "Url"
+#~ msgstr "Url"
+
+#~ msgid "Add company"
+#~ msgstr "Přidat společnost"
+
+#~ msgid "Server Instances"
+#~ msgstr "Instance serverů"
+
+#~ msgid "Checker"
+#~ msgstr "Zkoušeč"
+
+#~ msgid "Check AbraFlexi availbility"
+#~ msgstr "Kontrola dostupnosti AbraFlexi"
+
+#~ msgid "Reminder"
+#~ msgstr "Upomínač"
+
+#~ msgid "Remind unsettled invoices"
+#~ msgstr "Upomínač neuhrazených faktur"
+
+#~ msgid "Debts overview"
+#~ msgstr "Přehled pohledávek"
+
+#~ msgid "Gather unsettled invoices"
+#~ msgstr "Získá neuhrazené faktury"
+
+#~ msgid "Inventarize"
+#~ msgstr "Inventarizace Závazků"
+
+#~ msgid "Send inventarization"
+#~ msgstr "Zasílat inventarizaci"
+
+#~ msgid "Not even Invoice matcher"
+#~ msgstr "Ne pouze párovač faktur"
+
+#~ msgid "Recieved invoices Matcher"
+#~ msgstr "Párovač přijatých Faktur"
+
+#~ msgid "Match recieved invoices with outcoming payments"
+#~ msgstr "Páruj přijaté faktury s odchozími platbami"
+
+#~ msgid "Bank statements puller"
+#~ msgstr "Bank statements puller"
+
+#~ msgid "Pull bank statemetnts into AbraFlexi"
+#~ msgstr "Stahni bankovní výpisy do AbraFlexi"
+
+#~ msgid "Daily Digest"
+#~ msgstr "Dení přehled"
+
+#~ msgid "digest for your Accounting every day"
+#~ msgstr "každodení přehled vašeho účetnictví"
+
+#~ msgid "Weekly Digest"
+#~ msgstr "Týdení přehled"
+
+#~ msgid "digest for your Accounting every week"
+#~ msgstr "přehled vašeho účetnictví každý týden"
+
+#~ msgid "Monthly Digest"
+#~ msgstr "Měsíční přehled"
+
+#~ msgid "digest for your Accounting every month"
+#~ msgstr "měsíční přehled vašeho účetnictví"
+
+#~ msgid "Contract to Invoices"
+#~ msgstr "Smlouvy na Faktury"
+
+#~ msgid "Trigger AbraFlexi contracts to generate invoices"
+#~ msgstr "Spustí generování faktur ze smluv v AbraFlexi"
+
+#~ msgid "Email Sender"
+#~ msgstr "Odesílač pošty"
+
+#~ msgid "Send unsent documents with attachments"
+#~ msgstr "Odešli neodeslané dokumenty s přílohami"
+
+#~ msgid "Raiffeisen Bank Transaction puller"
+#~ msgstr "Stahovač bankovních výpisů z Raiffeisen banky"
+
+#~ msgid "AbraFlexi send"
+#~ msgstr "AbraFlexi odesílač"
+
+#~ msgid "Send all documents in Issued Invoices Agenda - selected by status"
+#~ msgstr "Odešle všechny doklady vydaných faktur které ještě nebyly odeslány"
+
+#~ msgid "Pohoda Checker"
+#~ msgstr "Zkoušeč Pohody"
+
+#~ msgid "Check Stormware mServer availbility"
+#~ msgstr "Zkontroluje dostupnost Stormware mServeru"
+
+#~ msgid "Raiffaisen to Pohoda"
+#~ msgstr "Raiffaisen do Pohody"
+
+#~ msgid "Raiffaisen Bank statements importer "
+#~ msgstr "Stahovač výpisů Raiffaisen banky "
+
+#~ msgid "AllTime Digest"
+#~ msgstr "Vůbec přehled"
+
+#~ msgid "digest for your Accounting from begin to now"
+#~ msgstr "přehled vašeho účetnictví od začátku do nynějška"
+
+#~ msgid "Yearly Digest"
+#~ msgstr "Roční přehed"
+
+#~ msgid "Generate AbraFlexi report every year"
+#~ msgstr "Každoroční AbraFlexi přehled"
+
+#~ msgid "Realpad to Mailkit"
+#~ msgstr "Realpad do Mailkitu"
+
+#~ msgid "Synchronize Realpad Contacts into Mailkit "
+#~ msgstr "Synchronizuje kontakty z Realpadu do Mailkitu "
+
+#~ msgid "Clear Reminder Labels"
+#~ msgstr "Čistič štítků upomínače"
+
+#~ msgid "Clear Debtor's labels"
+#~ msgstr "Vymaže štítky dlužníků"
+
+#~ msgid "Show Unsent"
+#~ msgstr "Ukaž neodeslané"
+
+#~ msgid "Show Unsent documents"
+#~ msgstr "Zobraz neodeslané dokumenty"
+
+#~ msgid "Redmine2AbraFlexi"
+#~ msgstr "Redmine do AbraFlexi"
+
+#~ msgid "Redmine WorkHours to AbraFlexi invoice"
+#~ msgstr "Človekohodiny v Redmine do faktury v AbraFlexi"
+
+#~ msgid "AbraFlexi Bulk Mailer"
+#~ msgstr "Hromadná pošta z AbraFlexi"
+
+#~ msgid "By Query select recipients from Addressbook and send mail based on template"
+#~ msgstr "Na základě dotazu zvolí příjmce z adresáře a odesílá mail na základě šablony"
+
+#~ msgid "MultiFlexi Probe"
+#~ msgstr "Multi Flexi Sonda"
+
+#~ msgid "Task launcher testing tool"
+#~ msgstr "Testovací nástroj spouštěče úloh"
+
+#~ msgid "Certificate file"
+#~ msgstr "Soubor certifikátu"
+
+#~ msgid "Certificate password"
+#~ msgstr "Heslo certifickátu"
+
+#~ msgid "ClientID"
+#~ msgstr "ID klienta"
+
+#~ msgid "Bank Account Number"
+#~ msgstr "Číslo bankovního účtu"
+
+#~ msgid "Time scope of transactions downloaded"
+#~ msgstr "Časový rozsah stažených transakcí"
+
+#~ msgid "Remind sender mail Address"
+#~ msgstr "mailová adresa odesilatele upomínky"
+
+#~ msgid "AbraFlexi Server URI"
+#~ msgstr "URI Serveru AbraFlexi"
+
+#~ msgid "AbraFlexi Login"
+#~ msgstr "Login do AbraFlexi"
+
+#~ msgid "AbraFlexi password"
+#~ msgstr "AbraFlexi heslo"
+
+#~ msgid "AbraFlexi comapny code"
+#~ msgstr "Kód společnosti AbraFlexi"
+
+#~ msgid "mServer Api Endpoint"
+#~ msgstr "koncový bod API mServeru"
+
+#~ msgid "Report theme"
+#~ msgstr "Téma reportu"
+
+#~ msgid "Your Realpad Username"
+#~ msgstr "Vaše uživatelské jméno pro Realpad"
+
+#~ msgid "Your Realpad Password"
+#~ msgstr "Vaše heslo do Realpadu"
+
+#~ msgid "only tag to export"
+#~ msgstr "exportovat pouze tag"
+
+#~ msgid "only project substring to export"
+#~ msgstr "exportovat pouze projekty s podřetězcem v názvu"
+
+#~ msgid "requied, must exists"
+#~ msgstr "vyžadováno, musí existovat"
+
+#~ msgid "Send Import Report to"
+#~ msgstr "Odeslat report z importu na"
+
+#~ msgid "Report sender From Address"
+#~ msgstr "Adresa odesilatele reportu"
+
+#~ msgid "test File uplodad"
+#~ msgstr "zkušební nahrání souboru"
+
+#~ msgid "Show debug messages"
+#~ msgstr "Zobraz ladící zprávy"
+
+#~ msgid "Do not send messages to customer"
+#~ msgstr "Nezasílat zpravy zákazníkovi"
+
+#~ msgid "Default target whe MUTE is ON"
+#~ msgstr "Výchozí cíl, když je MUTE ZAPNUTO"
+
+#~ msgid "Include Graphical Logo into messages"
+#~ msgstr "Vložit grafické logo do zpráv"
+
+#~ msgid "Include Payment QR Code into messages"
+#~ msgstr "Zahrnout platební QR kód do zpráv"
+
+#~ msgid "Carbon Copy for every message sent"
+#~ msgstr "Kopie pro každou odeslanou zprávu"
+
+#~ msgid "Default sender address"
+#~ msgstr "Vychozí adresa odesilatele"
+
+#~ msgid "Try to temporary unlock document to save sent date in it"
+#~ msgstr "Zkusí dočasně odemknout dokument a uložit do něj datum odeslání"
+
+#~ msgid "Do not modify document in AbraFlexi (send state/date)"
+#~ msgstr "Neupravujte dokument v AbraFlexi (stav/datum odeslání)"
+
+#~ msgid "Ignore this document types"
+#~ msgstr "Ignorovate dokoumenty tohoto typu"
+
+#~ msgid "Add QR Codes into Mails"
+#~ msgstr "Přidat QR kódy do e-mailů"
+
+#~ msgid "Add Company logo into Mails"
+#~ msgstr "Přidat logo společnosti do mailů"
+
+#~ msgid "Send notifications to customers"
+#~ msgstr "Zasílat upozornění zákazníkům"
+
+#~ msgid "Fallback adres when MUTE is ON"
+#~ msgstr "Záložní adresa, když je MUTE ZAPNUTO"
+
+#~ msgid "Signature at end of SMS"
+#~ msgstr "Podpis na konci SMS"
+
+#~ msgid "Ignore documents/customers with this Label"
+#~ msgstr "Ignorovat dokumenty/zákazníky s tímto štítkem"
+
+#~ msgid "Huawei E5180"
+#~ msgstr "Huawei E5180"
+
+#~ msgid "Huawei E5180 Password"
+#~ msgstr "Heslo do Huawei E5180"
+
+#~ msgid "Mail Template Filename"
+#~ msgstr "Název souboru šablony pošty"
+
+#~ msgid "Filter of recipients"
+#~ msgstr "Filtr příjemců"
+
+#~ msgid "Testing file upload field"
+#~ msgstr "Pole pro nahrávání testovacího souboru"
+
+#~ msgid "Are you sure ?"
+#~ msgstr "Opravdu ?"
+
+#~ msgid "Ne"
+#~ msgstr "No"
+
+#~ msgid "Ano"
+#~ msgstr "Yes"
+
+#~ msgid "Users"
+#~ msgstr "Uživatelé"
+
+#~ msgid "Commandline"
+#~ msgstr "Příkazová řádka"
+
+#~ msgid "Person"
+#~ msgstr "Osoba"
+
+#~ msgid "Last 10 Jobs"
+#~ msgstr "Posledních 10 úloh"
+
+#~ msgid "Init Command"
+#~ msgstr "Příkaz pro prvotní nastavení"
+
+#~ msgid "Deploy Command"
+#~ msgstr "Příkaz pro instalaci"
+
+#~ msgid "Admin Overview"
+#~ msgstr "Přehled administrátorů"
+
+#~ msgid "Modules Availble"
+#~ msgstr "Dostupné moduly"
+
+#, fuzzy
+#~ msgid "Uložit"
+#~ msgstr "Uložit"
+
+#, fuzzy
+#~ msgid "Přehled výsledků"
+#~ msgstr "Přehled výsledků"
+
+#, fuzzy
+#~ msgid "potvrzení hesla"
+#~ msgstr "potvrzení hesla"
+
+#, fuzzy
+#~ msgid "změna hesla"
+#~ msgstr "Změna hesla"
+
+#~ msgid "Cannot obtain organisation identification number for AbraFlexi %s"
+#~ msgstr "Nemohu získat Ičo pro AbraFlexi %s"
+
+#, fuzzy
+#~ msgid "Settings"
+#~ msgstr "Nastavení"
+
+#, fuzzy
+#~ msgid "Password change"
+#~ msgstr "Změna hesla"
+
+#~ msgid "About TaxTorro"
+#~ msgstr "O TaxTorro"
+
+#, fuzzy
+#~ msgid "Jméno"
+#~ msgstr "Jméno"
+
+#, fuzzy
+#~ msgid "Sign in as admin first"
+#~ msgstr "Nejprve se prosím přihlaš jako admin"
+
+#, fuzzy
+#~ msgid "Mail address is too short"
+#~ msgstr "Mailová adresa je příliš krátká"
+
+#, fuzzy
+#~ msgid "Sign On"
+#~ msgstr "Registrace"
+
+#, fuzzy
+#~ msgid "Signed As: "
+#~ msgstr "Příhlášen jako"
+
+#, fuzzy
+#~ msgid "Singn In"
+#~ msgstr "Registrace"
+
+#, fuzzy
+#~ msgid "Oprávnění"
+#~ msgstr "Oprávnění"
+
+#, fuzzy
+#~ msgid "Nastavení"
+#~ msgstr "Nastavení"
+
+#, fuzzy
+#~ msgid "Změna hesla"
+#~ msgstr "Změna hesla"
+
+#, fuzzy
+#~ msgid "Transakce"
+#~ msgstr "Transakce"

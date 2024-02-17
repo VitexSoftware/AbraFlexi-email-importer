@@ -4,7 +4,7 @@
  * Imap2AbraFlexi Isdoc to AbraFlexi convertor
  *
  * @author     Vítězslav Dvořák <info@vitexsofware.cz>
- * @copyright  (G) 2019-2020 Vitex Software
+ * @copyright  (G) 2019-2024 Vitex Software
  */
 
 namespace AbraFlexi\Imap2AF;
@@ -332,10 +332,10 @@ class Convertor extends Parser
 
             if (isset($this->configuration['invoiceRoundingDefaults']) && isset($this->configuration['roundingList'])) {
                 if (
-                    array_search(
-                        $itemArray['nazev'],
-                        $this->configuration['roundingList']
-                    ) !== false
+                        array_search(
+                            $itemArray['nazev'],
+                            $this->configuration['roundingList']
+                        ) !== false
                 ) {
                     $this->addStatusMessage(sprintf(
                         _('Rouding item %s found. Defaults used'),
@@ -370,13 +370,13 @@ class Convertor extends Parser
         if (is_array($itemArrayRaw['Item'])) {
             if (array_key_exists('CatalogueItemIdentification', $itemArrayRaw['Item'])) {
                 if (
-                    array_key_exists(
-                        'ID',
-                        $itemArrayRaw['Item']['CatalogueItemIdentification']
-                    ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search(
-                        $itemArray['nazev'],
-                        $this->storageBlacklist
-                    ) == false)
+                        array_key_exists(
+                            'ID',
+                            $itemArrayRaw['Item']['CatalogueItemIdentification']
+                        ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search(
+                            $itemArray['nazev'],
+                            $this->storageBlacklist
+                        ) == false)
                 ) {
                     $itemArray['typPolozkyK'] = 'typPolozky.katalog';
                     if (!empty($itemArrayRaw['Item']['CatalogueItemIdentification']['ID'])) {
@@ -387,21 +387,21 @@ class Convertor extends Parser
 
             if (array_key_exists('SellersItemIdentification', $itemArrayRaw['Item'])) {
                 if (
-                    array_key_exists(
-                        'ID',
-                        $itemArrayRaw['Item']['SellersItemIdentification']
-                    ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search(
-                        $itemArray['nazev'],
-                        $this->storageBlacklist
-                    ) == false)
+                        array_key_exists(
+                            'ID',
+                            $itemArrayRaw['Item']['SellersItemIdentification']
+                        ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search(
+                            $itemArray['nazev'],
+                            $this->storageBlacklist
+                        ) == false)
                 ) {
                     $itemArray['typPolozkyK'] = 'typPolozky.katalog';
                 }
                 if (
-                    array_key_exists(
-                        'SellersItemIdentification',
-                        $itemArrayRaw['Item']
-                    ) && !empty($itemArrayRaw['Item']['SellersItemIdentification']['ID'])
+                        array_key_exists(
+                            'SellersItemIdentification',
+                            $itemArrayRaw['Item']
+                        ) && !empty($itemArrayRaw['Item']['SellersItemIdentification']['ID'])
                 ) {
                     $itemArray['kratkyPopis'] = $itemArrayRaw['Item']['SellersItemIdentification']['ID'];
                 }

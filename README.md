@@ -76,6 +76,7 @@ export    DENY_PROVIDER_IDS="icoA,icoB,icoC"
  * ABRAFLEXI_STORAGE   - code of default storage
  * ACCEPT_PROVIDER_IDS - Always accept invoice from this IDs
  * DENY_PROVIDER_IDS   - Always denz invoice from this IDs
+ * DONE_FOLDER         - Move processed mails here
 
 Imap options described here: https://www.php.net/manual/en/function.imap-open.php
 
