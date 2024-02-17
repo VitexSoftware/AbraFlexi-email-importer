@@ -390,12 +390,11 @@ class Importer extends FakturaPrijata
         }
 
         try {
-          $invoiceInserted = $invoice->sync();
+            $invoiceInserted = $invoice->sync();
         } catch (\AbraFlexi\Exception $exc) {
-          if (strstr($exc->getMessage(), 'neexistuje') ===-1){
-            throw $exc;
-          }
-          
+            if (strstr($exc->getMessage(), 'neexistuje') === -1) {
+                throw $exc;
+            }
         }
 
         if ($invoiceInserted) {
