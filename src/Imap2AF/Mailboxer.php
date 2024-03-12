@@ -197,7 +197,9 @@ class Mailboxer extends Mailbox
     {
         parent::__destruct();
         foreach ($this->filesToClean as $fileToClean) {
-            unlink($fileToClean);
+            if (file_exists($fileToClean)) {
+                unlink($fileToClean);
+            }
         }
     }
 }
