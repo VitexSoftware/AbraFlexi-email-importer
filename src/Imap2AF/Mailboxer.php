@@ -43,6 +43,13 @@ class Mailboxer extends Mailbox
 
     /**
      *
+     * @var array
+     */
+    protected $filesToClean = [];
+
+
+    /**
+     *
      * @var string
      */
     private $moptions = 'notls';
@@ -130,6 +137,7 @@ class Mailboxer extends Mailbox
 
             if ($email->hasAttachments()) {
                 foreach ($email->getAttachments() as $attachmentRaw) {
+                    $this->filesToClean[basename($attachmentRaw->filePath)] = $attachmentRaw->filePath;
                     if (strstr(strtolower($attachmentRaw->name), '.isdoc')) {
                         $isdocs[$attachmentRaw->name] = $attachmentRaw;
                         $this->attachments[$attachmentRaw->name] = $mailId;
@@ -171,7 +179,7 @@ class Mailboxer extends Mailbox
     /**
      * Move mail to another folder
      *
-     * @param string $folder name of new folder
+     * @param string $folderName name of new folder
      */
     public function createFolder($folderName)
     {
@@ -179,5 +187,17 @@ class Mailboxer extends Mailbox
             throw new Exception('Cannot create mailbox: ' . imap_last_error());
         }
         return true;
+    }
+
+
+    /**
+     * Disconnect Nmpap and Clean temporary files
+     */
+    public function __destruct()
+    {
+        parent::__destruct();
+        foreach ($this->filesToClean as $fileToClean) {
+            unlink($fileToClean);
+        }
     }
 }

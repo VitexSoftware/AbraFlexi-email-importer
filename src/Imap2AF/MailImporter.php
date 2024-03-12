@@ -56,7 +56,7 @@ class MailImporter extends Importer
      *
      * @param string $inputFile
      *
-     * @return type
+     * @return null
      */
     public function moveMessageToDoneFolder($inputFile)
     {

@@ -217,4 +217,36 @@ class ConvertorTest extends \PHPUnit\Framework\TestCase {
         $this->markTestIncomplete('This test has not been implemented yet.');
     }
 
+    /**
+     * @covers AbraFlexi\Imap2AF\Convertor::domPaymentMeansToArray
+     */
+    public function testDomPaymentMeansToArray() {
+        $paymentMeansMock = $this->createMock(\DOMNodeList::class);
+        $paymentMeansMock->method('item')->willReturn($this->createMock(\DOMNode::class));
+        $expectedResult = ['datSplat' => '2020-10-13']; // Replace with your expected result
+        $this->assertEquals($expectedResult, $this->object->domPaymentMeansToArray($paymentMeansMock));
+    }
+
+    /**
+     * @covers AbraFlexi\Imap2AF\Convertor::domSuplierToArray
+     */
+    public function testDomSuplierToArray() {
+        $suplierMock = $this->createMock(\DOMNodeList::class);
+        $suplierMock->method('item')->willReturn($this->createMock(\DOMNode::class));
+        $expectedResult = [
+            'nazev' => 'SPOJE.NET s.r.o.',
+            'ulice' => 'Závěrka 473/8',
+            'mesto' => 'Praha 6',
+            'psc' => '16900',
+            'tel' => '+420 233 358 050',
+            'email' => 'office@spoje.net',
+            'stat' => 'code:CZ',
+            'ic' => '29034736',
+            'dic' => 'CZ29034736',
+            'platceDph' => true,
+            'typVztahuK' => 'typVztahu.dodavatel',
+        ]; // Replace with your expected result
+        $this->assertEquals($expectedResult, $this->object->domSuplierToArray($suplierMock));
+    }    
+    
 }
