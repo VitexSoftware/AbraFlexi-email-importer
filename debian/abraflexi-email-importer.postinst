@@ -3,10 +3,7 @@
 
 set -e
 
-if [ "$1" = "configure" ]; then
-    composer-debian abraflexi-email-importer
-fi
-
+composer-debian abraflexi-email-importer
 
 #DEBHELPER#
 
