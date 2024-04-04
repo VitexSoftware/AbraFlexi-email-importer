@@ -183,10 +183,7 @@ class Mailboxer extends Mailbox
      */
     public function createFolder($folderName)
     {
-        if (!imap_createmailbox($this->getImapStream(), imap_utf7_encode($this->imapPath . $folderName))) {
-            throw new Exception('Cannot create mailbox: ' . imap_last_error());
-        }
-        return true;
+        return imap_createmailbox($this->getImapStream(), imap_utf7_encode(str_replace('INBOX', $folderName, $this->imapPath)));
     }
 
 

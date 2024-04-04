@@ -1001,7 +1001,7 @@ class Importer extends FakturaPrijata
 
     public function moveMessageToDoneFolder($inputFile)
     {
-        $this->addStatusMessage(sprintf(_('Moving mail with %s'), $inputFile));
+        $this->addStatusMessage(sprintf(_('Moving mail with %s to %s'), $inputFile, \Ease\Shared::cfg('DONE_FOLDER')));
     }
 
     /**
