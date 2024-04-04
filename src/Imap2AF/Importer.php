@@ -1004,6 +1004,14 @@ class Importer extends FakturaPrijata
         $this->addStatusMessage(sprintf(_('Moving mail with %s'), $inputFile));
     }
 
+    /**
+     * Already known invoice is skipped
+     * 
+     * @param \AbraFlexi\FakturaPrijata $invoice   Invoice object instance
+     * @param string                    $inputFile file on disk
+     * 
+     * @return boolean operation result
+     */
     public function alreadyKnownInvoice($invoice, $inputFile)
     {
         $invoice->addStatusMessage(sprintf(_('Already known invoice %s - skipping'), $invoice->getMyKey()), 'warning');
@@ -1016,5 +1024,6 @@ class Importer extends FakturaPrijata
                 unlink($renamed);
             }
         }
+        return true;
     }
 }

@@ -18,7 +18,7 @@ class Convertor extends Parser
 {
     /**
      * Current CZ taxes
-     * @var array
+     * @var array<string>
      */
     public $taxes = [
         0 => 'typSzbDph.dphOsv',
@@ -26,11 +26,16 @@ class Convertor extends Parser
         15 => 'typSzbDph.dphSniz',
         21 => 'typSzbDph.dphZakl'
     ];
+    
+    /**
+     * Do not save into store
+     * @var array<string>
+     */
     public $storageBlacklist = [];
 
     /**
-     *
-     * @var array
+     * Configuration
+     * @var array<string>
      */
     private $configuration = [];
 

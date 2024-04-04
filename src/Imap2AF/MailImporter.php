@@ -41,15 +41,19 @@ class MailImporter extends Importer
                     $this->mailbox->addStatusMessage(sprintf(_('New DONE_FOLDER folder %s created'), \Ease\Shared::cfg('DONE_FOLDER')), 'success');
                 }
             }
+        } else {
+            $this->addStatusMessage(_('The DONE_FOLDER is not specified. The messages will remain in the same folder.'));
         }
     }
 
     /**
-     *
+     * Import isdoc files extracted from mails
+     * 
+     * @return null none
      */
     public function importMails()
     {
-        $this->importIsdocFiles($this->mailbox->saveIsdocs(), $this->mailbox->senders);
+        return $this->importIsdocFiles($this->mailbox->saveIsdocs(), $this->mailbox->senders);
     }
 
     /**
@@ -64,12 +68,16 @@ class MailImporter extends Importer
         return parent::moveMessageToDoneFolder($inputFile);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function alreadyKnownInvoice($invoice, $inputFile)
     {
-        parent::alreadyKnownInvoice($invoice, $inputFile);
+       $result = parent::alreadyKnownInvoice($invoice, $inputFile);
         if (\Ease\Shared::cfg('DONE_FOLDER')) {
             $this->moveMessageToDoneFolder($inputFile);
         }
+        return $result;
     }
 
     /**
@@ -82,6 +90,10 @@ class MailImporter extends Importer
         parent::cleanUp($invoiceFiles);
         if (\Ease\Shared::cfg('DONE_FOLDER')) {
             $this->moveMessageToDoneFolder(basename($invoiceFiles[0]));
+            $status = 1;
+        } else {
+            $status = 0;
         }
+        return $status;
     }
 }
