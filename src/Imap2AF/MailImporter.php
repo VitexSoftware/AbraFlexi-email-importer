@@ -37,7 +37,7 @@ class MailImporter extends Importer
             $allFolders = $this->mailbox->getListingFolders();
             if (array_search($this->mailbox->getImapPath() . '/' . \Ease\Shared::cfg('DONE_FOLDER'), $allFolders) === false) {
                 // Create IMAP folder for done messages DONE_DIR
-                if ($this->mailbox->createFolder('/' . \Ease\Shared::cfg('DONE_FOLDER'))) {
+                if ($this->mailbox->createFolder(\Ease\Shared::cfg('DONE_FOLDER'))) {
                     $this->mailbox->addStatusMessage(sprintf(_('New DONE_FOLDER folder %s created'), \Ease\Shared::cfg('DONE_FOLDER')), 'success');
                 }
             }
