@@ -102,7 +102,7 @@ class Mailboxer extends Mailbox
     {
         $this->setUp(Shared::singleton()->configuration);
 
-// Create PhpImap\Mailbox instance for all further actions
+        // Create PhpImap\Mailbox instance for all further actions
         parent::__construct(
             '{' . $this->mserver . ':' . $this->mport . '/' . $this->moptions . '}' . $this->mailbox, // IMAP server and mailbox folder
             $this->mlogin, // Username for the before configured mailbox

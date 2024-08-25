@@ -232,10 +232,10 @@ class Importer extends FakturaPrijata
             $itemArray['typSzbDphK'] = $this->taxes[intval($itemArrayRaw['ClassifiedTaxCategory']['Percent'])];
             if (isset($this->configuration['invoiceRoundingDefaults']) && isset($this->configuration['roundingList'])) {
                 if (
-                        array_search(
-                            $itemArray['nazev'],
-                            $this->configuration['roundingList']
-                        ) !== false
+                    array_search(
+                        $itemArray['nazev'],
+                        $this->configuration['roundingList']
+                    ) !== false
                 ) {
                     $this->addStatusMessage(sprintf(
                         _('Rouding item %s found. Defaults used'),
@@ -269,19 +269,19 @@ class Importer extends FakturaPrijata
 
 
         if (
-                array_key_exists(
-                    'CatalogueItemIdentification',
-                    $itemArrayRaw['Item']
-                )
+            array_key_exists(
+                'CatalogueItemIdentification',
+                $itemArrayRaw['Item']
+            )
         ) {
             if (
-                    array_key_exists(
-                        'ID',
-                        $itemArrayRaw['Item']['CatalogueItemIdentification']
-                    ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search(
-                        $itemArray['nazev'],
-                        $this->storageBlacklist
-                    ) == false)
+                array_key_exists(
+                    'ID',
+                    $itemArrayRaw['Item']['CatalogueItemIdentification']
+                ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search(
+                    $itemArray['nazev'],
+                    $this->storageBlacklist
+                ) == false)
             ) {
                 $itemArray['typPolozkyK'] = 'typPolozky.katalog';
                 if (!empty($itemArrayRaw['Item']['CatalogueItemIdentification']['ID'])) {
@@ -292,21 +292,21 @@ class Importer extends FakturaPrijata
 
         if (array_key_exists('SellersItemIdentification', $itemArrayRaw['Item'])) {
             if (
-                    array_key_exists(
-                        'ID',
-                        $itemArrayRaw['Item']['SellersItemIdentification']
-                    ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search(
-                        $itemArray['nazev'],
-                        $this->storageBlacklist
-                    ) == false)
+                array_key_exists(
+                    'ID',
+                    $itemArrayRaw['Item']['SellersItemIdentification']
+                ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search(
+                    $itemArray['nazev'],
+                    $this->storageBlacklist
+                ) == false)
             ) {
                 $itemArray['typPolozkyK'] = 'typPolozky.katalog';
             }
             if (
-                    array_key_exists(
-                        'SellersItemIdentification',
-                        $itemArrayRaw['Item']
-                    ) && !empty($itemArrayRaw['Item']['SellersItemIdentification']['ID'])
+                array_key_exists(
+                    'SellersItemIdentification',
+                    $itemArrayRaw['Item']
+                ) && !empty($itemArrayRaw['Item']['SellersItemIdentification']['ID'])
             ) {
                 $itemArray['kratkyPopis'] = $itemArrayRaw['Item']['SellersItemIdentification']['ID'];
             }
@@ -358,15 +358,15 @@ class Importer extends FakturaPrijata
                             _('Item was added to AbraFlexi Pricelist as %s'),
                             $newPriceListItem
                         ), 'success');
-//                        $newStorageItem = $this->addItemToStorage($this->priceList,
-//                                0);
-//                        if (is_null($newStorageItem) || ($newStorageItem['success'] != 'true')) {
-//                            $this->addStatusMessage(sprintf(_('Item %s inject to AbraFlexi Storage failed'),
-//                                            $invoiceItem['nazev']), 'error');
-//                        } else {
-//                            $this->addStatusMessage(sprintf(_('Item was added to AbraFlexi Storage as %s'),
-//                                            $newPriceListItem), 'success');
-//                        }
+                        //                        $newStorageItem = $this->addItemToStorage($this->priceList,
+                        //                                0);
+                        //                        if (is_null($newStorageItem) || ($newStorageItem['success'] != 'true')) {
+                        //                            $this->addStatusMessage(sprintf(_('Item %s inject to AbraFlexi Storage failed'),
+                        //                                            $invoiceItem['nazev']), 'error');
+                        //                        } else {
+                        //                            $this->addStatusMessage(sprintf(_('Item was added to AbraFlexi Storage as %s'),
+                        //                                            $newPriceListItem), 'success');
+                        //                        }
                     }
                 }
             }
@@ -383,7 +383,7 @@ class Importer extends FakturaPrijata
      */
     public function importInvoice(&$invoice)
     {
-//                $invoice->setDataValue('stitky', 'IMAP2AF');
+        //                $invoice->setDataValue('stitky', 'IMAP2AF');
 
         if ($this->conf('FORCE_INCOMING_INVOICE_TYPE')) {
             $invoice->setDataValue('typDokl', $this->conf('FORCE_INCOMING_INVOICE_TYPE'));
@@ -734,7 +734,7 @@ class Importer extends FakturaPrijata
         $element->removeChild($element->getElementsByTagName('LegalMonetaryTotal')->item(0));
         $element->removeChild($element->getElementsByTagName('PaymentMeans')->item(0));
         $invoiceInfo = Convertor::domInvoiceToArray($xmlDomDocument->getElementsByTagName('Invoice'));
-//        return array_merge($invoiceInfo, $taxTotal);
+        //        return array_merge($invoiceInfo, $taxTotal);
         return $invoiceInfo;
     }
 
@@ -1006,10 +1006,10 @@ class Importer extends FakturaPrijata
 
     /**
      * Already known invoice is skipped
-     * 
+     *
      * @param \AbraFlexi\FakturaPrijata $invoice   Invoice object instance
      * @param string                    $inputFile file on disk
-     * 
+     *
      * @return boolean operation result
      */
     public function alreadyKnownInvoice($invoice, $inputFile)

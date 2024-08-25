@@ -26,7 +26,7 @@ class Convertor extends Parser
         15 => 'typSzbDph.dphSniz',
         21 => 'typSzbDph.dphZakl'
     ];
-    
+
     /**
      * Do not save into store
      * @var array<string>
@@ -178,7 +178,7 @@ class Convertor extends Parser
         $invoiceArray['mena'] = 'code:' . $invoiceArrayRaw['LocalCurrencyCode'];
         $invoiceArray['typDokl'] = 'code:FAKTURA';
 
-//        $invoiceArray['datSplat'] = '';
+        //        $invoiceArray['datSplat'] = '';
         return $invoiceArray;
     }
 
@@ -235,7 +235,7 @@ class Convertor extends Parser
      */
     public function invoiceInfo()
     {
-//Remove Branches - See https://bugs.php.net/bug.php?id=61858
+        //Remove Branches - See https://bugs.php.net/bug.php?id=61858
 
         $element = $this->xmlDomDocument->documentElement;
 
@@ -253,18 +253,18 @@ class Convertor extends Parser
         }
         $element->removeChild($element->getElementsByTagName('InvoiceLines')->item(0));
 
-//$taxTotal = $this->domTaxTotalToArray($this->xmlDomDocument->getElementsByTagName('TaxTotal'));
+        //$taxTotal = $this->domTaxTotalToArray($this->xmlDomDocument->getElementsByTagName('TaxTotal'));
 
         $element->removeChild($element->getElementsByTagName('TaxTotal')->item(0));
 
-//$legalMonetaryTotal = $this->domLMTotalToArray($this->xmlDomDocument->getElementsByTagName('LegalMonetaryTotal'));
+        //$legalMonetaryTotal = $this->domLMTotalToArray($this->xmlDomDocument->getElementsByTagName('LegalMonetaryTotal'));
 
         $element->removeChild($element->getElementsByTagName('LegalMonetaryTotal')->item(0));
         $element->removeChild($element->getElementsByTagName('PaymentMeans')->item(0));
 
         $invoiceInfo = $this->domInvoiceToArray($this->xmlDomDocument->getElementsByTagName('Invoice'));
 
-//        return array_merge($invoiceInfo, $taxTotal);
+        //        return array_merge($invoiceInfo, $taxTotal);
         return $invoiceInfo;
     }
 
@@ -337,10 +337,10 @@ class Convertor extends Parser
 
             if (isset($this->configuration['invoiceRoundingDefaults']) && isset($this->configuration['roundingList'])) {
                 if (
-                        array_search(
-                            $itemArray['nazev'],
-                            $this->configuration['roundingList']
-                        ) !== false
+                    array_search(
+                        $itemArray['nazev'],
+                        $this->configuration['roundingList']
+                    ) !== false
                 ) {
                     $this->addStatusMessage(sprintf(
                         _('Rouding item %s found. Defaults used'),
@@ -375,13 +375,13 @@ class Convertor extends Parser
         if (is_array($itemArrayRaw['Item'])) {
             if (array_key_exists('CatalogueItemIdentification', $itemArrayRaw['Item'])) {
                 if (
-                        array_key_exists(
-                            'ID',
-                            $itemArrayRaw['Item']['CatalogueItemIdentification']
-                        ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search(
-                            $itemArray['nazev'],
-                            $this->storageBlacklist
-                        ) == false)
+                    array_key_exists(
+                        'ID',
+                        $itemArrayRaw['Item']['CatalogueItemIdentification']
+                    ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search(
+                        $itemArray['nazev'],
+                        $this->storageBlacklist
+                    ) == false)
                 ) {
                     $itemArray['typPolozkyK'] = 'typPolozky.katalog';
                     if (!empty($itemArrayRaw['Item']['CatalogueItemIdentification']['ID'])) {
@@ -392,21 +392,21 @@ class Convertor extends Parser
 
             if (array_key_exists('SellersItemIdentification', $itemArrayRaw['Item'])) {
                 if (
-                        array_key_exists(
-                            'ID',
-                            $itemArrayRaw['Item']['SellersItemIdentification']
-                        ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search(
-                            $itemArray['nazev'],
-                            $this->storageBlacklist
-                        ) == false)
+                    array_key_exists(
+                        'ID',
+                        $itemArrayRaw['Item']['SellersItemIdentification']
+                    ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search(
+                        $itemArray['nazev'],
+                        $this->storageBlacklist
+                    ) == false)
                 ) {
                     $itemArray['typPolozkyK'] = 'typPolozky.katalog';
                 }
                 if (
-                        array_key_exists(
-                            'SellersItemIdentification',
-                            $itemArrayRaw['Item']
-                        ) && !empty($itemArrayRaw['Item']['SellersItemIdentification']['ID'])
+                    array_key_exists(
+                        'SellersItemIdentification',
+                        $itemArrayRaw['Item']
+                    ) && !empty($itemArrayRaw['Item']['SellersItemIdentification']['ID'])
                 ) {
                     $itemArray['kratkyPopis'] = $itemArrayRaw['Item']['SellersItemIdentification']['ID'];
                 }

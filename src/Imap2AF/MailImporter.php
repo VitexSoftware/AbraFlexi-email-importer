@@ -35,7 +35,7 @@ class MailImporter extends Importer
         $doneFolder = \Ease\Shared::cfg('DONE_FOLDER');
         if ($doneFolder) {
             $allFolders = $this->mailbox->getListingFolders();
-            if (array_search(str_replace('INBOX', $doneFolder, $this->mailbox->getImapPath()) , $allFolders) === false) {
+            if (array_search(str_replace('INBOX', $doneFolder, $this->mailbox->getImapPath()), $allFolders) === false) {
                 // Create IMAP folder for done messages DONE_DIR
                 if ($this->mailbox->createFolder($doneFolder)) {
                     $this->mailbox->addStatusMessage(sprintf(_('New DONE_FOLDER folder %s created'), $doneFolder), 'success');
@@ -48,7 +48,7 @@ class MailImporter extends Importer
 
     /**
      * Import isdoc files extracted from mails
-     * 
+     *
      * @return null none
      */
     public function importMails()
@@ -73,7 +73,7 @@ class MailImporter extends Importer
      */
     public function alreadyKnownInvoice($invoice, $inputFile)
     {
-       $result = parent::alreadyKnownInvoice($invoice, $inputFile);
+        $result = parent::alreadyKnownInvoice($invoice, $inputFile);
         if (\Ease\Shared::cfg('DONE_FOLDER')) {
             $this->moveMessageToDoneFolder($inputFile);
         }
