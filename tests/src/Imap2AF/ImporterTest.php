@@ -1,5 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * This file is part of the Imap2AbraFlexi package
+ *
+ * https://github.com/VitexSoftware/AbraFlexi-email-importer
+ *
+ * (c) Vítězslav Dvořák <http://vitexsoftware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Test\AbraFlexi\Imap2AF;
 
 use AbraFlexi\Imap2AF\Importer;
@@ -9,11 +22,7 @@ use AbraFlexi\Imap2AF\Importer;
  */
 class ImporterTest extends \PHPUnit\Framework\TestCase
 {
-
-    /**
-     * @var Importer
-     */
-    protected $object;
+    protected Importer $object;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -30,14 +39,14 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
      */
     protected function tearDown(): void
     {
-        
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::importIsdocFiles
+     * @covers \AbraFlexi\Imap2AF\Importer::importIsdocFiles
+     *
      * @todo   Implement testimportIsdocFiles().
      */
-    public function testimportIsdocFiles()
+    public function testimportIsdocFiles(): void
     {
         $this->assertEquals('', $this->object->importIsdocFiles());
         // Remove the following lines when you implement this test.
@@ -45,10 +54,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::xmlDomToInvoice
+     * @covers \AbraFlexi\Imap2AF\Importer::xmlDomToInvoice
+     *
      * @todo   Implement testxmlDomToInvoice().
      */
-    public function testxmlDomToInvoice()
+    public function testxmlDomToInvoice(): void
     {
         $this->assertEquals('', $this->object->xmlDomToInvoice());
         // Remove the following lines when you implement this test.
@@ -56,10 +66,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::invoiceItems
+     * @covers \AbraFlexi\Imap2AF\Importer::invoiceItems
+     *
      * @todo   Implement testinvoiceItems().
      */
-    public function testinvoiceItems()
+    public function testinvoiceItems(): void
     {
         $this->assertEquals('', $this->object->invoiceItems());
         // Remove the following lines when you implement this test.
@@ -67,10 +78,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::domInvoiceItemToArray
+     * @covers \AbraFlexi\Imap2AF\Importer::domInvoiceItemToArray
+     *
      * @todo   Implement testdomInvoiceItemToArray().
      */
-    public function testdomInvoiceItemToArray()
+    public function testdomInvoiceItemToArray(): void
     {
         $this->assertEquals('', $this->object->domInvoiceItemToArray());
         // Remove the following lines when you implement this test.
@@ -78,10 +90,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::importInvoiceItems
+     * @covers \AbraFlexi\Imap2AF\Importer::importInvoiceItems
+     *
      * @todo   Implement testimportInvoiceItems().
      */
-    public function testimportInvoiceItems()
+    public function testimportInvoiceItems(): void
     {
         $this->assertEquals('', $this->object->importInvoiceItems());
         // Remove the following lines when you implement this test.
@@ -89,10 +102,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::importInvoice
+     * @covers \AbraFlexi\Imap2AF\Importer::importInvoice
+     *
      * @todo   Implement testimportInvoice().
      */
-    public function testimportInvoice()
+    public function testimportInvoice(): void
     {
         $this->assertEquals('', $this->object->importInvoice());
         // Remove the following lines when you implement this test.
@@ -100,10 +114,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::isForMe
+     * @covers \AbraFlexi\Imap2AF\Importer::isForMe
+     *
      * @todo   Implement testisForMe().
      */
-    public function testisForMe()
+    public function testisForMe(): void
     {
         $this->assertEquals('', $this->object->isForMe());
         // Remove the following lines when you implement this test.
@@ -111,10 +126,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::mainLoop
+     * @covers \AbraFlexi\Imap2AF\Importer::mainLoop
+     *
      * @todo   Implement testmainLoop().
      */
-    public function testmainLoop()
+    public function testmainLoop(): void
     {
         $this->assertEquals('', $this->object->mainLoop());
         // Remove the following lines when you implement this test.
@@ -122,10 +138,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::handleMeasureUnit
+     * @covers \AbraFlexi\Imap2AF\Importer::handleMeasureUnit
+     *
      * @todo   Implement testhandleMeasureUnit().
      */
-    public function testhandleMeasureUnit()
+    public function testhandleMeasureUnit(): void
     {
         $this->assertEquals('', $this->object->handleMeasureUnit());
         // Remove the following lines when you implement this test.
@@ -133,10 +150,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::addItemToStorage
+     * @covers \AbraFlexi\Imap2AF\Importer::addItemToStorage
+     *
      * @todo   Implement testaddItemToStorage().
      */
-    public function testaddItemToStorage()
+    public function testaddItemToStorage(): void
     {
         $this->assertEquals('', $this->object->addItemToStorage());
         // Remove the following lines when you implement this test.
@@ -144,10 +162,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::cleanUp
+     * @covers \AbraFlexi\Imap2AF\Importer::cleanUp
+     *
      * @todo   Implement testcleanUp().
      */
-    public function testcleanUp()
+    public function testcleanUp(): void
     {
         $this->assertEquals('', $this->object->cleanUp());
         // Remove the following lines when you implement this test.
@@ -155,10 +174,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::abraFlexiPricelistPresence
+     * @covers \AbraFlexi\Imap2AF\Importer::abraFlexiPricelistPresence
+     *
      * @todo   Implement testabraFlexiPricelistPresence().
      */
-    public function testabraFlexiPricelistPresence()
+    public function testabraFlexiPricelistPresence(): void
     {
         $this->assertEquals('', $this->object->abraFlexiPricelistPresence());
         // Remove the following lines when you implement this test.
@@ -166,10 +186,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::addItemToPriceList
+     * @covers \AbraFlexi\Imap2AF\Importer::addItemToPriceList
+     *
      * @todo   Implement testaddItemToPriceList().
      */
-    public function testaddItemToPriceList()
+    public function testaddItemToPriceList(): void
     {
         $this->assertEquals('', $this->object->addItemToPriceList());
         // Remove the following lines when you implement this test.
@@ -177,10 +198,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::getSuplierAbraFlexiID
+     * @covers \AbraFlexi\Imap2AF\Importer::getSuplierAbraFlexiID
+     *
      * @todo   Implement testgetSuplierAbraFlexiID().
      */
-    public function testgetSuplierAbraFlexiID()
+    public function testgetSuplierAbraFlexiID(): void
     {
         $this->assertEquals('', $this->object->getSuplierAbraFlexiID());
         // Remove the following lines when you implement this test.
@@ -188,10 +210,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::getPaymentMeans
+     * @covers \AbraFlexi\Imap2AF\Importer::getPaymentMeans
+     *
      * @todo   Implement testgetPaymentMeans().
      */
-    public function testgetPaymentMeans()
+    public function testgetPaymentMeans(): void
     {
         $this->assertEquals('', $this->object->getPaymentMeans());
         // Remove the following lines when you implement this test.
@@ -199,10 +222,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::abraFlexiSuplierPresence
+     * @covers \AbraFlexi\Imap2AF\Importer::abraFlexiSuplierPresence
+     *
      * @todo   Implement testabraFlexiSuplierPresence().
      */
-    public function testabraFlexiSuplierPresence()
+    public function testabraFlexiSuplierPresence(): void
     {
         $this->assertEquals('', $this->object->abraFlexiSuplierPresence());
         // Remove the following lines when you implement this test.
@@ -210,10 +234,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::getInvoiceInfo
+     * @covers \AbraFlexi\Imap2AF\Importer::getInvoiceInfo
+     *
      * @todo   Implement testgetInvoiceInfo().
      */
-    public function testgetInvoiceInfo()
+    public function testgetInvoiceInfo(): void
     {
         $this->assertEquals('', $this->object->getInvoiceInfo());
         // Remove the following lines when you implement this test.
@@ -221,10 +246,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::domLMTotalToArray
+     * @covers \AbraFlexi\Imap2AF\Importer::domLMTotalToArray
+     *
      * @todo   Implement testdomLMTotalToArray().
      */
-    public function testdomLMTotalToArray()
+    public function testdomLMTotalToArray(): void
     {
         $this->assertEquals('', $this->object->domLMTotalToArray());
         // Remove the following lines when you implement this test.
@@ -232,10 +258,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::isKnownInvoice
+     * @covers \AbraFlexi\Imap2AF\Importer::isKnownInvoice
+     *
      * @todo   Implement testisKnownInvoice().
      */
-    public function testisKnownInvoice()
+    public function testisKnownInvoice(): void
     {
         $this->assertEquals('', $this->object->isKnownInvoice());
         // Remove the following lines when you implement this test.
@@ -243,10 +270,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::unpackIsdocX
+     * @covers \AbraFlexi\Imap2AF\Importer::unpackIsdocX
+     *
      * @todo   Implement testunpackIsdocX().
      */
-    public function testunpackIsdocX()
+    public function testunpackIsdocX(): void
     {
         $this->assertEquals('', $this->object->unpackIsdocX());
         // Remove the following lines when you implement this test.
@@ -254,10 +282,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::isConnected
+     * @covers \AbraFlexi\Imap2AF\Importer::isConnected
+     *
      * @todo   Implement testisConnected().
      */
-    public function testisConnected()
+    public function testisConnected(): void
     {
         $this->assertEquals('', $this->object->isConnected());
         // Remove the following lines when you implement this test.
@@ -265,10 +294,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::createLabel
+     * @covers \AbraFlexi\Imap2AF\Importer::createLabel
+     *
      * @todo   Implement testcreateLabel().
      */
-    public function testcreateLabel()
+    public function testcreateLabel(): void
     {
         $this->assertEquals('', $this->object->createLabel());
         // Remove the following lines when you implement this test.
@@ -276,10 +306,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::recountForPricelist
+     * @covers \AbraFlexi\Imap2AF\Importer::recountForPricelist
+     *
      * @todo   Implement testrecountForPricelist().
      */
-    public function testrecountForPricelist()
+    public function testrecountForPricelist(): void
     {
         $this->assertEquals('', $this->object->recountForPricelist());
         // Remove the following lines when you implement this test.
@@ -287,10 +318,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::addRecountedPrice
+     * @covers \AbraFlexi\Imap2AF\Importer::addRecountedPrice
+     *
      * @todo   Implement testaddRecountedPrice().
      */
-    public function testaddRecountedPrice()
+    public function testaddRecountedPrice(): void
     {
         $this->assertEquals('', $this->object->addRecountedPrice());
         // Remove the following lines when you implement this test.
@@ -298,10 +330,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::conf
+     * @covers \AbraFlexi\Imap2AF\Importer::conf
+     *
      * @todo   Implement testconf().
      */
-    public function testconf()
+    public function testconf(): void
     {
         $this->assertEquals('', $this->object->conf());
         // Remove the following lines when you implement this test.
@@ -309,18 +342,19 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::checkSetup
+     * @covers \AbraFlexi\Imap2AF\Importer::checkSetup
      */
-    public function testcheckSetup()
+    public function testcheckSetup(): void
     {
         $this->assertTrue($this->object->checkSetup());
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::checkStorage
+     * @covers \AbraFlexi\Imap2AF\Importer::checkStorage
+     *
      * @todo   Implement testcheckStorage().
      */
-    public function testcheckStorage()
+    public function testcheckStorage(): void
     {
         $this->assertEquals('', $this->object->checkStorage());
         // Remove the following lines when you implement this test.
@@ -328,10 +362,11 @@ class ImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\Importer::checkBank
+     * @covers \AbraFlexi\Imap2AF\Importer::checkBank
+     *
      * @todo   Implement testcheckBank().
      */
-    public function testcheckBank()
+    public function testcheckBank(): void
     {
         $this->assertEquals('', $this->object->checkBank());
         // Remove the following lines when you implement this test.

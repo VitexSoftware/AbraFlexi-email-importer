@@ -1,52 +1,61 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * Imap2AbraFlexi Isdoc to AbraFlexi convertor
+ * This file is part of the Imap2AbraFlexi package
  *
- * @author     Vítězslav Dvořák <info@vitexsofware.cz>
- * @copyright  (G) 2019-2024 Vitex Software
+ * https://github.com/VitexSoftware/AbraFlexi-email-importer
+ *
+ * (c) Vítězslav Dvořák <http://vitexsoftware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace AbraFlexi\Imap2AF;
 
 /**
- * Convert parsed invoice into AbraFlexi format
+ * Convert parsed invoice into AbraFlexi format.
  *
  * @author vitex
  */
 class Convertor extends Parser
 {
     /**
-     * Current CZ taxes
+     * Current CZ taxes.
+     *
      * @var array<string>
      */
-    public $taxes = [
+    public array $taxes = [
         0 => 'typSzbDph.dphOsv',
         10 => 'typSzbDph.dphSniz2',
         15 => 'typSzbDph.dphSniz',
-        21 => 'typSzbDph.dphZakl'
+        21 => 'typSzbDph.dphZakl',
     ];
 
     /**
-     * Do not save into store
+     * Do not save into store.
+     *
      * @var array<string>
      */
-    public $storageBlacklist = [];
+    public array $storageBlacklist = [];
 
     /**
-     * Configuration
+     * Configuration.
+     *
      * @var array<string>
      */
-    private $configuration = [];
+    private array $configuration = [];
 
     /**
-     * Convert Dom based invoice Payment Element to Array
+     * Convert Dom based invoice Payment Element to Array.
      *
      * @param \DOMNodeList $payment
      *
-     * @return array
+     * @return array<string>
      */
-    public static function domPaymentMeansToArray($payment)
+    public static function domPaymentMeansToArray($payment): array
     {
         $paymentArray = [];
         $paymentArrayRaw = current(self::domToArray($payment->item(0)));
@@ -57,11 +66,11 @@ class Convertor extends Parser
     }
 
     /**
-     * Convert Dom based invoice item Element to Array
+     * Convert Dom based invoice item Element to Array.
      *
      * @param \DOMNodeList $suplier
      *
-     * @return array
+     * @return array<string, string>
      */
     public function domSuplierToArray($suplier)
     {
@@ -69,28 +78,30 @@ class Convertor extends Parser
         $suplierArrayRaw = current(self::domToArray($suplier->item(0)));
 
         $suplierArray['nazev'] = $suplierArrayRaw['PartyName']['Name'];
-        $suplierArray['ulice'] = $suplierArrayRaw['PostalAddress']['StreetName'] . ' ' . $suplierArrayRaw['PostalAddress']['BuildingNumber'];
+        $suplierArray['ulice'] = $suplierArrayRaw['PostalAddress']['StreetName'].' '.$suplierArrayRaw['PostalAddress']['BuildingNumber'];
         $suplierArray['mesto'] = $suplierArrayRaw['PostalAddress']['CityName'];
         $suplierArray['psc'] = $suplierArrayRaw['PostalAddress']['PostalZone'];
-        if (is_array($suplierArrayRaw['Contact'])) {
-            $suplierArray['tel'] = array_key_exists('Telephone', $suplierArrayRaw['Contact']) ? $suplierArrayRaw['Contact']['Telephone'] : '';
-            $suplierArray['email'] = array_key_exists('ElectronicMail', $suplierArrayRaw['Contact']) ? $suplierArrayRaw['Contact']['ElectronicMail'] : '';
+
+        if (\is_array($suplierArrayRaw['Contact'])) {
+            $suplierArray['tel'] = \array_key_exists('Telephone', $suplierArrayRaw['Contact']) ? $suplierArrayRaw['Contact']['Telephone'] : '';
+            $suplierArray['email'] = \array_key_exists('ElectronicMail', $suplierArrayRaw['Contact']) ? $suplierArrayRaw['Contact']['ElectronicMail'] : '';
         }
-        $suplierArray['stat'] = empty($suplierArrayRaw['PostalAddress']['Country']['IdentificationCode']) ? '' : 'code:' . $suplierArrayRaw['PostalAddress']['Country']['IdentificationCode'];
+
+        $suplierArray['stat'] = empty($suplierArrayRaw['PostalAddress']['Country']['IdentificationCode']) ? '' : 'code:'.$suplierArrayRaw['PostalAddress']['Country']['IdentificationCode'];
         $suplierArray['ic'] = $suplierArrayRaw['PartyIdentification']['ID'];
         $suplierArray['dic'] = $suplierArrayRaw['PartyTaxScheme']['CompanyID'];
-        $suplierArray['platceDph'] = ($suplierArrayRaw['PartyTaxScheme']['TaxScheme'] == 'VAT');
+        $suplierArray['platceDph'] = ($suplierArrayRaw['PartyTaxScheme']['TaxScheme'] === 'VAT');
         $suplierArray['typVztahuK'] = 'typVztahu.dodavatel';
 
         return $suplierArray;
     }
 
     /**
-     * Convert Dom based invoice item Element to Array
+     * Convert Dom based invoice item Element to Array.
      *
      * @param \DOMNodeList $customer
      *
-     * @return array
+     * @return array<string, string>
      */
     public function domCustomerToArray($customer)
     {
@@ -99,26 +110,27 @@ class Convertor extends Parser
         if ($customer->count()) {
             $customerArrayRaw = current(self::domToArray($customer->item(0)));
             $customerArray['nazev'] = $customerArrayRaw['PartyName']['Name'];
-            $customerArray['ulice'] = $customerArrayRaw['PostalAddress']['StreetName'] . ' ' . (empty($customerArrayRaw['PostalAddress']['BuildingNumber']) ? '' : $customerArrayRaw['PostalAddress']['BuildingNumber']);
+            $customerArray['ulice'] = $customerArrayRaw['PostalAddress']['StreetName'].' '.(empty($customerArrayRaw['PostalAddress']['BuildingNumber']) ? '' : $customerArrayRaw['PostalAddress']['BuildingNumber']);
             $customerArray['mesto'] = $customerArrayRaw['PostalAddress']['CityName'];
             $customerArray['psc'] = $customerArrayRaw['PostalAddress']['PostalZone'];
-            $customerArray['tel'] = array_key_exists('Telephone', $customerArrayRaw['Contact']) ? $customerArrayRaw['Contact']['Telephone'] : '';
-            $customerArray['email'] = array_key_exists('ElectronicMail', $customerArrayRaw['Contact']) ? $customerArrayRaw['Contact']['ElectronicMail'] : '';
-            $customerArray['stat'] = empty($customerArrayRaw['PostalAddress']['Country']['IdentificationCode']) ? '' : 'code:' . $customerArrayRaw['PostalAddress']['Country']['IdentificationCode'];
+            $customerArray['tel'] = \array_key_exists('Telephone', $customerArrayRaw['Contact']) ? $customerArrayRaw['Contact']['Telephone'] : '';
+            $customerArray['email'] = \array_key_exists('ElectronicMail', $customerArrayRaw['Contact']) ? $customerArrayRaw['Contact']['ElectronicMail'] : '';
+            $customerArray['stat'] = empty($customerArrayRaw['PostalAddress']['Country']['IdentificationCode']) ? '' : 'code:'.$customerArrayRaw['PostalAddress']['Country']['IdentificationCode'];
             $customerArray['ic'] = $customerArrayRaw['PartyIdentification']['ID'];
             $customerArray['dic'] = $customerArrayRaw['PartyTaxScheme']['CompanyID'];
-            $customerArray['platceDph'] = ($customerArrayRaw['PartyTaxScheme']['TaxScheme'] == 'VAT');
+            $customerArray['platceDph'] = ($customerArrayRaw['PartyTaxScheme']['TaxScheme'] === 'VAT');
         } else {
             $this->addStatusMessage(_('No customer data in invoice ?!?'), 'warning');
             $customerArray['ic'] = false;
         }
+
         return $customerArray;
     }
 
     /**
-     * Obtain Supplier info by Parsing ISDOC Dom
+     * Obtain Supplier info by Parsing ISDOC Dom.
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getInvoiceSuplier()
     {
@@ -126,11 +138,11 @@ class Convertor extends Parser
     }
 
     /**
-     * Convert Dom based invoice TaxTotal Element to Array
+     * Convert Dom based invoice TaxTotal Element to Array.
      *
      * @param \DOMNodeList $taxTotal
      *
-     * @return array
+     * @return array<string, string>
      */
     public function domTaxTotalToArray($taxTotal)
     {
@@ -139,7 +151,7 @@ class Convertor extends Parser
 
         $taxSubTotal = $taxTotalArrayRaw['TaxSubTotal'];
 
-        if (array_key_exists('TaxableAmount', $taxSubTotal)) {
+        if (\array_key_exists('TaxableAmount', $taxSubTotal)) {
             $taxTotalArray['sumZklZakl'] = $taxTotalArrayRaw['TaxSubTotal']['TaxableAmount'];
             $taxTotalArray['sumCelkZakl'] = $taxTotalArrayRaw['TaxSubTotal']['TaxInclusiveAmount'];
             $taxTotalArray['sumCelkem'] = $taxTotalArrayRaw['TaxSubTotal']['DifferenceTaxInclusiveAmount'];
@@ -149,17 +161,16 @@ class Convertor extends Parser
             }
         }
 
-
         $taxTotalArray['sumDphCelkem'] = $taxTotalArrayRaw['TaxAmount'];
 
         return $taxTotalArray;
     }
 
     /**
-     * Convert Dom based invoice Element to Array
+     * Convert Dom based invoice Element to Array.
      *
      * @param \DOMNodeList $invoice
-     * @param array $invoiceArray Invoice content override
+     * @param array        $invoiceArray Invoice content override
      *
      * @return array
      */
@@ -167,15 +178,17 @@ class Convertor extends Parser
     {
         $invoiceArrayRaw = self::domToArray($invoice->item(0));
 
-        $invoiceArray['id'] = 'ext:fc:' . $invoiceArrayRaw['ID'];
+        $invoiceArray['id'] = 'ext:fc:'.$invoiceArrayRaw['ID'];
         $invoiceArray['cisDosle'] = $invoiceArrayRaw['ID'];
         $invoiceArray['uuid'] = $invoiceArrayRaw['UUID'];
         $invoiceArray['datVyst'] = $invoiceArrayRaw['IssueDate'];
+
         if (isset($invoiceArrayRaw['Note'])) {
             $invoiceArray['poznam'] = $invoiceArrayRaw['Note'];
             $invoiceArray['popis'] = $invoiceArray['poznam'];
         }
-        $invoiceArray['mena'] = 'code:' . $invoiceArrayRaw['LocalCurrencyCode'];
+
+        $invoiceArray['mena'] = 'code:'.$invoiceArrayRaw['LocalCurrencyCode'];
         $invoiceArray['typDokl'] = 'code:FAKTURA';
 
         //        $invoiceArray['datSplat'] = '';
@@ -183,59 +196,60 @@ class Convertor extends Parser
     }
 
     /**
-     * Obtain Supplier info by Parsing ISDOC Dom
+     * Obtain Supplier info by Parsing ISDOC Dom.
      *
-     * @return array
+     * @return array<mixed>
      */
-    public function invoiceSuplier()
+    public function invoiceSuplier(): array
     {
         return $this->domSuplierToArray($this->xmlDomDocument->getElementsByTagName('AccountingSupplierParty'));
     }
 
     /**
-     * Obtain Customer info by Parsing ISDOC Dom
+     * Obtain Customer info by Parsing ISDOC Dom.
      *
-     * @return array
+     * @return array<mixed>
      */
-    public function invoiceCustomer()
+    public function invoiceCustomer(): array
     {
         return $this->domCustomerToArray($this->xmlDomDocument->getElementsByTagName('AccountingCustomerParty'));
     }
 
     /**
-     * Obtain Payment info by Parsing ISDOC Dom
+     * Obtain Payment info by Parsing ISDOC Dom.
      *
-     * @return array
+     * @return array<mixed>
      */
-    public function paymentMeans()
+    public function paymentMeans(): array
     {
         return $this->domPaymentMeansToArray($this->xmlDomDocument->getElementsByTagName('PaymentMeans'));
     }
 
     /**
-     *
-     * @return array
+     * @return array<mixed>
      */
-    public function invoiceItems()
+    public function invoiceItems(): array
     {
         $invoiceItems = [];
         $invoiceLines = $this->xmlDomDocument->getElementsByTagName('InvoiceLine');
-        if (count($invoiceLines)) {
+
+        if (\count($invoiceLines)) {
             foreach ($invoiceLines as $invoiceItem) {
                 $invoiceItems[] = $this->domInvoiceItemToArray($invoiceItem);
             }
         }
+
         return $invoiceItems;
     }
 
     /**
-     * Parse ISDOC invoice DOMDocument to
+     * Parse ISDOC invoice DOMDocument to.
      *
-     * @return array of \AbraFlexi\FakturaPrijata properties
+     * @return array<string, string> of \AbraFlexi\FakturaPrijata properties
      */
-    public function invoiceInfo()
+    public function invoiceInfo(): array
     {
-        //Remove Branches - See https://bugs.php.net/bug.php?id=61858
+        // Remove Branches - See https://bugs.php.net/bug.php?id=61858
 
         $element = $this->xmlDomDocument->documentElement;
 
@@ -243,39 +257,40 @@ class Convertor extends Parser
         $element->removeChild($element->getElementsByTagName('AccountingCustomerParty')->item(0));
 
         $buyerCustomerParty = $element->getElementsByTagName('BuyerCustomerParty')->item(0);
-        if (is_object($buyerCustomerParty)) {
+
+        if (\is_object($buyerCustomerParty)) {
             $element->removeChild($buyerCustomerParty);
         }
 
         $delivery = $element->getElementsByTagName('Delivery')->item(0);
-        if (is_object($delivery)) {
+
+        if (\is_object($delivery)) {
             $element->removeChild($delivery);
         }
+
         $element->removeChild($element->getElementsByTagName('InvoiceLines')->item(0));
 
-        //$taxTotal = $this->domTaxTotalToArray($this->xmlDomDocument->getElementsByTagName('TaxTotal'));
+        // $taxTotal = $this->domTaxTotalToArray($this->xmlDomDocument->getElementsByTagName('TaxTotal'));
 
         $element->removeChild($element->getElementsByTagName('TaxTotal')->item(0));
 
-        //$legalMonetaryTotal = $this->domLMTotalToArray($this->xmlDomDocument->getElementsByTagName('LegalMonetaryTotal'));
+        // $legalMonetaryTotal = $this->domLMTotalToArray($this->xmlDomDocument->getElementsByTagName('LegalMonetaryTotal'));
 
         $element->removeChild($element->getElementsByTagName('LegalMonetaryTotal')->item(0));
         $element->removeChild($element->getElementsByTagName('PaymentMeans')->item(0));
 
-        $invoiceInfo = $this->domInvoiceToArray($this->xmlDomDocument->getElementsByTagName('Invoice'));
-
+        return $this->domInvoiceToArray($this->xmlDomDocument->getElementsByTagName('Invoice'));
         //        return array_merge($invoiceInfo, $taxTotal);
-        return $invoiceInfo;
     }
 
     /**
-     * Convert Dom based invoice LegalMonetaryTotal Element to Array
+     * Convert Dom based invoice LegalMonetaryTotal Element to Array.
      *
      * @param \DOMNodeList $taxTotal
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function domLMTotalToArray($taxTotal)
+    public function domLMTotalToArray($taxTotal): array
     {
         $lmTotalArray = [];
         $lmTotalArrayRaw = self::domToArray($taxTotal->item(0));
@@ -300,55 +315,59 @@ class Convertor extends Parser
     }
 
     /**
-     * Convert Dom based invoice item Element to Array
+     * Convert Dom based invoice item Element to Array.
      *
      * @param \DOMElement $item
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function domInvoiceItemToArray($item)
+    public function domInvoiceItemToArray($item): array
     {
         $itemArray = [
             'typPolozkyK' => 'typPolozky.text',
             'ucetni' => false,
             'typCenyDphK' => 'typCeny.bezDph',
             'typSzbDphK' => 'typSzbDph.dphOsv',
-            'kratkyPopis' => ''
+            'kratkyPopis' => '',
         ];
         $itemArrayRaw = self::domToArray($item);
 
-        if (is_array($itemArrayRaw['Item'])) {
-            $itemArray['nazev'] = array_key_exists('Description', $itemArrayRaw['Item']) ? $itemArrayRaw['Item']['Description'] : '';
+        if (\is_array($itemArrayRaw['Item'])) {
+            $itemArray['nazev'] = \array_key_exists('Description', $itemArrayRaw['Item']) ? $itemArrayRaw['Item']['Description'] : '';
         } else {
             $itemArray['nazev'] = 'n/a';
         }
+
         $itemArray['cenaMj'] = $itemArrayRaw['UnitPriceTaxInclusive'];
 
-        if (isset($itemArrayRaw['LineExtensionAmount']) && ($itemArrayRaw['LineExtensionAmount'] != '0.0')) {
+        if (isset($itemArrayRaw['LineExtensionAmount']) && ($itemArrayRaw['LineExtensionAmount'] !== '0.0')) {
             $itemArray['typPolozkyK'] = 'typPolozky.ucetni';
             $itemArray['ucetni'] = true;
             $itemArray['nakupCena'] = $itemArray['sumZkl'] = $itemArray['sumCelkem'] = (float) $itemArrayRaw['LineExtensionAmount'];
             $itemArray['cenaZaklVcDph'] = (float) $itemArrayRaw['LineExtensionAmountTaxInclusive'];
             $itemArray['dan'] = (float) $itemArrayRaw['LineExtensionTaxAmount'];
-            if ($itemArray['dan'] != 0) {
+
+            if ($itemArray['dan'] !== 0) {
                 $itemArray['typCenyDphK'] = 'typCeny.sDph';
             }
-            $itemArray['typSzbDphK'] = $this->taxes[intval($itemArrayRaw['ClassifiedTaxCategory']['Percent'])];
 
-            if (isset($this->configuration['invoiceRoundingDefaults']) && isset($this->configuration['roundingList'])) {
+            $itemArray['typSzbDphK'] = $this->taxes[(int) $itemArrayRaw['ClassifiedTaxCategory']['Percent']];
+
+            if (isset($this->configuration['invoiceRoundingDefaults'], $this->configuration['roundingList'])) {
                 if (
                     array_search(
                         $itemArray['nazev'],
-                        $this->configuration['roundingList']
+                        $this->configuration['roundingList'],
+                        true,
                     ) !== false
                 ) {
                     $this->addStatusMessage(sprintf(
                         _('Rouding item %s found. Defaults used'),
-                        $itemArray['nazev']
+                        $itemArray['nazev'],
                     ));
                     $itemArray = array_merge(
                         $itemArray,
-                        $this->configuration['invoiceRoundingDefaults']
+                        $this->configuration['invoiceRoundingDefaults'],
                     );
                 }
             }
@@ -356,66 +375,72 @@ class Convertor extends Parser
             $itemArray['dan'] = 0;
         }
 
-        if (array_key_exists('InvoicedQuantity', $itemArrayRaw) && is_array($itemArrayRaw['InvoicedQuantity'])) {
+        if (\array_key_exists('InvoicedQuantity', $itemArrayRaw) && \is_array($itemArrayRaw['InvoicedQuantity'])) {
             $itemArray['typPolozkyK'] = 'typPolozky.obecny';
+
             if (isset($itemArrayRaw['InvoicedQuantity']['_value'])) {
                 $itemArray['stavMJ'] = $itemArray['mnozMj'] = $itemArrayRaw['InvoicedQuantity']['_value'];
             }
+
             if ($itemArrayRaw['InvoicedQuantity']['@attributes']['unitCode']) {
                 $itemArray['jednotka'] = strtoupper($itemArrayRaw['InvoicedQuantity']['@attributes']['unitCode']);
             }
         }
 
-        if (array_key_exists('InvoicedQuantity', $itemArrayRaw) && is_array($itemArrayRaw['InvoicedQuantity']) && ($itemArray['dan'] > 0)) {
+        if (\array_key_exists('InvoicedQuantity', $itemArrayRaw) && \is_array($itemArrayRaw['InvoicedQuantity']) && ($itemArray['dan'] > 0)) {
             $itemArray['typCenyDphK'] = 'typCeny.sDph';
             $itemArray['sumDph'] = $itemArrayRaw['LineExtensionTaxAmount'];
             $itemArray['sumCelkem'] = $itemArrayRaw['LineExtensionAmountTaxInclusive'];
         }
 
-        if (is_array($itemArrayRaw['Item'])) {
-            if (array_key_exists('CatalogueItemIdentification', $itemArrayRaw['Item'])) {
+        if (\is_array($itemArrayRaw['Item'])) {
+            if (\array_key_exists('CatalogueItemIdentification', $itemArrayRaw['Item'])) {
                 if (
-                    array_key_exists(
+                    \array_key_exists(
                         'ID',
-                        $itemArrayRaw['Item']['CatalogueItemIdentification']
-                    ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search(
+                        $itemArrayRaw['Item']['CatalogueItemIdentification'],
+                    ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && ((float) $itemArray['mnozMj'] > 0) && (array_search(
                         $itemArray['nazev'],
-                        $this->storageBlacklist
-                    ) == false)
+                        $this->storageBlacklist,
+                        true,
+                    ) === false)
                 ) {
                     $itemArray['typPolozkyK'] = 'typPolozky.katalog';
+
                     if (!empty($itemArrayRaw['Item']['CatalogueItemIdentification']['ID'])) {
                         $itemArray['eanKod'] = $itemArrayRaw['Item']['CatalogueItemIdentification']['ID'];
                     }
                 }
             }
 
-            if (array_key_exists('SellersItemIdentification', $itemArrayRaw['Item'])) {
+            if (\array_key_exists('SellersItemIdentification', $itemArrayRaw['Item'])) {
                 if (
-                    array_key_exists(
+                    \array_key_exists(
                         'ID',
-                        $itemArrayRaw['Item']['SellersItemIdentification']
-                    ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && (floatval($itemArray['mnozMj']) > 0) && (array_search(
+                        $itemArrayRaw['Item']['SellersItemIdentification'],
+                    ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && ((float) $itemArray['mnozMj'] > 0) && (array_search(
                         $itemArray['nazev'],
-                        $this->storageBlacklist
-                    ) == false)
+                        $this->storageBlacklist,
+                        true,
+                    ) === false)
                 ) {
                     $itemArray['typPolozkyK'] = 'typPolozky.katalog';
                 }
+
                 if (
-                    array_key_exists(
+                    \array_key_exists(
                         'SellersItemIdentification',
-                        $itemArrayRaw['Item']
+                        $itemArrayRaw['Item'],
                     ) && !empty($itemArrayRaw['Item']['SellersItemIdentification']['ID'])
                 ) {
                     $itemArray['kratkyPopis'] = $itemArrayRaw['Item']['SellersItemIdentification']['ID'];
                 }
             }
         }
+
         if (!empty($itemArrayRaw['Note'])) {
             $itemArray['poznam'] = $itemArrayRaw['Note'];
         }
-
 
         return $itemArray;
     }

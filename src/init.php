@@ -1,16 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * Imap2AbraFlexi Init
+ * This file is part of the Imap2AbraFlexi package
  *
- * @author     Vítězslav Dvořák <info@vitexsofware.cz>
- * @copyright  (G) 2019-2023 Vitex Software
+ * https://github.com/VitexSoftware/AbraFlexi-email-importer
+ *
+ * (c) Vítězslav Dvořák <http://vitexsoftware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace AbraFlexi\Imap2AF;
 
 require_once '../vendor/autoload.php';
 
-\Ease\Shared::init(['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY','ABRAFLEXI_BANK','ABRAFLEXI_STORAGE'], isset($argv[1]) ? $argv[1] : '../.env');
+\Ease\Shared::init(['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY', 'ABRAFLEXI_BANK', 'ABRAFLEXI_STORAGE'], $argv[1] ?? '../.env');
 \Ease\Locale::singleton('cs_CZ', '../i18n', 'imap2af');
 \Ease\Logger\Regent::singleton();

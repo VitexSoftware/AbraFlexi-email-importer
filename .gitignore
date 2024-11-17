@@ -18,3 +18,5 @@ imap2af.json
 /debian/tmp/composer.json
 /.vscode/
 /.php-cs-fixer.cache
+/.build/
+/social-preview.png

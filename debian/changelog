@@ -1,4 +1,10 @@
-abraflexi-email-importer (1.0.1) UNRELEASED; urgency=medium
+abraflexi-email-importer (1.1.0) UNRELEASED; urgency=medium
+
+  * Update for current deps
+
+ -- vitex <info@vitexsoftware.cz>  Sun, 17 Nov 2024 11:55:27 +0100
+
+abraflexi-email-importer (1.0.1) unstable; urgency=medium
 
   [ CyberVitexus ]
   * Initial release.
@@ -12,4 +18,4 @@ abraflexi-email-importer (1.0.1) UNRELEASED; urgency=medium
   [ Vítězslav Dvořák ]
   * Folder creating fix
 
- -- Vítězslav Dvořák <info@vitexsoftware.cz>  Thu, 04 Apr 2024 13:55:20 +0200
+ -- vitex <info@vitexsoftware.cz>  Sun, 17 Nov 2024 11:55:14 +0100

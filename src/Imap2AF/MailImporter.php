@@ -3,29 +3,28 @@
 declare(strict_types=1);
 
 /**
+ * This file is part of the Imap2AbraFlexi package
  *
+ * https://github.com/VitexSoftware/AbraFlexi-email-importer
  *
- * @author     Vítězslav Dvořák <info@vitexsoftware.cz>
- * @copyright  2024 Vitex Software
+ * (c) Vítězslav Dvořák <http://vitexsoftware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace AbraFlexi\Imap2AF;
 
 /**
- * Description of MailImporter
+ * Description of MailImporter.
  *
  * @author vitex
  */
 class MailImporter extends Importer
 {
-    /**
-     *
-     * @var Mailboxer
-     */
-    private $mailbox;
+    private Mailboxer $mailbox;
 
     /**
-     *
      * @param array $options
      */
     public function __construct($options = [])
@@ -33,9 +32,11 @@ class MailImporter extends Importer
         parent::__construct('mail', $options);
         $this->mailbox = new Mailboxer();
         $doneFolder = \Ease\Shared::cfg('DONE_FOLDER');
+
         if ($doneFolder) {
             $allFolders = $this->mailbox->getListingFolders();
-            if (array_search(str_replace('INBOX', $doneFolder, $this->mailbox->getImapPath()), $allFolders) === false) {
+
+            if (array_search(str_replace('INBOX', $doneFolder, $this->mailbox->getImapPath()), $allFolders, true) === false) {
                 // Create IMAP folder for done messages DONE_DIR
                 if ($this->mailbox->createFolder($doneFolder)) {
                     $this->mailbox->addStatusMessage(sprintf(_('New DONE_FOLDER folder %s created'), $doneFolder), 'success');
@@ -47,53 +48,48 @@ class MailImporter extends Importer
     }
 
     /**
-     * Import isdoc files extracted from mails
-     *
-     * @return null none
+     * Import isdoc files extracted from mails.
      */
     public function importMails()
     {
         return $this->importIsdocFiles($this->mailbox->saveIsdocs(), $this->mailbox->senders);
     }
 
-    /**
-     *
-     * @param string $inputFile
-     *
-     * @return null
-     */
-    public function moveMessageToDoneFolder($inputFile)
+    public function moveMessageToDoneFolder(string $inputFile): bool
     {
         $this->mailbox->moveMail($this->mailbox->attachmentMailId($inputFile), \Ease\Shared::cfg('DONE_FOLDER'));
+
         return parent::moveMessageToDoneFolder($inputFile);
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function alreadyKnownInvoice($invoice, $inputFile)
     {
         $result = parent::alreadyKnownInvoice($invoice, $inputFile);
+
         if (\Ease\Shared::cfg('DONE_FOLDER')) {
             $this->moveMessageToDoneFolder($inputFile);
         }
+
         return $result;
     }
 
     /**
-     * CleanUP processed inputfile and move mail to DONE_FOLDER
-     *
-     * @param array $invoiceFiles
+     * CleanUP processed input files and move mail to DONE_FOLDER.
      */
-    public function cleanUp($invoiceFiles)
+    public function cleanUp(array $invoiceFiles): bool
     {
         parent::cleanUp($invoiceFiles);
-        if (\Ease\Shared::cfg('DONE_FOLDER')) {
+
+        if (\Ease\Shared::cfg('DONE_FOLDER', false)) {
             $this->moveMessageToDoneFolder(basename($invoiceFiles[0]));
-            $status = 1;
+            $status = true;
         } else {
-            $status = 0;
+            $status = false;
         }
+
         return $status;
     }
 }

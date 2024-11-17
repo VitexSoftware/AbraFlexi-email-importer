@@ -1,41 +1,46 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * Imap2AbraFlexi ISDOC Parser
+ * This file is part of the Imap2AbraFlexi package
  *
- * @author     Vítězslav Dvořák <info@vitexsofware.cz>
- * @copyright  (G) 2019-2023 Vitex Software
+ * https://github.com/VitexSoftware/AbraFlexi-email-importer
+ *
+ * (c) Vítězslav Dvořák <http://vitexsoftware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace AbraFlexi\Imap2AF;
 
 /**
- * Description of Importer
+ * Description of Importer.
  *
  * @author Vítězslav Dvořák <info@vitexsoftware.cz>
  */
 class Parser extends \Ease\Sand
 {
     /**
-     * XML Loader
-     * @var \Lightools\Xml\XmlLoader
+     * XML Loader.
      */
-    public $loader;
+    public \Lightools\Xml\XmlLoader $loader;
 
     /**
-     * XML Data as DOM
-     * @var \DOMDocument
+     * XML Data as DOM.
      */
-    protected $xmlDomDocument;
+    protected \DOMDocument $xmlDomDocument;
 
     /**
+     * Keep track of invoice files.
      *
-     * @var array
+     * @var array<string>
      */
-    private $invoiceFiles = [];
+    private array $invoiceFiles = [];
 
     /**
-     * ISDOC Parser
+     * ISDOC Parser.
      *
      * @param string $init file to load
      */
@@ -43,73 +48,75 @@ class Parser extends \Ease\Sand
     {
         $this->setObjectName();
         $this->loader = new \Lightools\Xml\XmlLoader();
+
         if (!empty($init) && file_exists($init)) {
             $this->loadFile($init);
         }
     }
 
     /**
-     * CleanUP processed inputfile
+     * CleanUP processed inputfile.
      *
-     * @param array $invoiceFiles
+     * @param array<string> $invoiceFiles
      */
-    public function cleanUp($invoiceFiles)
+    public function cleanUp(array $invoiceFiles): void
     {
         foreach ($invoiceFiles as $invoiceID => $invoiceExtID) {
             $fileToDelete = $this->invoiceFiles[$invoiceExtID];
+
             if (unlink($fileToDelete)) {
                 $this->addStatusMessage(sprintf(
                     'Invoice %s file %s deleted',
                     $invoiceExtID,
-                    $this->invoiceFiles[$invoiceExtID]
+                    $this->invoiceFiles[$invoiceExtID],
                 ));
             } else {
                 $this->addStatusMessage(
                     sprintf(
                         'Invoice %s file %s delete failed',
                         $invoiceExtID,
-                        $this->invoiceFiles[$invoiceExtID]
+                        $this->invoiceFiles[$invoiceExtID],
                     ),
-                    'warning'
+                    'warning',
                 );
             }
 
-            $dirToDelete = dirname($fileToDelete);
-            $pdfToDelete = $dirToDelete . '/' . str_replace(
+            $dirToDelete = \dirname($fileToDelete);
+            $pdfToDelete = $dirToDelete.'/'.str_replace(
                 '.isdoc',
                 '.pdf',
-                basename($fileToDelete)
+                basename($fileToDelete),
             );
+
             if (file_exists($pdfToDelete)) {
                 if (unlink($pdfToDelete)) {
                     $this->addStatusMessage(sprintf(
                         'Invoice %s file %s deleted',
                         $invoiceExtID,
-                        $pdfToDelete
+                        $pdfToDelete,
                     ));
                     rmdir($dirToDelete);
                 } else {
                     $this->addStatusMessage(sprintf(
                         'Invoice %s file %s delete failed',
                         $invoiceExtID,
-                        $pdfToDelete
+                        $pdfToDelete,
                     ), 'warning');
                 }
             }
 
-
-            if (isset($this->invoiceFiles[$invoiceExtID . 'x'])) {
-                if (unlink($this->invoiceFiles[$invoiceExtID . 'x'])) {
+            if (isset($this->invoiceFiles[$invoiceExtID.'x'])) {
+                if (unlink($this->invoiceFiles[$invoiceExtID.'x'])) {
                     $this->addStatusMessage(sprintf(
                         'Original Invoice %s file %s deleted',
                         $invoiceExtID,
-                        $this->invoiceFiles[$invoiceExtID . 'x']
+                        $this->invoiceFiles[$invoiceExtID.'x'],
                     ));
                 } else {
                     $this->addStatusMessage(sprintf(
                         'Original Invoice %s file %s delete failed',
                         $invoiceExtID,
-                        $this->invoiceFiles[$invoiceExtID . 'x']
+                        $this->invoiceFiles[$invoiceExtID.'x'],
                     ), 'warning');
                 }
             }
@@ -117,17 +124,17 @@ class Parser extends \Ease\Sand
     }
 
     /**
-     * Convert DOM to Array
+     * Convert DOM to Array.
      *
-     * @param \DOMNode $root
-     *
-     * @return array
+     * @return array<mixed>|string parsed values
      */
-    public static function domToArray($root)
+    public static function domToArray(\DOMNode $root)
     {
-        $result = array();
+        $result = [];
+
         if ($root->hasAttributes()) {
             $attrs = $root->attributes;
+
             foreach ($attrs as $attr) {
                 $result['@attributes'][$attr->name] = $attr->value;
             }
@@ -135,22 +142,28 @@ class Parser extends \Ease\Sand
 
         if ($root->hasChildNodes()) {
             $children = $root->childNodes;
-            if ($children->length == 1) {
+
+            if ($children->length === 1) {
                 $child = $children->item(0);
-                if ($child->nodeType == constant('XML_TEXT_NODE')) {
+
+                if ($child->nodeType === \constant('XML_TEXT_NODE')) {
                     $result['_value'] = $child->nodeValue;
-                    return count($result) == 1 ? $result['_value'] : $result;
+
+                    return \count($result) === 1 ? $result['_value'] : $result;
                 }
             }
-            $groups = array();
+
+            $groups = [];
+
             foreach ($children as $child) {
                 if (!isset($result[$child->nodeName])) {
                     $result[$child->nodeName] = self::domToArray($child);
                 } else {
                     if (!isset($groups[$child->nodeName])) {
-                        $result[$child->nodeName] = array($result[$child->nodeName]);
+                        $result[$child->nodeName] = [$result[$child->nodeName]];
                         $groups[$child->nodeName] = 1;
                     }
+
                     $result[$child->nodeName][] = self::domToArray($child);
                 }
             }
@@ -160,58 +173,65 @@ class Parser extends \Ease\Sand
     }
 
     /**
-     * Unpack isdocx file
+     * Unpack isdocx file.
      *
      * @param string $filename path to .isdocx
      *
      * @return string extracted .isdoc
      */
-    public function unpackIsdocX(string $filename)
+    public function unpackIsdocX(string $filename): string
     {
         $unpackto = '';
-        $dir = sys_get_temp_dir() . '/';
+        $dir = sys_get_temp_dir().'/';
         $zip = new \ZipArchive();
+
         if ($zip->open($filename) === true) {
-            $unpackTo = $dir . basename($filename) . 'unzipped/';
+            $unpackTo = $dir.basename($filename).'unzipped/';
+
             if (!file_exists($unpackTo)) {
                 mkdir($unpackTo);
                 chmod($unpackTo, 0777);
             }
+
             $zip->extractTo($unpackTo);
 
-            for ($i = 0; $i < $zip->numFiles; $i++) {
+            for ($i = 0; $i < $zip->numFiles; ++$i) {
                 $unpacked = $zip->getNameIndex($i);
-                if (substr($unpacked, -6) == '.isdoc') {
+
+                if (substr($unpacked, -6) === '.isdoc') {
                     $filename = $unpacked;
                 }
             }
 
             $zip->close();
+            $unpacked = $unpackTo.$filename;
         } else {
-            $this->addStatusMessage(_('Error unpacking archive') . ': ' . $filename, 'error');
+            throw new \Ease\Exception(_('Error unpacking archive').': '.$filename);
         }
-        return $unpackTo . $filename;
+
+        return $unpacked;
     }
 
     /**
-     * Load ISDOC or ISDOCx File
+     * Load ISDOC or ISDOCx File.
      *
      * @param string $inputFile real filename on disk
      *
-     * @return boolean parsing status
+     * @return bool parsing status
      */
     public function loadFile($inputFile)
     {
-        $this->addStatusMessage('loading: ' . $inputFile, 'debug');
-        return pathinfo($inputFile, PATHINFO_EXTENSION) == 'isdocx' ? $this->loadISDOCx($inputFile) : $this->loadISDOC($inputFile); //TODO: Check Mime
+        $this->addStatusMessage('loading: '.$inputFile, 'debug');
+
+        return pathinfo($inputFile, \PATHINFO_EXTENSION) === 'isdocx' ? $this->loadISDOCx($inputFile) : $this->loadISDOC($inputFile); // TODO: Check Mime
     }
 
     /**
-     * Load ISDOCx File
+     * Load ISDOCx File.
      *
      * @param string $inputFile real filename on disk
      *
-     * @return boolean parsing status
+     * @return bool parsing status
      */
     public function loadISDOCx($inputFile)
     {
@@ -219,24 +239,23 @@ class Parser extends \Ease\Sand
     }
 
     /**
-     * Load ISDOC File
+     * Load ISDOC File.
      *
      * @param string $filename real filename on disk
      *
-     * @return boolean parsing status
+     * @return bool parsing status
      */
-    public function loadISDOC($filename)
+    public function loadISDOC(string $filename): bool
     {
         $this->xmlDomDocument = $this->loader->loadXml(file_get_contents($filename));
+
         return $this->xmlDomDocument->hasChildNodes();
     }
 
     /**
-     * Current ISDOC as DOM object
-     *
-     * @return \DOMDocument
+     * Current ISDOC as DOM object.
      */
-    public function getXmlDomDocument()
+    public function getXmlDomDocument(): \DOMDocument
     {
         return $this->xmlDomDocument;
     }

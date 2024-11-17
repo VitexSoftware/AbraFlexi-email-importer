@@ -1,5 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * This file is part of the Imap2AbraFlexi package
+ *
+ * https://github.com/VitexSoftware/AbraFlexi-email-importer
+ *
+ * (c) Vítězslav Dvořák <http://vitexsoftware.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Test\AbraFlexi\Imap2AF;
 
 use AbraFlexi\Imap2AF\MailImporter;
@@ -9,11 +22,7 @@ use AbraFlexi\Imap2AF\MailImporter;
  */
 class MailImporterTest extends \PHPUnit\Framework\TestCase
 {
-
-    /**
-     * @var MailImporter
-     */
-    protected $object;
+    protected MailImporter $object;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -30,14 +39,14 @@ class MailImporterTest extends \PHPUnit\Framework\TestCase
      */
     protected function tearDown(): void
     {
-        
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\MailImporter::importMails
+     * @covers \AbraFlexi\Imap2AF\MailImporter::importMails
+     *
      * @todo   Implement testimportMails().
      */
-    public function testimportMails()
+    public function testimportMails(): void
     {
         $this->assertEquals('', $this->object->importMails());
         // Remove the following lines when you implement this test.
@@ -45,10 +54,11 @@ class MailImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\MailImporter::moveMessageToDoneFolder
+     * @covers \AbraFlexi\Imap2AF\MailImporter::moveMessageToDoneFolder
+     *
      * @todo   Implement testmoveMessageToDoneFolder().
      */
-    public function testmoveMessageToDoneFolder()
+    public function testmoveMessageToDoneFolder(): void
     {
         $this->assertEquals('', $this->object->moveMessageToDoneFolder());
         // Remove the following lines when you implement this test.
@@ -56,10 +66,11 @@ class MailImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\MailImporter::alreadyKnownInvoice
+     * @covers \AbraFlexi\Imap2AF\MailImporter::alreadyKnownInvoice
+     *
      * @todo   Implement testalreadyKnownInvoice().
      */
-    public function testalreadyKnownInvoice()
+    public function testalreadyKnownInvoice(): void
     {
         $this->assertEquals('', $this->object->alreadyKnownInvoice());
         // Remove the following lines when you implement this test.
@@ -67,10 +78,11 @@ class MailImporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers AbraFlexi\Imap2AF\MailImporter::cleanUp
+     * @covers \AbraFlexi\Imap2AF\MailImporter::cleanUp
+     *
      * @todo   Implement testcleanUp().
      */
-    public function testcleanUp()
+    public function testcleanUp(): void
     {
         $this->assertEquals('', $this->object->cleanUp());
         // Remove the following lines when you implement this test.
