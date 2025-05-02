@@ -79,7 +79,7 @@
             "required": false
         },
         "ABRAFLEXI_DOCTYPE": {
-            "type": "text",
+            "type": "string",
             "description": "code of the type of invoices received",
             "defval": "FAKTURA",
             "required": true
@@ -89,7 +89,19 @@
             "description": "Move Mails with imported invoices here",
             "defval": "ImportedInvoices",
             "required": true
+        },
+        "RESULT_FILE": {
+            "type": "file",
+            "description": "File with result of import",
+            "defval": "result.txt",
+            "required": false
+        },
+        "EASE_LOGGER": {
+            "type": "string",
+            "description": "",
+            "defval": "imap2abraflexi.log",
+            "required": false
         }
     },
-    "multiflexi": "1.9.2.240"
+    "multiflexi": "1.19"
 }

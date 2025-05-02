@@ -19,7 +19,16 @@ require_once '../vendor/autoload.php';
 
 \define('EASE_APPNAME', 'Imap2AbraFlexi');
 
-\Ease\Shared::init(['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY', 'ABRAFLEXI_BANK', 'ABRAFLEXI_STORAGE', 'ABRAFLEXI_DOCTYPE'], $argv[1] ?? '../.env');
+/**
+ * Get today's Statements list.
+ */
+$options = getopt('o::e::', ['output::environment::']);
+\Ease\Shared::init(
+    ['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY', 'ABRAFLEXI_BANK', 'ABRAFLEXI_STORAGE', 'ABRAFLEXI_DOCTYPE'],
+    \array_key_exists('environment', $options) ? $options['environment'] : (\array_key_exists('e', $options) ? $options['e'] : '../.env'),
+);
+$destination = \array_key_exists('o', $options) ? $options['o'] : (\array_key_exists('output', $options) ? $options['output'] : \Ease\Shared::cfg('RESULT_FILE', 'php://stdout'));
+
 \Ease\Locale::singleton('cs_CZ', '../i18n', 'abraflexi-email-importer');
 \Ease\Logger\Regent::singleton();
 
@@ -30,7 +39,13 @@ if (\Ease\Shared::cfg('APP_DEBUG') === 'True') {
 }
 
 if ($imp->checkSetup() === true) {
-    $imp->importMails();
+    $report = $imp->importMails();
 } else {
-    exit(1);
+    $exitcode = 1;
 }
+
+$report['exitcode'] = $exitcode;
+$written = file_put_contents($destination, json_encode($report, Shared::cfg('DEBUG') ? \JSON_PRETTY_PRINT | \JSON_UNESCAPED_UNICODE : 0));
+$imp->addStatusMessage(sprintf(_('Saving result to %s'), $destination), $written ? 'success' : 'error');
+
+exit($exitcode);

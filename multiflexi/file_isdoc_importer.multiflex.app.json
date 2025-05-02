@@ -1,0 +1,71 @@
+{
+    "image": "",
+    "name": "IDOC File Importer",
+    "description": "Import ISDOC file to AbraFlexi",
+    "executable": "isdoc2abraflexi",
+    "setup": "abraflexi-email-importer-init",
+    "cmdparams": "{{ ISDOC_FILE }}",
+    "deploy": "apt install abraflexi-email-importer",
+    "homepage": "https://github.com/VitexSoftware/AbraFlexi-email-importer",
+    "requirements": "AbraFlexi",
+    "ociimage": "docker.io/vitexsoftware/abraflexi-file-importer",
+    "topics": "File,Importer,Isdoc",
+    "uuid": "3375c1cf-a2a1-407c-a0a0-f407893c39de",
+    "environment": {
+        "ISDOC_FILE": {
+            "type": "file",
+            "description": "ISDOC File path to import",
+            "hint": "Faktura_250800021.isdocx",
+            "required": true
+        },
+        "ABRAFLEXI_COMPANY": {
+            "type": "string",
+            "description": "",
+            "defval": "demo_de",
+            "required": false
+        },
+        "ABRAFLEXI_LOGIN": {
+            "type": "string",
+            "description": "AbraFlexi Login",
+            "defval": "winstrom",
+            "required": false
+        },
+        "ABRAFLEXI_PASSWORD": {
+            "type": "string",
+            "description": "AbraFlexi password",
+            "defval": "winstrom",
+            "required": false
+        },
+        "ABRAFLEXI_URL": {
+            "type": "string",
+            "description": "AbraFlexi Server URI",
+            "defval": "https:\/\/demo.flexibee.eu:5434",
+            "required": false
+        },
+        "ABRAFLEXI_STORAGE": {
+            "type": "text",
+            "description": "Default storage for new items",
+            "defval": "SKLAD",
+            "required": false
+        },
+        "ABRAFLEXI_DOCTYPE": {
+            "type": "string",
+            "description": "code of the type of invoices received",
+            "defval": "FAKTURA",
+            "required": true
+        },
+        "RESULT_FILE": {
+            "type": "file",
+            "description": "File with result of import",
+            "defval": "result.txt",
+            "required": false
+        },
+        "EASE_LOGGER": {
+            "type": "string",
+            "description": "",
+            "defval": "syslog|console",
+            "required": false
+        }
+    },
+    "multiflexi": "1.19"
+}

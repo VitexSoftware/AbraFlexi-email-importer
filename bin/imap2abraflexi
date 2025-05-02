@@ -1,2 +1,2 @@
 #!/bin/bash
-php -f /usr/share/abraflexi-email-importer/imap2abraflexi.php
+php -f /usr/share/abraflexi-email-importer/imap2abraflexi.php -- "$@"

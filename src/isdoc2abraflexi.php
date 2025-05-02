@@ -23,6 +23,11 @@ require_once '../vendor/autoload.php';
 \Ease\Locale::singleton('cs_CZ', '../i18n', 'abraflexi-email-importer');
 \Ease\Logger\Regent::singleton();
 
+$report = [
+    'processedFiles' => [],
+    'exitcode' => 1,
+];
+
 $imp = new Importer('file');
 
 if (\Ease\Shared::cfg('APP_DEBUG') === 'True') {
@@ -36,5 +41,13 @@ if ($imp->checkSetup() === true) {
         $isdocs[basename($isdocFile)] = $isdocFile;
     }
 
-    $imp->importIsdocFiles($isdocs, []);
+    $report['processedFiles'] = $imp->importIsdocFiles($isdocs, []);
+    $report['exitcode'] = 0;
 }
+
+$destination = \Ease\Shared::cfg('RESULT_FILE', 'php://stdout');
+$written = file_put_contents($destination, json_encode($report, \Ease\Shared::cfg('DEBUG') ? \JSON_PRETTY_PRINT | \JSON_UNESCAPED_UNICODE : 0));
+
+$imp->addStatusMessage(sprintf(_('Saving result to %s'), $destination), $written ? 'success' : 'error');
+
+exit($report['exitcode']);

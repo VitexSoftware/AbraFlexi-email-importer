@@ -190,7 +190,7 @@ class Parser extends \Ease\Sand
 
             if (!file_exists($unpackTo)) {
                 mkdir($unpackTo);
-                chmod($unpackTo, 0777);
+                chmod($unpackTo, 0o777);
             }
 
             $zip->extractTo($unpackTo);

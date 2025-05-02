@@ -125,19 +125,21 @@ class Importer extends FakturaPrijata
      * @param array<string, string> $isdocs  list of Isdoc filenames and its downloaded files
      * @param array<string, string> $senders list of Isdoc filenames and its senders
      */
-    public function importIsdocFiles($isdocs, $senders): void
+    public function importIsdocFiles($isdocs, $senders): array
     {
         $this->invoicesToImport = $isdocs;
 
         if (!empty($isdocs)) {
-            $this->mainLoop($this->invoicesToImport, $senders);
+            $imported[] = $this->mainLoop($this->invoicesToImport, $senders);
         }
+
+        return $imported;
     }
 
     /**
      * Compile Invoice.
      */
-    public function xmlDomToInvoice(): \AbraFlexi\FakturaPrijata
+    public function xmlDomToInvoice(): FakturaPrijata
     {
         $invoiceSuplier = $this->parser->invoiceSuplier();
         $invoiceCustomer = $this->parser->invoiceCustomer();
@@ -839,7 +841,7 @@ class Importer extends FakturaPrijata
 
             if (!file_exists($unpackTo)) {
                 mkdir($unpackTo);
-                chmod($unpackTo, 0777);
+                chmod($unpackTo, 0o777);
             }
 
             for ($i = 0; $i < $zip->numFiles; ++$i) {
@@ -847,7 +849,7 @@ class Importer extends FakturaPrijata
                 $buf = $zip->getFromIndex($i);
                 $unpacked = $unpackTo.'/'.$zip_entry;
                 $fp = fopen($unpacked, 'w+b');
-                chmod($unpacked, 0777);
+                chmod($unpacked, 0o777);
                 fwrite($fp, $buf);
                 fclose($fp);
 

@@ -1,8 +1,14 @@
-abraflexi-email-importer (1.1.0) UNRELEASED; urgency=medium
+abraflexi-email-importer (1.1.1) UNRELEASED; urgency=medium
+
+  * minimal supported php is 8.1
+
+ -- vitex <info@vitexsoftware.cz>  Fri, 02 May 2025 12:11:13 +0200
+
+abraflexi-email-importer (1.1.0) unstable; urgency=medium
 
   * Update for current deps
 
- -- vitex <info@vitexsoftware.cz>  Sun, 17 Nov 2024 11:55:27 +0100
+ -- vitex <info@vitexsoftware.cz>  Fri, 02 May 2025 12:10:43 +0200
 
 abraflexi-email-importer (1.0.1) unstable; urgency=medium
 

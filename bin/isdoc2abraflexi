@@ -1,3 +1,4 @@
 #!/bin/bash
-php -f /usr/share/abraflexi-email-importer/idoc2abraflexi.php
+php -f /usr/share/abraflexi-email-importer/idoc2abraflexi.php -- "$@"
+
 
