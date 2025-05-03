@@ -1,6 +1,8 @@
 #!groovy
 
-String[] distributions = ['debian:bookworm', 'debian:trixie', 'ubuntu:jammy', 'ubuntu:noble']
+String[] distributions = ['debian:bookworm', 'ubuntu:jammy', 'ubuntu:noble']
+
+# 'debian:trixie' does not contain php-imap package ?!?
 
 String vendor = 'vitexsoftware'
 String distribution = ''
