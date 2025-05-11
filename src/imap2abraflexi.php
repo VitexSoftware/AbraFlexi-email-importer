@@ -15,6 +15,8 @@ declare(strict_types=1);
 
 namespace AbraFlexi\Imap2AF;
 
+use Ease\Shared;
+
 require_once '../vendor/autoload.php';
 
 \define('EASE_APPNAME', 'Imap2AbraFlexi');
@@ -23,18 +25,19 @@ require_once '../vendor/autoload.php';
  * Get today's Statements list.
  */
 $options = getopt('o::e::', ['output::environment::']);
-\Ease\Shared::init(
+Shared::init(
     ['ABRAFLEXI_URL', 'ABRAFLEXI_LOGIN', 'ABRAFLEXI_PASSWORD', 'ABRAFLEXI_COMPANY', 'ABRAFLEXI_BANK', 'ABRAFLEXI_STORAGE', 'ABRAFLEXI_DOCTYPE'],
     \array_key_exists('environment', $options) ? $options['environment'] : (\array_key_exists('e', $options) ? $options['e'] : '../.env'),
 );
 $destination = \array_key_exists('o', $options) ? $options['o'] : (\array_key_exists('output', $options) ? $options['output'] : \Ease\Shared::cfg('RESULT_FILE', 'php://stdout'));
+$exitcode = 0;
 
 \Ease\Locale::singleton('cs_CZ', '../i18n', 'abraflexi-email-importer');
 \Ease\Logger\Regent::singleton();
 
 $imp = new MailImporter();
 
-if (\Ease\Shared::cfg('APP_DEBUG') === 'True') {
+if (Shared::cfg('APP_DEBUG') === 'True') {
     $imp->logBanner();
 }
 
