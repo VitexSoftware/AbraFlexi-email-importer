@@ -127,6 +127,7 @@ class Importer extends FakturaPrijata
      */
     public function importIsdocFiles($isdocs, $senders): array
     {
+        $imported=[];
         $this->invoicesToImport = $isdocs;
 
         if (!empty($isdocs)) {
