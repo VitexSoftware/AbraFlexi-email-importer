@@ -148,22 +148,26 @@ class Mailboxer extends Mailbox
         $this->attachments = [];
 
         foreach ($mailsIds as $mailId) {
-            $email = $this->getMail(
-                $mailId, // ID of the email, you want to get
-                false, // Do NOT mark emails as seen (optional)
-            );
+            try {
+                $email = $this->getMail(
+                    $mailId, // ID of the email, you want to get
+                    false, // Do NOT mark emails as seen (optional)
+                );
 
-            if ($email->hasAttachments()) {
-                foreach ($email->getAttachments() as $attachmentRaw) {
-                    $this->filesToClean[basename($attachmentRaw->filePath)] = $attachmentRaw->filePath;
+                if ($email->hasAttachments()) {
+                    foreach ($email->getAttachments() as $attachmentRaw) {
+                        $this->filesToClean[basename($attachmentRaw->filePath)] = $attachmentRaw->filePath;
 
-                    if (strstr(strtolower($attachmentRaw->name), '.isdoc')) {
-                        $isdocs[$attachmentRaw->name] = $attachmentRaw;
-                        $this->attachments[$attachmentRaw->name] = $mailId;
-                        $this->senders[$attachmentRaw->name] = property_exists($email->headers, 'replay_to') ? $email->headers->reply_to[0]->mailbox.'@'.$email->headers->reply_to[0]->host : $email->headers->from[0]->mailbox.'@'.$email->headers->from[0]->host;
-                        $this->addStatusMessage(sprintf(_('Isdoc File %s Found in mail from %s '), $attachmentRaw->name, $this->senders[$attachmentRaw->name]));
+                        if (strstr(strtolower($attachmentRaw->name), '.isdoc')) {
+                            $isdocs[$attachmentRaw->name] = $attachmentRaw;
+                            $this->attachments[$attachmentRaw->name] = $mailId;
+                            $this->senders[$attachmentRaw->name] = property_exists($email->headers, 'replay_to') ? $email->headers->reply_to[0]->mailbox.'@'.$email->headers->reply_to[0]->host : $email->headers->from[0]->mailbox.'@'.$email->headers->from[0]->host;
+                            $this->addStatusMessage(sprintf(_('Isdoc File %s Found in mail from %s '), $attachmentRaw->name, $this->senders[$attachmentRaw->name]));
+                        }
                     }
                 }
+            } catch (\Exception $exc) {
+                $this->addStatusMessage($exc->getMessage(), 'error');
             }
         }
 

@@ -317,129 +317,59 @@ class Convertor extends Parser
     /**
      * Convert Dom based invoice item Element to Array.
      *
-     * @param \DOMElement $item
-     *
      * @return array<string, string>
      */
-    public function domInvoiceItemToArray($item): array
+    public function domInvoiceItemToArray(\DOMElement $item): array
     {
         $itemArray = [
             'typPolozkyK' => 'typPolozky.text',
-            'ucetni' => false,
             'typCenyDphK' => 'typCeny.bezDph',
             'typSzbDphK' => 'typSzbDph.dphOsv',
-            'kratkyPopis' => '',
         ];
         $itemArrayRaw = self::domToArray($item);
 
+        // Název a označení
         if (\is_array($itemArrayRaw['Item'])) {
-            $itemArray['nazev'] = \array_key_exists('Description', $itemArrayRaw['Item']) ? $itemArrayRaw['Item']['Description'] : '';
+            $itemArray['nazev'] = $itemArrayRaw['Item']['Description'] ?? '';
         } else {
             $itemArray['nazev'] = 'n/a';
         }
 
-        $itemArray['cenaMj'] = $itemArrayRaw['UnitPriceTaxInclusive'];
+        // Množství a MJ
+        if (isset($itemArrayRaw['InvoicedQuantity'])) {
+            $itemArray['mnozstvi'] = (float) $itemArrayRaw['InvoicedQuantity'];
 
-        if (isset($itemArrayRaw['LineExtensionAmount']) && ($itemArrayRaw['LineExtensionAmount'] !== '0.0')) {
+            if (isset($itemArrayRaw['InvoicedQuantity_attr']['unitCode'])) {
+                $itemArray['mj'] = $itemArrayRaw['InvoicedQuantity_attr']['unitCode'];
+            }
+        }
+
+        // Sleva
+        if (isset($itemArrayRaw['AllowanceCharge']['MultiplierFactorNumeric'])) {
+            $itemArray['sleva'] = (float) $itemArrayRaw['AllowanceCharge']['MultiplierFactorNumeric'] * 100;
+        }
+
+        // Cena za MJ
+        $itemArray['cenaMj'] = isset($itemArrayRaw['UnitPrice']) ? (float) $itemArrayRaw['UnitPrice'] : (isset($itemArrayRaw['UnitPriceTaxInclusive']) ? (float) $itemArrayRaw['UnitPriceTaxInclusive'] : 0);
+
+        // Sazba DPH
+        if (isset($itemArrayRaw['ClassifiedTaxCategory']['Percent'])) {
+            $itemArray['sazbaDph'] = (float) $itemArrayRaw['ClassifiedTaxCategory']['Percent'];
+            $itemArray['typSzbDphK'] = $this->taxes[(int) $itemArray['sazbaDph']] ?? 'typSzbDph.dphOsv';
+        }
+
+        // Rounding
+        if (empty($itemArray['cenaMj'])) {
             $itemArray['typPolozkyK'] = 'typPolozky.ucetni';
-            $itemArray['ucetni'] = true;
-            $itemArray['nakupCena'] = $itemArray['sumZkl'] = $itemArray['sumCelkem'] = (float) $itemArrayRaw['LineExtensionAmount'];
-            $itemArray['cenaZaklVcDph'] = (float) $itemArrayRaw['LineExtensionAmountTaxInclusive'];
-            $itemArray['dan'] = (float) $itemArrayRaw['LineExtensionTaxAmount'];
-
-            if ($itemArray['dan'] !== 0) {
-                $itemArray['typCenyDphK'] = 'typCeny.sDph';
-            }
-
-            $itemArray['typSzbDphK'] = $this->taxes[(int) $itemArrayRaw['ClassifiedTaxCategory']['Percent']];
-
-            if (isset($this->configuration['invoiceRoundingDefaults'], $this->configuration['roundingList'])) {
-                if (
-                    array_search(
-                        $itemArray['nazev'],
-                        $this->configuration['roundingList'],
-                        true,
-                    ) !== false
-                ) {
-                    $this->addStatusMessage(sprintf(
-                        _('Rouding item %s found. Defaults used'),
-                        $itemArray['nazev'],
-                    ));
-                    $itemArray = array_merge(
-                        $itemArray,
-                        $this->configuration['invoiceRoundingDefaults'],
-                    );
-                }
-            }
+            unset($itemArray['cenaMj']);
+            $itemArray['sumZkl'] = isset($itemArrayRaw['LineExtensionAmount']) ? (float) $itemArrayRaw['LineExtensionAmount'] : 0;
         } else {
-            $itemArray['dan'] = 0;
+            $itemArray['sumZkl'] = $itemArrayRaw['LineExtensionAmount'];
         }
 
-        if (\array_key_exists('InvoicedQuantity', $itemArrayRaw) && \is_array($itemArrayRaw['InvoicedQuantity'])) {
-            $itemArray['typPolozkyK'] = 'typPolozky.obecny';
-
-            if (isset($itemArrayRaw['InvoicedQuantity']['_value'])) {
-                $itemArray['stavMJ'] = $itemArray['mnozMj'] = $itemArrayRaw['InvoicedQuantity']['_value'];
-            }
-
-            if ($itemArrayRaw['InvoicedQuantity']['@attributes']['unitCode']) {
-                $itemArray['jednotka'] = strtoupper($itemArrayRaw['InvoicedQuantity']['@attributes']['unitCode']);
-            }
-        }
-
-        if (\array_key_exists('InvoicedQuantity', $itemArrayRaw) && \is_array($itemArrayRaw['InvoicedQuantity']) && ($itemArray['dan'] > 0)) {
-            $itemArray['typCenyDphK'] = 'typCeny.sDph';
-            $itemArray['sumDph'] = $itemArrayRaw['LineExtensionTaxAmount'];
-            $itemArray['sumCelkem'] = $itemArrayRaw['LineExtensionAmountTaxInclusive'];
-        }
-
-        if (\is_array($itemArrayRaw['Item'])) {
-            if (\array_key_exists('CatalogueItemIdentification', $itemArrayRaw['Item'])) {
-                if (
-                    \array_key_exists(
-                        'ID',
-                        $itemArrayRaw['Item']['CatalogueItemIdentification'],
-                    ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && ((float) $itemArray['mnozMj'] > 0) && (array_search(
-                        $itemArray['nazev'],
-                        $this->storageBlacklist,
-                        true,
-                    ) === false)
-                ) {
-                    $itemArray['typPolozkyK'] = 'typPolozky.katalog';
-
-                    if (!empty($itemArrayRaw['Item']['CatalogueItemIdentification']['ID'])) {
-                        $itemArray['eanKod'] = $itemArrayRaw['Item']['CatalogueItemIdentification']['ID'];
-                    }
-                }
-            }
-
-            if (\array_key_exists('SellersItemIdentification', $itemArrayRaw['Item'])) {
-                if (
-                    \array_key_exists(
-                        'ID',
-                        $itemArrayRaw['Item']['SellersItemIdentification'],
-                    ) && $itemArray['ucetni'] && isset($itemArray['mnozMj']) && ((float) $itemArray['mnozMj'] > 0) && (array_search(
-                        $itemArray['nazev'],
-                        $this->storageBlacklist,
-                        true,
-                    ) === false)
-                ) {
-                    $itemArray['typPolozkyK'] = 'typPolozky.katalog';
-                }
-
-                if (
-                    \array_key_exists(
-                        'SellersItemIdentification',
-                        $itemArrayRaw['Item'],
-                    ) && !empty($itemArrayRaw['Item']['SellersItemIdentification']['ID'])
-                ) {
-                    $itemArray['kratkyPopis'] = $itemArrayRaw['Item']['SellersItemIdentification']['ID'];
-                }
-            }
-        }
-
-        if (!empty($itemArrayRaw['Note'])) {
-            $itemArray['poznam'] = $itemArrayRaw['Note'];
+        // Záruka (pokud je v ISDOC)
+        if (isset($itemArrayRaw['Warranty'])) {
+            $itemArray['zaruka'] = $itemArrayRaw['Warranty'];
         }
 
         return $itemArray;

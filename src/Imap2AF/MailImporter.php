@@ -50,7 +50,7 @@ class MailImporter extends Importer
     /**
      * Import isdoc files extracted from mails.
      */
-    public function importMails()
+    public function importMails(): array
     {
         return $this->importIsdocFiles($this->mailbox->saveIsdocs(), $this->mailbox->senders);
     }

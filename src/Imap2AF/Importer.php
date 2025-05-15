@@ -127,7 +127,7 @@ class Importer extends FakturaPrijata
      */
     public function importIsdocFiles($isdocs, $senders): array
     {
-        $imported=[];
+        $imported = [];
         $this->invoicesToImport = $isdocs;
 
         if (!empty($isdocs)) {
@@ -295,12 +295,7 @@ class Importer extends FakturaPrijata
                 $itemArray['typPolozkyK'] = 'typPolozky.katalog';
             }
 
-            if (
-                \array_key_exists(
-                    'SellersItemIdentification',
-                    $itemArrayRaw['Item'],
-                ) && !empty($itemArrayRaw['Item']['SellersItemIdentification']['ID'])
-            ) {
+            if (\array_key_exists('SellersItemIdentification', $itemArrayRaw['Item']) && !empty($itemArrayRaw['Item']['SellersItemIdentification']['ID'])) {
                 $itemArray['kratkyPopis'] = $itemArrayRaw['Item']['SellersItemIdentification']['ID'];
             }
         }
@@ -375,13 +370,20 @@ class Importer extends FakturaPrijata
     /**
      * Insert given invoice to AbraFlexi.
      *
-     * @param FakturaPrijata $invoice
-     *
      * @return bool insertion status
      */
-    public function importInvoice(&$invoice): bool
+    public function importInvoice(FakturaPrijata &$invoice): bool
     {
         //                $invoice->setDataValue('stitky', 'IMAP2AF');
+
+        $noteRows[] = $invoice->getDataValue('poznam');
+        $noteRows[] = _('Imported by').' '.\Ease\Shared::appName().' '.\Ease\Shared::appVersion();
+
+        if (\Ease\Shared::cfg('MULTIFLEXI_JOB_ID')) {
+            $noteRows[] = _('MultiFlexi Job').' #'.\Ease\Shared::cfg('MULTIFLEXI_JOB_ID');
+        }
+
+        $invoice->setDataValue('poznam', implode("\n", $noteRows));
 
         if ($this->conf('FORCE_INCOMING_INVOICE_TYPE')) {
             $invoice->setDataValue('typDokl', $this->conf('FORCE_INCOMING_INVOICE_TYPE'));
@@ -419,7 +421,7 @@ class Importer extends FakturaPrijata
     }
 
     /**
-     * Main LOOP.
+     * Main importing LOOP.
      *
      * @param array<string, string> $inputFiles List of ISDOC files paths
      * @param array<string, string> $senders    List of sender emails for each invoice
