@@ -13,7 +13,7 @@
         "ext-zip": "*",
         "spojenet/flexibee": "^3.6",
         "vitexsoftware/abraflexi-bricks": "^1.4",
-        "php-imap/php-imap": "^4.4",
+        "php-imap/php-imap": "^5.0",
         "lightools/xml": "^3.0"
     },
     "require-dev": {
@@ -21,7 +21,7 @@
         "phpstan/phpstan": "*",
         "friendsofphp/php-cs-fixer": "^3.85",
         "ergebnis/composer-normalize": "^2.47",
-        "ergebnis/php-cs-fixer-config": "^6.46"
+        "ergebnis/php-cs-fixer-config": "^6.51"
     },
     "autoload": {
         "psr-4": {
