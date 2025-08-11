@@ -7,9 +7,9 @@
     "cmdparams": "{{ ISDOC_FILE }}",
     "deploy": "apt install abraflexi-email-importer",
     "homepage": "https://github.com/VitexSoftware/AbraFlexi-email-importer",
-    "requirements": "AbraFlexi",
+    "requirements": ["AbraFlexi"],
     "ociimage": "docker.io/vitexsoftware/abraflexi-file-importer",
-    "topics": "File,Importer,Isdoc",
+    "topics": ["File", "Importer", "Isdoc"],
     "uuid": "3375c1cf-a2a1-407c-a0a0-f407893c39de",
     "environment": {
         "ISDOC_FILE": {

@@ -7,9 +7,9 @@
     "cmdparams": "",
     "deploy": "apt install abraflexi-email-importer",
     "homepage": "https://github.com/VitexSoftware/AbraFlexi-email-importer",
-    "requirements": "AbraFlexi",
+    "requirements": ["AbraFlexi"],
     "ociimage": "docker.io/vitexsoftware/abraflexi-email-importer",
-    "topics": "Email,Importer,Isdoc",
+    "topics": ["Email", "Importer", "Isdoc"],
     "uuid": "0323bde6-a24c-4faf-90ff-45dd88c15603",
     "environment": {
         "ABRAFLEXI_COMPANY": {
