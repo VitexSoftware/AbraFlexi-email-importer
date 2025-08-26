@@ -1,8 +1,6 @@
 #!groovy
 
-String[] distributions = ['debian:bookworm', 'debian:trixie', 'debian:forky', 'ubuntu:jammy', 'ubuntu:noble']
-
-// php-imap package now available via Sury repository
+String[] distributions = ['debian:bullseye', 'debian:bookworm', 'debian:trixie', 'debian:forky', 'ubuntu:focal', 'ubuntu:jammy', 'ubuntu:noble']
 
 String vendor = 'vitexsoftware'
 String distribution = ''
@@ -50,14 +48,6 @@ distributions.each {
                     sh 'dch -b -v ' + ver  + ' "' + env.BUILD_TAG  + '"'
                     sh 'sudo apt-get update --allow-releaseinfo-change'
                     sh 'sudo chown jenkins:jenkins ..'
-                    // Add Sury PHP repository for php-imap package
-                    sh '''
-                        sudo apt-get install -y lsb-release ca-certificates curl
-                        sudo curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
-                        sudo dpkg -i /tmp/debsuryorg-archive-keyring.deb
-                        echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/sury-php.list
-                        sudo apt-get update
-                    '''
                     sh 'debuild-pbuilder  -i -us -uc -b'
                     sh 'mkdir -p $WORKSPACE/dist/debian/ ; rm -rf $WORKSPACE/dist/debian/* ; for deb in $(cat debian/files | awk \'{print $1}\'); do mv "../$deb" $WORKSPACE/dist/debian/; done'
                     artifacts = sh (
@@ -87,8 +77,8 @@ distributions.each {
                     artifacts.each { deb_file ->
                         println "Copying artifact: " + deb_file
                         archiveArtifacts artifacts: 'dist/debian/' + deb_file
+                        sh 'cp $WORKSPACE/dist/debian/' + deb_file + ' $WORKSPACE'
                     }
-                    sh 'mv $WORKSPACE/dist/debian/*.deb $WORKSPACE'
                 }
             }
         }
