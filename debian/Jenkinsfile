@@ -1,8 +1,8 @@
 #!groovy
 
-String[] distributions = ['debian:bookworm', 'ubuntu:jammy', 'ubuntu:noble']
+String[] distributions = ['debian:bookworm', 'debian:trixie', 'ubuntu:jammy', 'ubuntu:noble']
 
-// 'debian:trixie' does not contain php-imap package ?!?
+// php-imap package now available via Sury repository
 
 String vendor = 'vitexsoftware'
 String distribution = ''
@@ -50,6 +50,14 @@ distributions.each {
                     sh 'dch -b -v ' + ver  + ' "' + env.BUILD_TAG  + '"'
                     sh 'sudo apt-get update --allow-releaseinfo-change'
                     sh 'sudo chown jenkins:jenkins ..'
+                    // Add Sury PHP repository for php-imap package
+                    sh '''
+                        sudo apt-get install -y lsb-release ca-certificates curl
+                        sudo curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
+                        sudo dpkg -i /tmp/debsuryorg-archive-keyring.deb
+                        echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/sury-php.list
+                        sudo apt-get update
+                    '''
                     sh 'debuild-pbuilder  -i -us -uc -b'
                     sh 'mkdir -p $WORKSPACE/dist/debian/ ; rm -rf $WORKSPACE/dist/debian/* ; for deb in $(cat debian/files | awk \'{print $1}\'); do mv "../$deb" $WORKSPACE/dist/debian/; done'
                     artifacts = sh (
