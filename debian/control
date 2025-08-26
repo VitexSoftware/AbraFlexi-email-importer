@@ -2,7 +2,7 @@ Source: abraflexi-email-importer
 Section: web
 Priority: optional
 Maintainer: "Vítězslav Dvořák" <info@vitexsoftware.cz>
-Build-Depends: debhelper (>=11~),composer, php-imap, php-zip, moreutils, jq
+Build-Depends: debhelper (>=11~), composer, php-imap, php-zip, moreutils, jq
 Standards-Version: 4.1.4
 Homepage: https://github.com/VitexSoftware/AbraFlexi-email-importer
 
