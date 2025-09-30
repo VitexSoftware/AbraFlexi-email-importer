@@ -1,3 +1,11 @@
+abraflexi-email-importer (1.1.2) UNRELEASED; urgency=medium
+
+  * Fixed MultiFlexi JSON schema compliance
+  * Updated environment variable types: IMAP_PORT (integer), RESULT_FILE (file-path), ISDOC_FILE (file-path)
+  * Updated documentation with comprehensive configuration guide
+
+ -- vitex <info@vitexsoftware.cz>  Mon, 30 Sep 2025 10:14:26 +0200
+
 abraflexi-email-importer (1.1.1) UNRELEASED; urgency=medium
 
   * minimal supported php is 8.1
