@@ -13,7 +13,7 @@
     "uuid": "3375c1cf-a2a1-407c-a0a0-f407893c39de",
     "environment": {
         "ISDOC_FILE": {
-            "type": "file",
+            "type": "file-path",
             "description": "ISDOC File path to import",
             "hint": "Faktura_250800021.isdocx",
             "required": true
@@ -55,7 +55,7 @@
             "required": true
         },
         "RESULT_FILE": {
-            "type": "file",
+            "type": "file-path",
             "description": "File with result of import",
             "defval": "result.txt",
             "required": false

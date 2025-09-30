@@ -61,7 +61,7 @@
             "required": true
         },
         "IMAP_PORT": {
-            "type": "number",
+            "type": "integer",
             "description": "",
             "defval": "993",
             "required": true
@@ -91,7 +91,7 @@
             "required": true
         },
         "RESULT_FILE": {
-            "type": "file",
+            "type": "file-path",
             "description": "File with result of import",
             "defval": "result.txt",
             "required": false
