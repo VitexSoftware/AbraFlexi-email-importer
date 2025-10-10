@@ -1,107 +1,150 @@
 {
-    "image": "",
-    "name": "Email Importer",
-    "description": "Na\u010d\u00edt\u00e1 doklady z mailboxu do FlexiBee",
-    "executable": "\/usr\/bin\/imap2abraflexi",
-    "setup": "abraflexi-email-importer-init",
-    "cmdparams": "",
-    "deploy": "apt install abraflexi-email-importer",
-    "homepage": "https://github.com/VitexSoftware/AbraFlexi-email-importer",
-    "requirements": ["AbraFlexi"],
-    "ociimage": "docker.io/vitexsoftware/abraflexi-email-importer",
-    "topics": ["Email", "Importer", "Isdoc"],
+    "$schema": "https://raw.githubusercontent.com/VitexSoftware/php-vitexsoftware-multiflexi-core/refs/heads/main/multiflexi.app.schema.json",
+    "schemaVersion": "3.0.0",
     "uuid": "0323bde6-a24c-4faf-90ff-45dd88c15603",
+    "name": {
+        "en": "Email Importer",
+        "cs": "Email Importer"
+    },
+    "description": {
+        "en": "Načítá doklady z mailboxu do FlexiBee",
+        "cs": "Načítá doklady z mailboxu do FlexiBee"
+    },
+    "tags": [
+        "Email",
+        "Importer",
+        "Isdoc"
+    ],
+    "homepage": "https://github.com/VitexSoftware/AbraFlexi-email-importer",
+    "image": "",
+    "ociimage": "docker.io/vitexsoftware/abraflexi-email-importer",
+    "executable": "/usr/bin/imap2abraflexi",
     "environment": {
         "ABRAFLEXI_COMPANY": {
             "type": "string",
             "description": "",
             "defval": "demo_de",
-            "required": false
+            "required": false,
+            "category": "API"
         },
         "ABRAFLEXI_LOGIN": {
             "type": "string",
-            "description": "AbraFlexi Login",
+            "description": {
+                "en": "AbraFlexi Login",
+                "cs": "AbraFlexi Login"
+            },
             "defval": "winstrom",
-            "required": false
+            "required": false,
+            "category": "API"
         },
         "ABRAFLEXI_PASSWORD": {
-            "type": "string",
-            "description": "AbraFlexi password",
+            "type": "password",
+            "description": {
+                "en": "AbraFlexi password",
+                "cs": "AbraFlexi password"
+            },
             "defval": "winstrom",
-            "required": false
+            "required": false,
+            "category": "API"
         },
         "ABRAFLEXI_URL": {
             "type": "string",
-            "description": "AbraFlexi Server URI",
-            "defval": "https:\/\/demo.flexibee.eu:5434",
-            "required": false
+            "description": {
+                "en": "AbraFlexi Server URI",
+                "cs": "AbraFlexi Server URI"
+            },
+            "defval": "https://demo.flexibee.eu:5434",
+            "required": false,
+            "category": "API"
         },
         "IMAP_LOGIN": {
             "type": "text",
             "description": "",
             "defval": "",
-            "required": false
+            "required": false,
+            "category": "Other"
         },
         "IMAP_MAILBOX": {
             "type": "text",
             "description": "",
             "defval": "INBOX",
-            "required": false
+            "required": false,
+            "category": "Other"
         },
         "IMAP_OPTIONS": {
             "type": "text",
             "description": "",
-            "defval": "imap\/ssl",
-            "required": false
+            "defval": "imap/ssl",
+            "required": false,
+            "category": "Other"
         },
         "IMAP_PASSWORD": {
             "type": "password",
             "description": "",
             "defval": "",
-            "required": true
+            "required": true,
+            "category": "Security"
         },
         "IMAP_PORT": {
             "type": "integer",
             "description": "",
             "defval": "993",
-            "required": true
+            "required": true,
+            "category": "Other"
         },
         "IMAP_SERVER": {
             "type": "text",
             "description": "",
             "defval": "",
-            "required": true
+            "required": true,
+            "category": "Other"
         },
         "ABRAFLEXI_STORAGE": {
             "type": "text",
-            "description": "Default storage for new items",
+            "description": {
+                "en": "Default storage for new items",
+                "cs": "Default storage for new items"
+            },
             "defval": "SKLAD",
-            "required": false
+            "required": false,
+            "category": "API"
         },
         "ABRAFLEXI_DOCTYPE": {
             "type": "string",
-            "description": "code of the type of invoices received",
+            "description": {
+                "en": "code of the type of invoices received",
+                "cs": "code of the type of invoices received"
+            },
             "defval": "FAKTURA",
-            "required": true
+            "required": true,
+            "category": "API"
         },
         "DONE_FOLDER": {
             "type": "text",
-            "description": "Move Mails with imported invoices here",
+            "description": {
+                "en": "Move Mails with imported invoices here",
+                "cs": "Move Mails with imported invoices here"
+            },
             "defval": "ImportedInvoices",
-            "required": true
+            "required": true,
+            "category": "Other"
         },
         "RESULT_FILE": {
             "type": "file-path",
-            "description": "File with result of import",
+            "description": {
+                "en": "File with result of import",
+                "cs": "File with result of import"
+            },
             "defval": "result.txt",
-            "required": false
+            "required": false,
+            "category": "Other"
         },
         "EASE_LOGGER": {
             "type": "string",
             "description": "",
             "defval": "imap2abraflexi.log",
-            "required": false
+            "required": false,
+            "category": "Behavior"
         }
-    },
-    "multiflexi": "1.19"
+    }
 }
