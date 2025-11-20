@@ -1,6 +1,6 @@
 {
     "$schema": "https://raw.githubusercontent.com/VitexSoftware/php-vitexsoftware-multiflexi-core/refs/heads/main/multiflexi.app.schema.json",
-    "schemaVersion": "3.0.0",
+    "schemaVersion": "3.1.0",
     "uuid": "0323bde6-a24c-4faf-90ff-45dd88c15603",
     "name": {
         "en": "Email Importer",
@@ -145,6 +145,24 @@
             "defval": "imap2abraflexi.log",
             "required": false,
             "category": "Behavior"
+        }
+    },
+    "exitCodes": {
+        "0": {
+            "description": {
+                "en": "Success",
+                "cs": "Úspěch"
+            },
+            "severity": "success",
+            "retry": false
+        },
+        "1": {
+            "description": {
+                "en": "General error",
+                "cs": "Obecná chyba"
+            },
+            "severity": "error",
+            "retry": true
         }
     }
 }

@@ -172,3 +172,10 @@ sudo wget -O /etc/apt/trusted.gpg.d/vitexsoftware.gpg http://repo.vitexsoftware.
 sudo apt update
 sudo apt install abraflexi-email-importer
 ```
+
+## Exit Codes
+
+This application uses the following exit codes:
+
+- `0`: Success
+- `1`: General error

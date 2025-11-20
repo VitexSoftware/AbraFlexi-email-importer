@@ -20,3 +20,5 @@ Recent fixes applied:
 - Changed IMAP_PORT from "number" to "integer"
 - Changed RESULT_FILE from "file" to "file-path" 
 - Changed ISDOC_FILE from "file" to "file-path"
+
+After every single edit to a PHP file, always run `php -l` on the edited file to lint it and ensure code sanity before proceeding further. This is mandatory for all PHP code changes.
