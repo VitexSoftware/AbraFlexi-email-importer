@@ -3,11 +3,11 @@
     "schemaVersion": "3.1.0",
     "uuid": "0323bde6-a24c-4faf-90ff-45dd88c15603",
     "name": {
-        "en": "Email Importer",
-        "cs": "Email Importer"
+        "en": "Email Importer to FlexiBee",
+        "cs": "Importér emailů do FlexiBee"
     },
     "description": {
-        "en": "Načítá doklady z mailboxu do FlexiBee",
+        "en": "Imports documents from mailbox to FlexiBee",
         "cs": "Načítá doklady z mailboxu do FlexiBee"
     },
     "tags": [
@@ -22,7 +22,10 @@
     "environment": {
         "ABRAFLEXI_COMPANY": {
             "type": "string",
-            "description": "",
+            "description": {
+                "en": "AbraFlexi Company",
+                "cs": "AbraFlexi Společnost"
+            },
             "defval": "demo_de",
             "required": false,
             "category": "API"
@@ -41,7 +44,7 @@
             "type": "password",
             "description": {
                 "en": "AbraFlexi password",
-                "cs": "AbraFlexi password"
+                "cs": "AbraFlexi heslo"
             },
             "defval": "winstrom",
             "required": false,
@@ -59,42 +62,60 @@
         },
         "IMAP_LOGIN": {
             "type": "text",
-            "description": "",
+            "description": {
+                "en": "IMAP Login",
+                "cs": "IMAP Login"
+            },
             "defval": "",
             "required": false,
             "category": "Other"
         },
         "IMAP_MAILBOX": {
             "type": "text",
-            "description": "",
+            "description": {
+                "en": "IMAP Mailbox",
+                "cs": "IMAP Mailbox"
+            },
             "defval": "INBOX",
             "required": false,
             "category": "Other"
         },
         "IMAP_OPTIONS": {
             "type": "text",
-            "description": "",
+            "description": {
+                "en": "IMAP Options",
+                "cs": "IMAP Options"
+            },
             "defval": "imap/ssl",
             "required": false,
             "category": "Other"
         },
         "IMAP_PASSWORD": {
             "type": "password",
-            "description": "",
+            "description": {
+                "en": "IMAP Password",
+                "cs": "IMAP Heslo"
+            },
             "defval": "",
             "required": true,
             "category": "Security"
         },
         "IMAP_PORT": {
             "type": "integer",
-            "description": "",
+            "description": {
+                "en": "IMAP Port",
+                "cs": "IMAP Port"
+            },
             "defval": "993",
             "required": true,
             "category": "Other"
         },
         "IMAP_SERVER": {
             "type": "text",
-            "description": "",
+            "description": {
+                "en": "IMAP Server",
+                "cs": "IMAP Server"
+            },
             "defval": "",
             "required": true,
             "category": "Other"
@@ -103,7 +124,7 @@
             "type": "text",
             "description": {
                 "en": "Default storage for new items",
-                "cs": "Default storage for new items"
+                "cs": "Výchozí sklad pro nové položky"
             },
             "defval": "SKLAD",
             "required": false,
@@ -113,7 +134,7 @@
             "type": "string",
             "description": {
                 "en": "code of the type of invoices received",
-                "cs": "code of the type of invoices received"
+                "cs": "kód typu přijatých faktur"
             },
             "defval": "FAKTURA",
             "required": true,
@@ -123,7 +144,7 @@
             "type": "text",
             "description": {
                 "en": "Move Mails with imported invoices here",
-                "cs": "Move Mails with imported invoices here"
+                "cs": "Přesuň e-maily s importovanými fakturami sem"
             },
             "defval": "ImportedInvoices",
             "required": true,
@@ -133,7 +154,7 @@
             "type": "file-path",
             "description": {
                 "en": "File with result of import",
-                "cs": "File with result of import"
+                "cs": "Soubor s výsledkem importu"
             },
             "defval": "result.txt",
             "required": false,
@@ -141,7 +162,10 @@
         },
         "EASE_LOGGER": {
             "type": "string",
-            "description": "",
+            "description": {
+                "en": "Logging target: syslog|console",
+                "cs": "Cíl logování: syslog|console"
+            },
             "defval": "imap2abraflexi.log",
             "required": false,
             "category": "Behavior"

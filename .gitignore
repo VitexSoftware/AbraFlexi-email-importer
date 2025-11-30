@@ -20,3 +20,4 @@ imap2af.json
 /.php-cs-fixer.cache
 /.build/
 /social-preview.png
+debian/files

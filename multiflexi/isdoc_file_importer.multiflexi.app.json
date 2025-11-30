@@ -4,11 +4,11 @@
     "uuid": "3375c1cf-a2a1-407c-a0a0-f407893c39de",
     "name": {
         "en": "IDOC File Importer",
-        "cs": "IDOC File Importer"
+        "cs": "Importér ISDOC souborů"
     },
     "description": {
         "en": "Import ISDOC file to AbraFlexi",
-        "cs": "Import ISDOC file to AbraFlexi"
+        "cs": "Importuj ISDOC soubor do AbraFlexi"
     },
     "tags": [
         "File",
@@ -24,10 +24,10 @@
             "type": "file-path",
             "description": {
                 "en": "ISDOC File path to import",
-                "cs": "ISDOC File path to import"
+                "cs": "Cesta k souboru ISDOC k importu"
             },
             "hint": {
-                "en": "Faktura_250800021.isdocx",
+                "en": "Invoice_250800021.isdocx",
                 "cs": "Faktura_250800021.isdocx"
             },
             "required": true,
@@ -35,7 +35,10 @@
         },
         "ABRAFLEXI_COMPANY": {
             "type": "string",
-            "description": "",
+            "description": {
+                "en": "AbraFlexi Company",
+                "cs": "AbraFlexi Společnost"
+            },
             "defval": "demo_de",
             "required": false,
             "category": "API"
@@ -54,7 +57,7 @@
             "type": "password",
             "description": {
                 "en": "AbraFlexi password",
-                "cs": "AbraFlexi password"
+                "cs": "AbraFlexi heslo"
             },
             "defval": "winstrom",
             "required": false,
@@ -74,7 +77,7 @@
             "type": "text",
             "description": {
                 "en": "Default storage for new items",
-                "cs": "Default storage for new items"
+                "cs": "Výchozí sklad pro nové položky"
             },
             "defval": "SKLAD",
             "required": false,
@@ -84,7 +87,7 @@
             "type": "string",
             "description": {
                 "en": "code of the type of invoices received",
-                "cs": "code of the type of invoices received"
+                "cs": "kód typu přijatých faktur"
             },
             "defval": "FAKTURA",
             "required": true,
@@ -94,7 +97,7 @@
             "type": "file-path",
             "description": {
                 "en": "File with result of import",
-                "cs": "File with result of import"
+                "cs": "Soubor s výsledkem importu"
             },
             "defval": "result.txt",
             "required": false,
@@ -102,7 +105,10 @@
         },
         "EASE_LOGGER": {
             "type": "string",
-            "description": "",
+            "description": {
+                "en": "Logging target: syslog|console",
+                "cs": "Cíl logování: syslog|console"
+            },
             "defval": "syslog|console",
             "required": false,
             "category": "Behavior"

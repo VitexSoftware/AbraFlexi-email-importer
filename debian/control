@@ -16,7 +16,7 @@ Description: mail to AbraFlexi importer
  Utility for importning invoices from imap account to abraflexi.
 
 Package: multiflexi-abraflexi-email-importer
-Depends: abraflexi-email-importer, multiflexi
+Depends: abraflexi-email-importer, multiflexi-cli
 Architecture: all
 Section: web
 Priority: optional
