@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.vitexsoftware.abraflexi_email_importer</id>
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+  <name>abraflexi-email-importer</name>
+  <summary>mail to AbraFlexi importer</summary>
+  <description>
+    <p>
+      Utility for importning invoices from imap account to abraflexi. Import invoices from mailbox to AbraFlexi using MultiFlexi
+    </p>
+  </description>
+  <categories>
+    <category>Utility</category>
+  </categories>
+  <url type="homepage">https://github.com/VitexSoftware/AbraFlexi-email-importer</url>
+  <url type="bugtracker">https://github.com/VitexSoftware/AbraFlexi-email-importer/issues</url>
+  <developer id="cz.vitexsoftware">
+    <name>VitexSoftware</name>
+  </developer>
+  <content_rating type="oars-1.1"/>
+</component>
