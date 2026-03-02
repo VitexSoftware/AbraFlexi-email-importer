@@ -3,7 +3,6 @@
 
 set -e
 
-composer-debian abraflexi-email-importer
 
 #DEBHELPER#
 
