@@ -1,0 +1,36 @@
+{
+    "name": "vitexsoftware/imap2abraflexi",
+    "description": "Import Invoices from imap Inbox to AbraFlexi",
+    "authors": [
+        {
+            "name": "Vitex",
+            "email": "info@vitexsoftware.cz"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "ext-imap": "*",
+        "ext-zip": "*",
+        "spojenet/flexibee": "^2025.7",
+        "vitexsoftware/abraflexi-bricks": "^1.4",
+        "php-imap/php-imap": "^5.0",
+        "lightools/xml": "^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*",
+        "phpstan/phpstan": "*",
+        "friendsofphp/php-cs-fixer": "^3.89",
+        "ergebnis/composer-normalize": "^2.48",
+        "ergebnis/php-cs-fixer-config": "^6.56"
+    },
+    "autoload": {
+        "psr-4": {
+            "AbraFlexi\\Imap2AF\\": "src/Imap2AF/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true
+        }
+    }
+}
