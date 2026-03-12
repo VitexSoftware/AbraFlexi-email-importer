@@ -3,18 +3,6 @@
 %:
 	dh $@ --with phpcomposer
 
-override_dh_auto_build:
-	# Generate Debian autoloader for abraflexi-email-importer
-	cat > debian/autoload.php <<'AUTOLOADER'
-<?php
-// Debian autoloader for abraflexi-email-importer
-// Load dependency autoloaders
-require_once '/usr/share/php/AbraFlexi/autoload.php';
-require_once '/usr/share/php/AbraFlexiBricks/autoload.php';
-require_once '/usr/share/php/PhpImap/autoload.php';
-require_once '/usr/share/php/Lightools/Xml/autoload.php';
-AUTOLOADER
-
 override_dh_install:
 	jq '.version = "'`dpkg-parsechangelog | sed -n 's/^Version: //p'| sed 's/~.*//'`'"'  debian/composer.json |sponge debian/tmp/composer.json
 	dh_install
