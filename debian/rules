@@ -6,7 +6,6 @@
 override_dh_install:
 	jq '.version = "'`dpkg-parsechangelog | sed -n 's/^Version: //p'| sed 's/~.*//'`'"' composer.json |sponge debian/tmp/composer.json
 	dh_install
-	install -D -m 0644 debian/autoload.php debian/abraflexi-email-importer/usr/share/php/abraflexi-email-importer/autoload.php
 	sed -i -e 's/..\/vendor/\/usr\/share\/php\/abraflexi-email-importer/g'   debian/abraflexi-email-importer/usr/share/abraflexi-email-importer/*.php
 	sed -i -e 's/\.\.\/.env//'                                          debian/abraflexi-email-importer/usr/share/abraflexi-email-importer/*.php
 	sed -i -e 's/\.\.\/i18n/\/usr\/share\/locale/g'                   debian/abraflexi-email-importer/usr/share/abraflexi-email-importer/*.php
