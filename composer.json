@@ -11,17 +11,17 @@
   "require": {
     "ext-imap": "*",
     "ext-zip": "*",
-    "spojenet/flexibee": "^2025.7",
-    "vitexsoftware/abraflexi-bricks": "^1.4",
-    "php-imap/php-imap": "^5.0",
+    "spojenet/flexibee": "^3.7",
+    "vitexsoftware/abraflexi-bricks": "^1.5",
+    "php-imap/php-imap": "^4.4",
     "lightools/xml": "^3.0"
   },
   "require-dev": {
     "phpunit/phpunit": "*",
     "phpstan/phpstan": "*",
-    "friendsofphp/php-cs-fixer": "^3.93",
-    "ergebnis/composer-normalize": "^2.49",
-    "ergebnis/php-cs-fixer-config": "^6.59"
+    "friendsofphp/php-cs-fixer": "^3.95",
+    "ergebnis/composer-normalize": "^2.50",
+    "ergebnis/php-cs-fixer-config": "^6.61"
   },
   "autoload": {
     "psr-4": {
