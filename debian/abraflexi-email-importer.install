@@ -6,3 +6,5 @@ i18n/en_US/LC_MESSAGES/*.mo     usr/share/locale/en_US/LC_MESSAGES/
 debian/tmp/composer.json        usr/lib/abraflexi-email-importer/
 
 debian/autoload.php 		usr/share/php/abraflexi-email-importer/
+abraflexi-email-importer.svg	usr/share/icons/hicolor/scalable/apps/
+io.github.vitexsoftware.abraflexi_email_importer.metainfo.xml	usr/share/metainfo/
