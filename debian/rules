@@ -7,14 +7,15 @@ PKG_SOURCE  := $(shell jq -r '.name' composer.json)
 	dh $@ --with phpcomposer
 
 override_dh_install:
+	mkdir -p debian/tmp/
 	jq '.version = "'`dpkg-parsechangelog | sed -n 's/^Version: //p'| sed 's/~.*//'`'"' composer.json |sponge debian/tmp/composer.json
 	dh_install
 	sed -i "s|'unknown'|'$(PKG_SOURCE)'|" \
-		debian/abraflexi-email-importer/usr/share/php/abraflexi-email-importer/autoload.php
+		debian/abraflexi-email-importer/usr/lib/abraflexi-email-importer/Imap2AF/autoload.php
 	sed -i "s|'0.0.0'|'$(PKG_VERSION)'|" \
-		debian/abraflexi-email-importer/usr/share/php/abraflexi-email-importer/autoload.php
-	sed -i -e 's/..\/vendor/\/usr\/share\/php\/abraflexi-email-importer/g'   debian/abraflexi-email-importer/usr/share/abraflexi-email-importer/*.php
-	sed -i -e 's/\.\.\/.env//'                                          debian/abraflexi-email-importer/usr/share/abraflexi-email-importer/*.php
+		debian/abraflexi-email-importer/usr/lib/abraflexi-email-importer/Imap2AF/autoload.php
+	sed -i -e 's/..\/vendor/\/usr\/lib\/abraflexi-email-importer/g'   debian/abraflexi-email-importer/usr/share/abraflexi-email-importer/*.php
+	sed -i -e 's/\.\.\/.env//'                                        debian/abraflexi-email-importer/usr/share/abraflexi-email-importer/*.php
 	sed -i -e 's/\.\.\/i18n/\/usr\/share\/locale/g'                   debian/abraflexi-email-importer/usr/share/abraflexi-email-importer/*.php
 	jq '.version = "'`dpkg-parsechangelog | sed -n 's/^Version: //p'| sed 's/~.*//'`'"'  debian/multiflexi-abraflexi-email-importer/usr/lib/abraflexi-email-importer/multiflexi/isdoc_email_importer.multiflexi.app.json | sponge debian/multiflexi-abraflexi-email-importer/usr/lib/abraflexi-email-importer/multiflexi/isdoc_email_importer.multiflexi.app.json
 	jq '.version = "'`dpkg-parsechangelog | sed -n 's/^Version: //p'| sed 's/~.*//'`'"'  debian/multiflexi-abraflexi-email-importer/usr/lib/abraflexi-email-importer/multiflexi/isdoc_file_importer.multiflexi.app.json | sponge debian/multiflexi-abraflexi-email-importer/usr/lib/abraflexi-email-importer/multiflexi/isdoc_file_importer.multiflexi.app.json

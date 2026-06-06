@@ -5,11 +5,27 @@ require_once '/usr/share/php/AbraFlexi/autoload.php';
 require_once '/usr/share/php/AbraFlexiBricks/autoload.php';
 require_once '/usr/share/php/PhpImap/autoload.php';
 require_once '/usr/share/php/Lightools/Xml/autoload.php';
-require_once '/usr/lib/abraflexi-email-importer/Imap2AF/Convertor.php';
-require_once '/usr/lib/abraflexi-email-importer/Imap2AF/Importer.php';
-require_once '/usr/lib/abraflexi-email-importer/Imap2AF/Mailboxer.php';
-require_once '/usr/lib/abraflexi-email-importer/Imap2AF/MailImporter.php';
-require_once '/usr/lib/abraflexi-email-importer/Imap2AF/Parser.php';
+require_once '/usr/share/php/PhpImap/autoload.php';
+
+
+spl_autoload_register(function ($class) {
+    $prefix = 'AbraFlexi\\Imap2AF\\';
+    $baseDir = __DIR__ . '/';
+
+    $len = strlen($prefix);
+    if (strncmp($prefix, $class, $len) !== 0) {
+        return;
+    }
+
+    $relativeClass = substr($class, $len);
+    $file = $baseDir . str_replace('\\', '/', $relativeClass) . '.php';
+
+    if (file_exists($file)) {
+        require $file;
+    }
+});
+
+
 
 require_once '/usr/share/php/Composer/InstalledVersions.php';
 
