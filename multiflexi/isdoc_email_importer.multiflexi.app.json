@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/VitexSoftware/php-vitexsoftware-multiflexi-core/refs/heads/main/multiflexi.app.schema.json",
-  "schemaVersion": "3.2.1",
+  "schemaVersion": "3.4.0",
   "uuid": "0323bde6-a24c-4faf-90ff-45dd88c15603",
   "name": {
     "en": "Email Importer to FlexiBee",
@@ -19,6 +19,15 @@
   "image": "",
   "ociimage": "docker.io/vitexsoftware/abraflexi-email-importer",
   "executable": "/usr/bin/imap2abraflexi",
+  "events": {
+    "emits": {
+      "invoice.received": {
+        "description": "A received (supplier) invoice was recorded",
+        "evidence": "faktura-prijata",
+        "operation": "create"
+      }
+    }
+  },
   "environment": {
     "ABRAFLEXI_COMPANY": {
       "type": "string",

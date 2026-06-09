@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/VitexSoftware/php-vitexsoftware-multiflexi-core/refs/heads/main/multiflexi.app.schema.json",
-  "schemaVersion": "3.2.1",
+  "schemaVersion": "3.4.0",
   "uuid": "3375c1cf-a2a1-407c-a0a0-f407893c39de",
   "name": {
     "en": "IDOC File Importer",
@@ -19,6 +19,15 @@
   "image": "",
   "ociimage": "docker.io/vitexsoftware/abraflexi-file-importer",
   "executable": "isdoc2abraflexi",
+  "events": {
+    "emits": {
+      "invoice.received": {
+        "description": "A received (supplier) invoice was recorded",
+        "evidence": "faktura-prijata",
+        "operation": "create"
+      }
+    }
+  },
   "environment": {
     "ISDOC_FILE": {
       "type": "file-path",
