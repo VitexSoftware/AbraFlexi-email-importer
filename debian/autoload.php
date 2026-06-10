@@ -10,7 +10,7 @@ require_once '/usr/share/php/PhpImap/autoload.php';
 
 spl_autoload_register(function ($class) {
     $prefix = 'AbraFlexi\\Imap2AF\\';
-    $baseDir = __DIR__ . '/';
+    $baseDir = __DIR__ . '/Imap2AF/';
 
     $len = strlen($prefix);
     if (strncmp($prefix, $class, $len) !== 0) {
