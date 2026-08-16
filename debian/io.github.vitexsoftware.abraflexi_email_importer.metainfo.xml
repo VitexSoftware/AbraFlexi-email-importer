@@ -6,9 +6,13 @@
   <project_license>MIT</project_license>
   <name>abraflexi-email-importer</name>
   <summary>mail to AbraFlexi importer</summary>
+  <summary xml:lang="cs">Import pošty do AbraFlexi</summary>
   <description>
     <p>
       Utility for importning invoices from imap account to abraflexi. Import invoices from mailbox to AbraFlexi using MultiFlexi
+    </p>
+    <p xml:lang="cs">
+      Nástroj pro import faktur z IMAP schránky do AbraFlexi. Importuje faktury z e-mailové schránky do AbraFlexi pomocí MultiFlexi.
     </p>
   </description>
   <categories>
