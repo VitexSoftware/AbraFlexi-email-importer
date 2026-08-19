@@ -1,4 +1,4 @@
-# WARP.md - Working AI Reference for AbraFlexi-email-importer
+# AGENTS.md - Working AI Reference for AbraFlexi-email-importer
 
 ## Project Overview
 **Type**: PHP Project/Debian Package
