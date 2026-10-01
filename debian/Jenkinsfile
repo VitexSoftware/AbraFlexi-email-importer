@@ -22,6 +22,8 @@ properties([
 node() {
     ansiColor('xterm') {
         stage('SCM Checkout') {
+            // Reclaim files left root-owned by earlier "sudo -E" builds.
+            sh 'sudo chown -R jenkins:jenkins . || true'
             checkout scm
             // Checked out once here; every parallel branch below unstashes
             // this instead of hitting GitHub again, so a wide build matrix
@@ -47,6 +49,7 @@ distributions.each { distro ->
         node {
             ansiColor('xterm') {
                 stage('Checkout ' + distroName) {
+                    sh 'sudo chown -R jenkins:jenkins . || true'
                     unstash 'src'
                     def imageName = vendor + '/' + distro
                     buildImage = docker.image(imageName)
@@ -61,7 +64,8 @@ distributions.each { distro ->
                     buildImage.inside {
                         sh 'dch -b -v ' + buildVer  + ' "' + env.BUILD_TAG  + '"'
                         sh 'sudo apt-get update --allow-releaseinfo-change'
-                        sh 'sudo chown jenkins:jenkins ..'
+                        sh 'sudo chown -R jenkins:jenkins . ..'
+                        sh 'sudo rm -rf debian/$(dpkg-parsechangelog --show-field Source)/ debian/.debhelper/ debian/tmp/'
                         sh 'debuild-pbuilder -r"sudo -E" -i -us -uc -b'
                         sh 'mkdir -p $WORKSPACE/dist/debian/ ; rm -rf $WORKSPACE/dist/debian/* ; for deb in $(cat debian/files | awk \'{print $1}\'); do mv "../$deb" $WORKSPACE/dist/debian/; done'
                         artifacts = sh (
