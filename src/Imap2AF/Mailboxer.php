@@ -81,6 +81,36 @@ class Mailboxer extends Mailbox
     }
 
     /**
+     * Probe the IMAP connection and fail with a readable message.
+     *
+     * PhpImap's ConnectionException json_encode()s the server errors, which
+     * yields a TypeError when they are not valid UTF-8 and hides the real cause.
+     *
+     * @throws \RuntimeException
+     */
+    public function checkConnection(): void
+    {
+        \imap_errors(); // flush
+        $stream = @\imap_open($this->getImapPath(), $this->mlogin, $this->mpassword, OP_HALFOPEN, 0);
+
+        if ($stream === false) {
+            $errors = \imap_errors() ?: [_('no error reported by the server')];
+            $text = mb_convert_encoding(implode('; ', $errors), 'UTF-8', 'UTF-8, ISO-8859-2, Windows-1250');
+
+            throw new \RuntimeException(sprintf(
+                _('IMAP connection failed to %s:%s/%s as %s: %s'),
+                $this->mserver,
+                $this->mport,
+                $this->moptions,
+                $this->mlogin,
+                $text,
+            ));
+        }
+
+        \imap_close($stream);
+    }
+
+    /**
      * Disconnect Nmpap and Clean temporary files.
      */
     public function __destruct()

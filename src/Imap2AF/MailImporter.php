@@ -31,6 +31,13 @@ class MailImporter extends Importer
     {
         parent::__construct('mail', $options);
         $this->mailbox = new Mailboxer();
+
+        try {
+            $this->mailbox->checkConnection();
+        } catch (\TypeError|\PhpImap\Exceptions\ConnectionException $ex) {
+            throw new \RuntimeException('IMAP connection failed: '.$ex->getMessage(), 0, $ex);
+        }
+
         $doneFolder = \Ease\Shared::cfg('DONE_FOLDER');
 
         if ($doneFolder) {

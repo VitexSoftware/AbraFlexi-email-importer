@@ -35,7 +35,14 @@ $exitcode = 0;
 \Ease\Locale::singleton('cs_CZ', '../i18n', 'abraflexi-email-importer');
 \Ease\Logger\Regent::singleton();
 
-$imp = new MailImporter();
+try {
+    $imp = new MailImporter();
+} catch (\Throwable $ex) {
+    fwrite(\STDERR, $ex->getMessage().\PHP_EOL);
+    file_put_contents($destination, json_encode(['exitcode' => 1, 'error' => $ex->getMessage()], \JSON_UNESCAPED_UNICODE));
+
+    exit(1);
+}
 
 if (Shared::cfg('APP_DEBUG') === 'True') {
     $imp->logBanner();
