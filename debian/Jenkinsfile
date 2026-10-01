@@ -50,6 +50,9 @@ distributions.each { distro ->
             ansiColor('xterm') {
                 stage('Checkout ' + distroName) {
                     sh 'sudo chown -R jenkins:jenkins . || true'
+                    // Stashed .git holds read-only pack files that cannot be
+                    // extracted over a previous run's copy; start clean.
+                    deleteDir()
                     unstash 'src'
                     def imageName = vendor + '/' + distro
                     buildImage = docker.image(imageName)
