@@ -20,7 +20,28 @@ declare(strict_types=1);
  */
 $testServer = 'vitexsoftware';
 
-include_once file_exists('../vendor/autoload.php') ? '../vendor/autoload.php' : 'vendor/autoload.php';
+if (file_exists(__DIR__.'/../vendor/autoload.php')) {
+    include_once __DIR__.'/../vendor/autoload.php';
+} else {
+    // No composer install: fall back to the Debian dependency autoloaders.
+    foreach (['AbraFlexi', 'AbraFlexiBricks', 'PhpImap', 'Lightools/Xml', 'Ease'] as $dependency) {
+        if (file_exists('/usr/share/php/'.$dependency.'/autoload.php')) {
+            include_once '/usr/share/php/'.$dependency.'/autoload.php';
+        }
+    }
+
+    spl_autoload_register(static function (string $class): void {
+        $prefix = 'AbraFlexi\\Imap2AF\\';
+
+        if (strncmp($prefix, $class, \strlen($prefix)) === 0) {
+            $file = __DIR__.'/../src/Imap2AF/'.str_replace('\\', '/', substr($class, \strlen($prefix))).'.php';
+
+            if (file_exists($file)) {
+                require $file;
+            }
+        }
+    });
+}
 
 /**
  * Write logs as:

@@ -244,7 +244,7 @@ class ConvertorTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers \AbraFlexi\Imap2AF\Convertor::domSuplierToArray
      */
-    public function testDomSuplierToArray(): void
+    public function testDomSuplierToArrayWithMock(): void
     {
         $suplierMock = $this->createMock(\DOMNodeList::class);
         $suplierMock->method('item')->willReturn($this->createMock(\DOMNode::class));

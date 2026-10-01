@@ -95,7 +95,7 @@ class Mailboxer extends Mailbox
 
         if ($stream === false) {
             $errors = \imap_errors() ?: [_('no error reported by the server')];
-            $text = mb_convert_encoding(implode('; ', $errors), 'UTF-8', 'UTF-8, ISO-8859-2, Windows-1250');
+            $text = mb_convert_encoding(implode('; ', $errors), 'UTF-8', 'UTF-8, ISO-8859-2');
 
             throw new \RuntimeException(sprintf(
                 _('IMAP connection failed to %s:%s/%s as %s: %s'),
